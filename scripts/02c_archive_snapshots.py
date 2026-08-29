@@ -67,10 +67,11 @@ def get_existing_snapshot(url: str) -> Optional[Dict[str, str]]:
         return None
 
 
-def create_fresh_snapshot(url: str) -> Optional[Dict[str, str]]:
+def create_fresh_snapshot(url: str, existing_timestamp: Optional[str]) -> Optional[Dict[str, str]]:
     """
     Create a fresh snapshot using Save Page Now API.
     Respects rate limiting, timeout, and retry logic.
+    After save, re-queries availability API to get final snapshot URL.
     Returns: {"url": "...", "timestamp": "..."} or None if failed.
     """
     global last_save_request_time
@@ -83,6 +84,7 @@ def create_fresh_snapshot(url: str) -> Optional[Dict[str, str]]:
         time.sleep(sleep_time)
 
     # Retry loop with exponential backoff
+    save_succeeded = False
     for attempt in range(SAVE_MAX_RETRIES + 1):
         try:
             last_save_request_time = time.time()
@@ -95,23 +97,11 @@ def create_fresh_snapshot(url: str) -> Optional[Dict[str, str]]:
                 allow_redirects=True
             )
 
-            # Check if save was successful
-            if response.status_code == 200:
-                # Parse response to get snapshot timestamp
-                # Response contains the saved snapshot URL in redirects
-                if "web.archive.org/web/" in response.url:
-                    # Extract timestamp from URL: https://web.archive.org/web/YYYYMMDDHHMMSS/...
-                    parts = response.url.split("/web/")
-                    if len(parts) == 2:
-                        timestamp_and_path = parts[1]
-                        # Timestamp is first 14 characters
-                        timestamp = timestamp_and_path[:14]
-                        snapshot_url = f"https://web.archive.org/web/{timestamp}/{url}"
-                        print(f"  [SUCCESS] Snapshot created at {timestamp}")
-                        return {
-                            "url": snapshot_url,
-                            "timestamp": timestamp
-                        }
+            # Save Page Now returns 200/302 on success
+            if response.status_code in [200, 302]:
+                print(f"  [SAVE OK] Got status {response.status_code}, waiting for indexing...")
+                save_succeeded = True
+                break
 
             # Handle specific error codes
             if response.status_code in [429, 500, 502, 503, 504]:
@@ -145,14 +135,15 @@ def create_fresh_snapshot(url: str) -> Optional[Dict[str, str]]:
                 print(f"  [FAILED] Error: {e}")
                 return None
 
-    return None
+    if not save_succeeded:
+        return None
 
+    # Wait for Wayback Machine to index the new snapshot
+    print("  [WAIT] Waiting 10s for snapshot to be indexed...")
+    time.sleep(10)
 
-def get_latest_snapshot(url: str) -> Optional[Dict[str, str]]:
-    """
-    Query Wayback Machine to get the most recent snapshot.
-    Used after creating a fresh snapshot to get its final URL.
-    """
+    # Re-query availability API to get the fresh snapshot
+    print("  [VERIFY] Verifying fresh snapshot...")
     try:
         response = session.get(
             WAYBACK_AVAILABILITY_API,
@@ -165,16 +156,24 @@ def get_latest_snapshot(url: str) -> Optional[Dict[str, str]]:
         if data.get("archived_snapshots"):
             closest = data["archived_snapshots"].get("closest")
             if closest and closest.get("available"):
-                timestamp = closest.get("timestamp", "")
-                snapshot_url = f"https://web.archive.org/web/{timestamp}/{url}"
-                return {
-                    "url": snapshot_url,
-                    "timestamp": timestamp
-                }
+                new_timestamp = closest.get("timestamp", "")
+                # Only return if timestamp is different from existing
+                if new_timestamp and new_timestamp != existing_timestamp:
+                    snapshot_url = f"https://web.archive.org/web/{new_timestamp}/{url}"
+                    print(f"  [VERIFIED] New snapshot at {new_timestamp}")
+                    return {
+                        "url": snapshot_url,
+                        "timestamp": new_timestamp
+                    }
+                else:
+                    print(f"  [SKIP] No new snapshot (same timestamp: {new_timestamp})")
+                    return None
         return None
     except Exception as e:
-        print(f"  [ERROR] Failed to verify fresh snapshot for {url}: {e}")
+        print(f"  [ERROR] Failed to verify fresh snapshot: {e}")
         return None
+
+
 
 
 def process_urls():
@@ -220,7 +219,8 @@ def process_urls():
 
             # Step 2: Create fresh snapshot
             print("  [CREATE] Creating fresh snapshot...")
-            fresh = create_fresh_snapshot(url)
+            existing_ts = existing["timestamp"] if existing else None
+            fresh = create_fresh_snapshot(url, existing_ts)
             if fresh:
                 result["fresh_snapshot"] = fresh
                 print(f"  [CREATED] Fresh snapshot: {fresh['timestamp']}")
