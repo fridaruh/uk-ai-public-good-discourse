@@ -8,7 +8,6 @@ import csv
 import re
 from pathlib import Path
 from collections import defaultdict
-from datetime import datetime
 from typing import Dict, List, Set, Tuple
 
 # Configuración
@@ -24,20 +23,10 @@ FAMILIES = {"Anthropic", "Cohere", "OpenAI", "DeepMind", "ElevenLabs"}
 
 def normalize_text(text: str) -> str:
     """Normaliza texto: minúsculas, colapsa espacios, quita puntuación excepto apóstrofes."""
-    # Minúsculas
     text = text.lower()
-    # Quita puntuación excepto apóstrofes
     text = re.sub(r"[^\w\s']", " ", text)
-    # Colapsa espacios
     text = re.sub(r"\s+", " ", text).strip()
     return text
-
-def get_ngrams(text: str, n: int) -> Set[Tuple[str, ...]]:
-    """Extrae n-gramas de palabras de un texto normalizado."""
-    words = text.split()
-    if len(words) < n:
-        return set()
-    return set(tuple(words[i:i+n]) for i in range(len(words) - n + 1))
 
 def load_manifest() -> Dict[str, dict]:
     """Carga el manifest como dict {doc_id: {columns}}."""
@@ -62,10 +51,7 @@ def load_text_content(doc_id: str) -> str:
         return ""
 
 def categorize_docs(manifest: Dict[str, dict]) -> Dict[str, Dict[str, List[str]]]:
-    """
-    Categoriza docs en gobierno vs empresa por familia.
-    Retorna {family: {'government': [doc_ids], 'company': [doc_ids]}}
-    """
+    """Categoriza docs en gobierno vs empresa por familia."""
     categorized = defaultdict(lambda: {'government': [], 'company': []})
 
     for doc_id, row in manifest.items():
@@ -76,9 +62,7 @@ def categorize_docs(manifest: Dict[str, dict]) -> Dict[str, Dict[str, List[str]]
         speaker = row.get('speaker', '')
         genre = row.get('genre', '')
 
-        # Identifica lado gobierno
         is_government = speaker.startswith('DSIT') or genre in {'MOU', 'PRGOV'}
-        # Identifica lado empresa
         is_company = genre == 'PRCO'
 
         if is_government:
@@ -88,31 +72,44 @@ def categorize_docs(manifest: Dict[str, dict]) -> Dict[str, Dict[str, List[str]]
 
     return dict(categorized)
 
-def find_maximal_ngrams(gov_ngrams: Set[Tuple[str, ...]], comp_ngrams: Set[Tuple[str, ...]]) -> List[Tuple[str, ...]]:
+def find_shared_ngrams_length_n(words1: List[str], words2: List[str], n: int) -> Set[Tuple[str, ...]]:
+    """Encuentra n-gramas de longitud exacta n compartidos entre dos listas de palabras."""
+    if len(words1) < n or len(words2) < n:
+        return set()
+
+    ngrams1 = set(tuple(words1[i:i+n]) for i in range(len(words1) - n + 1))
+    ngrams2 = set(tuple(words2[i:i+n]) for i in range(len(words2) - n + 1))
+    return ngrams1 & ngrams2
+
+def find_maximal_ngrams(words1: List[str], words2: List[str]) -> List[Tuple[str, ...]]:
     """Encuentra n-gramas compartidos de longitud >= 6 y retorna solo los maximales."""
-    # Encuentra matches de cualquier longitud >= 6
-    matches_by_length = defaultdict(set)
-    for length in range(6, max(len(n) for n in gov_ngrams | comp_ngrams if isinstance(n, tuple)) + 1):
-        gov_n = {ng for ng in gov_ngrams if len(ng) == length}
-        comp_n = {ng for ng in comp_ngrams if len(ng) == length}
-        common = gov_n & comp_n
-        if common:
-            matches_by_length[length] = common
+    max_len = min(len(words1), len(words2))
+    if max_len < 6:
+        return []
+
+    matches_by_length = {}
+
+    # Busca n-gramas de cada longitud de 6 a max_len
+    for n in range(6, max_len + 1):
+        shared = find_shared_ngrams_length_n(words1, words2, n)
+        if shared:
+            matches_by_length[n] = shared
 
     if not matches_by_length:
         return []
 
-    # Filtra maximales (un n-grama es maximal si no es substring de otro más largo)
-    all_matches = set()
+    # Recolecta todos los matches
+    all_matches = []
     for matches in matches_by_length.values():
-        all_matches.update(matches)
+        all_matches.extend(matches)
 
+    # Filtra maximales
     maximal = []
-    for candidate in sorted(all_matches, key=lambda x: len(x), reverse=True):
+    for candidate in all_matches:
         is_maximal = True
         for other in all_matches:
             if len(other) > len(candidate):
-                # Checa si candidate es substring de other
+                # Verifica si candidate es substring de other
                 for i in range(len(other) - len(candidate) + 1):
                     if other[i:i+len(candidate)] == candidate:
                         is_maximal = False
@@ -124,21 +121,13 @@ def find_maximal_ngrams(gov_ngrams: Set[Tuple[str, ...]], comp_ngrams: Set[Tuple
 
     return maximal
 
-def is_formulaic(ngram: Tuple[str, ...], all_family_ngrams: Dict[str, Set[Tuple[str, ...]]]) -> bool:
-    """Detecta si un n-grama aparece en 2+ familias (es fórmula, no eco)."""
-    count = 0
-    for family_ngrams in all_family_ngrams.values():
-        if ngram in family_ngrams:
-            count += 1
-    return count >= 2
-
 def process_echo_phrases():
     """Procesa echo-phrases."""
     manifest = load_manifest()
     categorized = categorize_docs(manifest)
 
     echoes = []
-    all_family_matches = defaultdict(set)  # Para detectar fórmulas
+    all_family_matches = defaultdict(set)
 
     for family in FAMILIES:
         if family not in categorized:
@@ -166,33 +155,16 @@ def process_echo_phrases():
         if not gov_texts or not comp_texts:
             continue
 
-        # Extrae n-gramas
-        gov_ngrams = {}
-        for doc_id, text in gov_texts.items():
-            ngrams = set()
-            for length in range(6, len(text.split()) + 1):
-                ngrams.update(get_ngrams(text, length))
-            gov_ngrams[doc_id] = ngrams
-
-        comp_ngrams = {}
-        for doc_id, text in comp_texts.items():
-            ngrams = set()
-            for length in range(6, len(text.split()) + 1):
-                ngrams.update(get_ngrams(text, length))
-            comp_ngrams[doc_id] = ngrams
+        # Convierte a listas de palabras
+        gov_words = {doc_id: text.split() for doc_id, text in gov_texts.items()}
+        comp_words = {doc_id: text.split() for doc_id, text in comp_texts.items()}
 
         # Encuentra matches entre cada par gobierno-empresa
-        for gov_doc in gov_docs:
-            if gov_doc not in gov_ngrams:
-                continue
-            for comp_doc in comp_docs:
-                if comp_doc not in comp_ngrams:
-                    continue
-
-                maximal = find_maximal_ngrams(gov_ngrams[gov_doc], comp_ngrams[comp_doc])
+        for gov_doc, gov_word_list in gov_words.items():
+            for comp_doc, comp_word_list in comp_words.items():
+                maximal = find_maximal_ngrams(gov_word_list, comp_word_list)
 
                 for ngram in maximal:
-                    # Obtiene fechas para determinar quién publicó primero
                     gov_date = manifest[gov_doc]['date']
                     comp_date = manifest[comp_doc]['date']
 
@@ -212,13 +184,12 @@ def process_echo_phrases():
                         'n_words': len(ngram),
                         'phrase': phrase_text,
                         'published_first': published_first,
-                        'ngram_tuple': ngram  # Para detectar fórmulas
+                        'ngram_tuple': ngram
                     })
 
-                    # Registra el n-grama para análisis de fórmulas
                     all_family_matches[family].add(ngram)
 
-    # Detecta fórmulas: n-gramas que aparecen en 2+ familias
+    # Detecta fórmulas
     for echo in echoes:
         ngram = echo['ngram_tuple']
         count = sum(1 for f in FAMILIES if ngram in all_family_matches.get(f, set()))
@@ -239,7 +210,6 @@ def write_echo_csv(echoes: List[dict]):
 
 def write_echo_summary(echoes: List[dict]):
     """Escribe resumen en Markdown."""
-    # Agrupa por familia
     by_family = defaultdict(list)
     for echo in echoes:
         by_family[echo['family']].append(echo)
@@ -256,11 +226,9 @@ def write_echo_summary(echoes: List[dict]):
             formulaic_count = sum(1 for e in family_echoes if e['formulaic'])
             non_formulaic_count = len(family_echoes) - formulaic_count
 
-            # Encuentra el eco no-formulaic más largo
             non_formulaic = [e for e in family_echoes if not e['formulaic']]
             longest = max(non_formulaic, key=lambda e: e['n_words']) if non_formulaic else None
 
-            # Cuenta quién publicó primero
             first_counts = defaultdict(int)
             for echo in family_echoes:
                 first_counts[echo['published_first']] += 1

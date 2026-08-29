@@ -1,0 +1,8 @@
+genre,docs_present,docs_variant,docs_absent,total_nominal_mentions,total_variant_mentions
+STRAT,5,2,1,22,11
+MOU,0,0,5,0,0
+PRGOV,3,0,2,7,1
+PRCO,0,2,8,0,3
+BLOG,2,0,2,4,0
+WMS,1,0,1,3,0
+REG,1,0,0,4,2
