@@ -409,17 +409,7 @@ def main():
 
     # ---- doc profiles first (cheap: 1 call/doc) so this data survives even if
     # the much larger unit-level loop below is interrupted for time reasons ----
-    doc_profile_records = []
-    with ThreadPoolExecutor(max_workers=CONCURRENCY) as ex:
-        futs = {}
-        for d in doc_ids:
-            header = common_header.replace("{doc_context}", doc_contexts[d]).replace(
-                "{passage}", full_doc_text(d, doc_json_cache))
-            futs[ex.submit(code_doc_profile, model, run_id, d, header)] = d
-        for fut in as_completed(futs):
-            doc_profile_records.append(fut.result())
-    print(f"Doc profiles: {len(doc_profile_records)}")
-
+    # Resume support: only run profiles for docs without a successful one on disk.
     profiles_path = os.path.join(round1_dir, "doc_profiles.jsonl")
     existing_profiles = {}
     if os.path.exists(profiles_path):
@@ -427,6 +417,22 @@ def main():
             for line in f:
                 rec = json.loads(line)
                 existing_profiles[rec["doc_id"]] = rec
+    profile_todo = [d for d in doc_ids
+                    if d not in existing_profiles or existing_profiles[d].get("error")]
+    if len(profile_todo) < len(doc_ids):
+        print(f"Resume: {len(doc_ids) - len(profile_todo)} doc profiles already on disk; "
+              f"running {len(profile_todo)}.")
+
+    doc_profile_records = []
+    with ThreadPoolExecutor(max_workers=CONCURRENCY) as ex:
+        futs = {}
+        for d in profile_todo:
+            header = common_header.replace("{doc_context}", doc_contexts[d]).replace(
+                "{passage}", full_doc_text(d, doc_json_cache))
+            futs[ex.submit(code_doc_profile, model, run_id, d, header)] = d
+        for fut in as_completed(futs):
+            doc_profile_records.append(fut.result())
+    print(f"Doc profiles: {len(doc_profile_records)} new")
     for r in doc_profile_records:
         existing_profiles[r["doc_id"]] = r
     with open(profiles_path, "w", encoding="utf-8") as f:
@@ -435,6 +441,26 @@ def main():
     print(f"Wrote {profiles_path} ({len(existing_profiles)} docs)")
 
     # ---- unit x question coding ----
+    # Resume support: load previously successful records so a re-run after an
+    # interruption (e.g. the Ollama Cloud session quota) only spends calls on
+    # what is still missing or failed.
+    existing_records = {d: [] for d in doc_ids}
+    done_pairs = set()
+    for d in doc_ids:
+        p = os.path.join(round1_dir, f"{d}.jsonl")
+        if os.path.exists(p):
+            with open(p, encoding="utf-8") as f:
+                for line in f:
+                    try:
+                        rec = json.loads(line)
+                    except json.JSONDecodeError:
+                        continue
+                    if not rec.get("error"):
+                        existing_records[d].append(rec)
+                        done_pairs.add((rec["unit_id"], rec["question"]))
+    if done_pairs:
+        print(f"Resume: {len(done_pairs)} unit x question pairs already successful; skipping them.")
+
     tasks = []
     n_truncated = 0
     for u in units:
@@ -446,6 +472,8 @@ def main():
                   f"truncated to {MAX_UNIT_CHARS} for coding (segmentation outlier)")
         header = common_header.replace("{doc_context}", doc_contexts[u["doc_id"]]).replace("{passage}", passage)
         for qname, qdef in questions.items():
+            if (u["unit_id"], qname) in done_pairs:
+                continue
             tasks.append((u, qname, qdef, header, passage))
     if n_truncated:
         print(f"Truncated {n_truncated} oversized unit(s) to {MAX_UNIT_CHARS} chars before coding.")
@@ -458,8 +486,11 @@ def main():
     doc_file_handles = {}
     for d in doc_ids:
         doc_file_handles[d] = open(os.path.join(round1_dir, f"{d}.jsonl"), "w", encoding="utf-8")
+        for rec in existing_records[d]:
+            doc_file_handles[d].write(json.dumps(rec, ensure_ascii=False) + "\n")
+        doc_file_handles[d].flush()
 
-    all_records = []
+    all_records = [r for recs in existing_records.values() for r in recs]
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as ex:
         futs = {ex.submit(code_unit_question, model, run_id, u, qname, qdef, header, passage): (u["unit_id"], qname)
                 for (u, qname, qdef, header, passage) in tasks}
