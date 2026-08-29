@@ -1,8 +1,8 @@
-# Prompts de codificación v1 — Ronda 1 (Saldaña: provisional, guiado por preguntas).
-# Un prompt por pregunta; el runner los instancia con {doc_context} y {passage}.
-# Regla global: el LLM LOCALIZA Y EXTRAE; no interpreta más allá de lo pedido.
-# Salida siempre JSON válido. verbatim_quote debe existir literal en el pasaje
-# (el runner lo verifica y descarta/reintenta si no).
+# Coding prompts v1 — Round 1 (Saldaña: provisional, question-guided).
+# One prompt per question; the runner instantiates them with {doc_context} and {passage}.
+# Global rule: the LLM LOCATES AND EXTRACTS; it does not interpret beyond what is asked.
+# Output always valid JSON. verbatim_quote must exist literally in the passage
+# (the runner verifies it and discards/retries if not).
 version: 1
 common_header: |
   You are a coding assistant for a discourse analysis of UK government documents

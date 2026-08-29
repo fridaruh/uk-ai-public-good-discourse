@@ -1,17 +1,17 @@
-# Lexicón de variantes v1 — espejo de los nodos del plan NVivo (hoja 'method').
-# Stemming apagado por diseño: los patrones nominales usan regex que excluye "goods".
-# PROVISIONAL hasta aprobación de Frida; cambios generan v2 (no se edita en sitio).
+# Variant lexicon v1 — mirror of the NVivo plan nodes ('method' sheet).
+# Stemming turned off by design: nominal patterns use regex that excludes "goods".
+# PROVISIONAL until approval by the author; changes generate v2 (not edited in place).
 version: 1
 nominal:            # PublicGood_Nominal → term_status = present
   - 'public good(?!s)'
   - 'the public good'
   - 'ai for (the )?public good'
-variant_nominal:    # mismo reclamo con otro sustantivo → term_status = variant
+variant_nominal:    # same claim with a different noun → term_status = variant
   - 'public benefit'
   - 'public interest'
   - 'societal wellbeing'
   - 'social good(?!s)'
-distributive:       # PublicBenefit_Distributive: el reclamo sin el sustantivo
+distributive:       # PublicBenefit_Distributive: the claim without the noun
   - 'benefits? (of ai )?(reach|felt by|shared|for) (every|all)'
   - 'delivers? for (all|everyone|working people)'
   - "improve (people's|citizens') lives"
@@ -20,7 +20,7 @@ distributive:       # PublicBenefit_Distributive: el reclamo sin el sustantivo
   - 'for the benefit of (all|everyone|the public|citizens)'
   - 'everyone benefits'
   - 'benefit (all|everyone|the public|citizens|society)'
-beneficiary_probes: # sondas semánticas para recuperación por embeddings (docs sin término)
+beneficiary_probes: # semantic probes for embedding-based retrieval (docs without the term)
   - 'AI should deliver benefits for every citizen and improve ordinary people''s lives'
   - 'technology in government must serve the public and society as a whole'
   - 'the gains from artificial intelligence must be shared across the whole country'

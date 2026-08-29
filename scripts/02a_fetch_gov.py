@@ -1,21 +1,21 @@
-"""Fase 1 (parcial): descarga y extrae texto estructurado de los documentos
-GUBERNAMENTALES (gov.uk / parliament.uk) del corpus.
+"""Phase 1 (partial): downloads and extracts structured text from the
+GOVERNMENT documents (gov.uk / parliament.uk) in the corpus.
 
-Lee data/manifest.csv, toma solo las filas cuyo host de `url` contiene
-"gov.uk" o "parliament", y para cada una:
+Reads data/manifest.csv, takes only the rows whose `url` host contains
+"gov.uk" or "parliament", and for each one:
 
-1. Descarga la URL a data/raw/<doc_id>.<ext> (pdf u html, sigue redirects).
-   Si la página de gov.uk es una landing page delgada de una publicación con
-   PDF/HTML adjunto, sigue el adjunto y usa ese contenido como principal.
-2. Extrae bloques de texto ESTRUCTURADO a data/text/<doc_id>.json.
-3. Escribe metadata de descarga en data/raw/<doc_id>.meta.json.
-4. Si la descarga falla, reintenta vía web.archive.org.
-5. Verifica: blocks no vacío, exactamente un bloque "title", longitud plausible.
+1. Downloads the URL to data/raw/<doc_id>.<ext> (pdf or html, follows redirects).
+   If the gov.uk page is a thin landing page for a publication with an
+   attached PDF/HTML, it follows the attachment and uses that content as primary.
+2. Extracts STRUCTURED text blocks to data/text/<doc_id>.json.
+3. Writes download metadata to data/raw/<doc_id>.meta.json.
+4. If the download fails, retries via web.archive.org.
+5. Verifies: blocks not empty, exactly one "title" block, plausible length.
 
-Dos documentos (los dos Written Ministerial Statements en dominios
-*.parliament.uk) están protegidos por un challenge JS de Cloudflare que
-`requests` no puede resolver; su HTML/PDF ya fue pre-descargado a mano vía
-navegador real y se referencia aquí en PREFETCHED_HTML / PREFETCHED_PDF.
+Two documents (the two Written Ministerial Statements on
+*.parliament.uk domains) are protected by a Cloudflare JS challenge that
+`requests` cannot solve; their HTML/PDF was already pre-downloaded by hand via
+a real browser and is referenced here in PREFETCHED_HTML / PREFETCHED_PDF.
 """
 from __future__ import annotations
 
@@ -46,7 +46,7 @@ UA = (
 HEADERS = {"User-Agent": UA, "Accept-Language": "en-GB,en;q=0.9"}
 TIMEOUT = 30
 RETRIES = 2
-MIN_CONTENT_CHARS = 900  # umbral para decidir si una landing page es "delgada"
+MIN_CONTENT_CHARS = 900  # threshold to decide whether a landing page is "thin"
 
 MIN_TOTAL_CHARS = {
     "STRAT": 1000, "MOU": 1000, "REG": 1000,
@@ -59,8 +59,8 @@ WMS_BOILERPLATE_RE = re.compile(r"^House of (Commons|Lords):\s*Written Statement
 DINGBAT_FONT_RE = re.compile(r"(dingbat|wingding|symbol)", re.IGNORECASE)
 BARE_NUMBERING_RE = re.compile(r"^\d{1,4}\.?$")
 
-# Documentos ya descargados a mano vía navegador real porque el dominio está
-# detrás de un challenge JS de Cloudflare que `requests` no resuelve.
+# Documents already downloaded by hand via a real browser because the domain is
+# behind a Cloudflare JS challenge that `requests` cannot resolve.
 PREFETCHED_HTML = {
     "2025-01-21_WMS_DSIT_BlueprintMinisterialStatement": (
         "https://questions-statements.parliament.uk/written-statements/detail/2025-01-21/hcws375"
@@ -72,8 +72,8 @@ PREFETCHED_PDF = {
     ),
 }
 
-# Overrides puntuales para heading -> pillar_name donde el patrón no es
-# detectable por regex genérica (headings sin numeración tipo "Principle N").
+# One-off overrides for heading -> pillar_name where the pattern isn't
+# detectable by a generic regex (headings without numbering like "Principle N").
 PILLAR_HEADING_OVERRIDES = {
     "2026-01-20_STRAT_GDS_RoadmapModernDigitalGov": {
         "Join up public sector services",
@@ -103,7 +103,7 @@ def sha256_bytes(b: bytes) -> str:
 
 
 # --------------------------------------------------------------------------
-# Descarga con reintentos
+# Download with retries
 # --------------------------------------------------------------------------
 
 def fetch_with_retry(session, url, retries=RETRIES):
@@ -128,7 +128,7 @@ def is_pdf_response(resp) -> bool:
 
 
 # --------------------------------------------------------------------------
-# Selección de contenedor principal / título por sitio
+# Selection of main container / title by site
 # --------------------------------------------------------------------------
 
 def get_container(soup: BeautifulSoup, url: str):
@@ -166,7 +166,7 @@ def get_title(soup: BeautifulSoup, url: str, doc_id: str) -> str:
 
 
 # --------------------------------------------------------------------------
-# Resolución de landing pages delgadas (publicación con adjunto HTML/PDF)
+# Resolution of thin landing pages (publication with an HTML/PDF attachment)
 # --------------------------------------------------------------------------
 
 def find_attachment_links(soup: BeautifulSoup, base_url: str):
@@ -184,7 +184,7 @@ def find_attachment_links(soup: BeautifulSoup, base_url: str):
 
 
 def resolve_main_content(session, url):
-    """Devuelve dict con keys: kind ('html'|'pdf'), resp/soup/container o pdf_url."""
+    """Returns dict with keys: kind ('html'|'pdf'), resp/soup/container or pdf_url."""
     resp = fetch_with_retry(session, url)
     if is_pdf_response(resp):
         return {"kind": "pdf", "resp": resp}
@@ -219,12 +219,12 @@ def resolve_main_content(session, url):
         except Exception:  # noqa: BLE001
             pass
 
-    # No se encontró nada mejor: usar lo que hay (posible failed en verificación).
+    # Nothing better was found: use what we have (may fail verification).
     return {"kind": "html", "resp": resp, "soup": soup, "container": container}
 
 
 # --------------------------------------------------------------------------
-# Extracción de bloques desde HTML
+# Block extraction from HTML
 # --------------------------------------------------------------------------
 
 CAPTURE_TAGS = {"h1", "h2", "h3", "h4", "p", "li", "blockquote"}
@@ -259,7 +259,7 @@ def extract_html_blocks(container, title_text, doc_id):
         n += 1
         return f"b{n:03d}"
 
-    # bloque de título (siempre primero, un único bloque)
+    # title block (always first, a single block)
     blocks.append({
         "block_id": next_id(),
         "structural_position": "title",
@@ -273,7 +273,7 @@ def extract_html_blocks(container, title_text, doc_id):
             continue
         name = el.name
         if name == "h1":
-            # el h1 ya se usó como título; no se re-emite.
+            # the h1 was already used as the title; not re-emitted.
             continue
         if name in ("h2", "h3", "h4"):
             level = int(name[1])
@@ -303,7 +303,7 @@ def extract_html_blocks(container, title_text, doc_id):
 
 
 # --------------------------------------------------------------------------
-# Extracción de bloques desde PDF
+# Block extraction from PDF
 # --------------------------------------------------------------------------
 
 def is_bold_span(span) -> bool:
@@ -316,7 +316,7 @@ def is_bold_span(span) -> bool:
 def extract_pdf_blocks(pdf_path, doc_id):
     doc = fitz.open(pdf_path)
 
-    pages_blocks = []  # por página: lista de bloques con lines->spans
+    pages_blocks = []  # per page: list of blocks with lines->spans
     size_counts = Counter()
     for page in doc:
         d = page.get_text("dict")
@@ -342,8 +342,8 @@ def extract_pdf_blocks(pdf_path, doc_id):
 
     body_size = size_counts.most_common(1)[0][0]
 
-    # título: texto con el tamaño de fuente máximo global, tomado de la
-    # primera página donde aparece ese tamaño (normalmente la portada).
+    # title: text with the global maximum font size, taken from the
+    # first page where that size appears (usually the cover page).
     max_size = max(size_counts)
     title_parts = []
     title_page = None
@@ -359,11 +359,11 @@ def extract_pdf_blocks(pdf_path, doc_id):
             break
     title_text = clean_text(" ".join(title_parts)) or doc_id
 
-    # Caso especial: PDFs de "written statement" parlamentarios (p.ej.
-    # commonsbusiness.parliament.uk) no destacan el título con un tamaño de
-    # fuente mayor; el texto más grande es la cabecera administrativa
-    # ("House of Commons: Written Statement..."). En ese caso, el título
-    # real es el primer bloque de esa misma página que no sea boilerplate.
+    # Special case: parliamentary "written statement" PDFs (e.g.
+    # commonsbusiness.parliament.uk) don't set the title apart with a larger
+    # font size; the largest text is the administrative header
+    # ("House of Commons: Written Statement..."). In that case, the real
+    # title is the first block on that same page that isn't boilerplate.
     if WMS_BOILERPLATE_RE.match(title_text) and title_page is not None:
         for runs in pages_blocks[title_page]:
             cand = clean_text("".join(t for t, _, _, _ in runs))
@@ -375,11 +375,11 @@ def extract_pdf_blocks(pdf_path, doc_id):
                 title_text = cand
             break
 
-    # tamaños de heading: > body_size, en runs íntegramente en negrita
+    # heading sizes: > body_size, in runs that are entirely bold
     heading_sizes = sorted(
         {sz for sz in size_counts if sz > body_size and sz != max_size}, reverse=True
     )
-    # nivel 1..N por tamaño descendente
+    # level 1..N by descending size
     level_by_size = {sz: i + 1 for i, sz in enumerate(heading_sizes)}
 
     def is_toc_page(page_blk):
@@ -389,13 +389,13 @@ def extract_pdf_blocks(pdf_path, doc_id):
         numeric = sum(1 for t in flat if re.fullmatch(r"\d{1,4}", t.strip()))
         return numeric / len(flat) > 0.15
 
-    # detección de encabezados/pies de página repetidos ("running header"):
-    # texto corto con un número de página fusionado como prefijo/sufijo
-    # (p.ej. "14A blueprint for modern digital government") que se repite
-    # en varias páginas -> no es contenido, es chrome. Solo se cuentan
-    # candidatos donde quitar el número SÍ cambia el texto, para no atrapar
-    # subtítulos legítimos que se repiten sin numeración (p.ej. "Practical
-    # recommendations").
+    # detection of repeated running headers/footers ("running header"):
+    # short text with a page number fused as a prefix/suffix
+    # (e.g. "14A blueprint for modern digital government") that repeats
+    # across several pages -> not content, it's chrome. Only candidates
+    # where removing the number DOES change the text are counted, so as not
+    # to catch legitimate subtitles that repeat without numbering (e.g.
+    # "Practical recommendations").
     def strip_page_num(t):
         return re.sub(r"^\d{1,4}\s*", "", re.sub(r"\s*\d{1,4}$", "", t)).strip()
 
@@ -427,7 +427,7 @@ def extract_pdf_blocks(pdf_path, doc_id):
 
     heading_stack = {}  # level -> text
     last_heading_text = ""
-    last_heading_block = None  # referencia al último bloque de heading emitido
+    last_heading_block = None  # reference to the last heading block emitted
     last_heading_size = None
     last_heading_level = None
 
@@ -445,12 +445,12 @@ def extract_pdf_blocks(pdf_path, doc_id):
 
     for pno, page_blk in enumerate(pages_blocks):
         if pno == 0:
-            continue  # portada, ya usada para el título
+            continue  # cover page, already used for the title
         if is_toc_page(page_blk):
             continue
         for runs in page_blk:
-            # descarta bloques que son puramente un glifo de viñeta decorativo
-            # (fuentes símbolo tipo ZapfDingbats/Wingdings) sin contenido real.
+            # discards blocks that are purely a decorative bullet glyph
+            # (symbol fonts like ZapfDingbats/Wingdings) with no real content.
             if all(DINGBAT_FONT_RE.search(font) for _, _, _, font in runs):
                 continue
             full_text = clean_text("".join(t for t, _, _, _ in runs))
@@ -460,8 +460,8 @@ def extract_pdf_blocks(pdf_path, doc_id):
             if norm_text != full_text and norm_text in running_headers_footers:
                 continue
             if BARE_NUMBERING_RE.match(full_text):
-                # marcador de lista numerada que quedó como bloque aislado
-                # (list marker con hanging indent); sin valor analítico.
+                # numbered list marker that ended up as an isolated block
+                # (list marker with hanging indent); no analytical value.
                 continue
             sizes = {sz for _, sz, _, _ in runs}
             all_bold = all(bold for _, _, bold, _ in runs)
@@ -470,10 +470,10 @@ def extract_pdf_blocks(pdf_path, doc_id):
             if uniform_heading_size:
                 sz = next(iter(sizes))
                 level = level_by_size[sz]
-                # una misma línea lógica de heading puede llegar partida en
-                # varios "bloques" de PyMuPDF (salto de línea manual, etc.):
-                # si el heading anterior es del mismo tamaño/nivel y no hubo
-                # nada entremedio, se funde en el mismo bloque.
+                # a single logical heading line can arrive split across
+                # several PyMuPDF "blocks" (manual line break, etc.):
+                # if the previous heading is the same size/level and nothing
+                # came in between, it gets merged into the same block.
                 if (
                     last_heading_block is not None
                     and last_heading_size == sz
@@ -509,8 +509,8 @@ def extract_pdf_blocks(pdf_path, doc_id):
             last_heading_size = None
             last_heading_level = None
 
-            # detectar lista numerada de pilares con lead en negrita, solo
-            # dentro de una sección que hable explícitamente de "point plan"
+            # detect numbered list of pillars with a bold lead-in, only
+            # inside a section that explicitly talks about a "point plan"
             numbered = re.match(r"^\d+\.\s*", full_text)
             first_bold_idx = next((i for i, r in enumerate(runs) if r[2]), None)
             leads_with_bold = (
@@ -556,7 +556,7 @@ def extract_pdf_blocks(pdf_path, doc_id):
 
 
 # --------------------------------------------------------------------------
-# Manifest / filtrado
+# Manifest / filtering
 # --------------------------------------------------------------------------
 
 def load_gov_rows():
@@ -581,7 +581,7 @@ def try_archive_fallback(session, url):
 
 
 # --------------------------------------------------------------------------
-# Pipeline por documento
+# Per-document pipeline
 # --------------------------------------------------------------------------
 
 def genre_from_doc_id(doc_id):
@@ -592,11 +592,11 @@ def genre_from_doc_id(doc_id):
 def verify_blocks(blocks, genre, doc_id):
     problems = []
     if not blocks:
-        problems.append("blocks vacío")
+        problems.append("blocks empty")
         return problems
     n_titles = sum(1 for b in blocks if b["structural_position"] == "title")
     if n_titles != 1:
-        problems.append(f"n_title={n_titles} (esperado 1)")
+        problems.append(f"n_title={n_titles} (expected 1)")
     total_chars = sum(len(b["text"]) for b in blocks)
     min_chars = MIN_TOTAL_CHARS.get(genre, 500)
     if total_chars < min_chars:
@@ -689,8 +689,8 @@ def process_doc(session, doc_id, url):
 
     except Exception as exc:  # noqa: BLE001
         first_error = str(exc)
-        log(f"[{doc_id}] fallo en fuente primaria: {first_error}")
-        # fallback archive.org
+        log(f"[{doc_id}] primary source failed: {first_error}")
+        # archive.org fallback
         try:
             resp = try_archive_fallback(session, url)
             meta["http_status"] = resp.status_code
@@ -708,7 +708,7 @@ def process_doc(session, doc_id, url):
                 content = resp.content
                 raw_path.write_bytes(content)
                 soup = BeautifulSoup(content, "lxml")
-                container = get_container(soup, url)  # usar host original para elegir selector
+                container = get_container(soup, url)  # use original host to pick the selector
                 title_text = get_title(soup, url, doc_id)
                 blocks = extract_html_blocks(container, title_text, doc_id)
                 fmt = "html"
@@ -743,7 +743,7 @@ def process_doc(session, doc_id, url):
 
 def main():
     rows = load_gov_rows()
-    log(f"{len(rows)} documentos gov.uk/parliament a procesar")
+    log(f"{len(rows)} gov.uk/parliament documents to process")
     session = requests.Session()
 
     results = []
