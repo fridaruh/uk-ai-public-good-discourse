@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Tarea 1: Detectar echo-phrases entre documentos de gobierno y empresa por familia.
+Task 1: Detect echo-phrases between government and company documents by family.
 """
 
 import json
@@ -10,7 +10,7 @@ from pathlib import Path
 from collections import defaultdict
 from typing import Dict, List, Set, Tuple
 
-# Configuración
+# Configuration
 DATA_DIR = Path(__file__).parent.parent / "data"
 TEXT_DIR = DATA_DIR / "text"
 MANIFEST_FILE = DATA_DIR / "manifest.csv"
@@ -18,18 +18,18 @@ ANALYSIS_DIR = Path(__file__).parent.parent / "analysis" / "queries"
 OUTPUT_CSV = ANALYSIS_DIR / "echo_phrases.csv"
 OUTPUT_MD = ANALYSIS_DIR / "echo_summary.md"
 
-# Familias
+# Families
 FAMILIES = {"Anthropic", "Cohere", "OpenAI", "DeepMind", "ElevenLabs"}
 
 def normalize_text(text: str) -> str:
-    """Normaliza texto: minúsculas, colapsa espacios, quita puntuación excepto apóstrofes."""
+    """Normalize text: lowercase, collapse whitespace, remove punctuation except apostrophes."""
     text = text.lower()
     text = re.sub(r"[^\w\s']", " ", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
 def load_manifest() -> Dict[str, dict]:
-    """Carga el manifest como dict {doc_id: {columns}}."""
+    """Load the manifest as a dict {doc_id: {columns}}."""
     docs = {}
     with open(MANIFEST_FILE, newline='', encoding='utf-8') as f:
         reader = csv.DictReader(f)
@@ -38,7 +38,7 @@ def load_manifest() -> Dict[str, dict]:
     return docs
 
 def load_text_content(doc_id: str) -> str:
-    """Carga el contenido de texto de un documento."""
+    """Load the text content of a document."""
     json_file = TEXT_DIR / f"{doc_id}.json"
     if not json_file.exists():
         return ""
@@ -51,7 +51,7 @@ def load_text_content(doc_id: str) -> str:
         return ""
 
 def categorize_docs(manifest: Dict[str, dict]) -> Dict[str, Dict[str, List[str]]]:
-    """Categoriza docs en gobierno vs empresa por familia."""
+    """Categorize docs as government vs company by family."""
     categorized = defaultdict(lambda: {'government': [], 'company': []})
 
     for doc_id, row in manifest.items():
@@ -73,7 +73,7 @@ def categorize_docs(manifest: Dict[str, dict]) -> Dict[str, Dict[str, List[str]]
     return dict(categorized)
 
 def find_shared_ngrams_length_n(words1: List[str], words2: List[str], n: int) -> Set[Tuple[str, ...]]:
-    """Encuentra n-gramas de longitud exacta n compartidos entre dos listas de palabras."""
+    """Find shared n-grams of exact length n between two word lists."""
     if len(words1) < n or len(words2) < n:
         return set()
 
@@ -82,14 +82,14 @@ def find_shared_ngrams_length_n(words1: List[str], words2: List[str], n: int) ->
     return ngrams1 & ngrams2
 
 def find_maximal_ngrams(words1: List[str], words2: List[str]) -> List[Tuple[str, ...]]:
-    """Encuentra n-gramas compartidos de longitud >= 6 y retorna solo los maximales."""
+    """Find shared n-grams of length >= 6 and return only the maximal ones."""
     max_len = min(len(words1), len(words2))
     if max_len < 6:
         return []
 
     matches_by_length = {}
 
-    # Busca n-gramas de cada longitud de 6 a max_len
+    # Search for n-grams of each length from 6 to max_len
     for n in range(6, max_len + 1):
         shared = find_shared_ngrams_length_n(words1, words2, n)
         if shared:
@@ -98,18 +98,18 @@ def find_maximal_ngrams(words1: List[str], words2: List[str]) -> List[Tuple[str,
     if not matches_by_length:
         return []
 
-    # Recolecta todos los matches
+    # Collect all matches
     all_matches = []
     for matches in matches_by_length.values():
         all_matches.extend(matches)
 
-    # Filtra maximales
+    # Filter maximal
     maximal = []
     for candidate in all_matches:
         is_maximal = True
         for other in all_matches:
             if len(other) > len(candidate):
-                # Verifica si candidate es substring de other
+                # Check if candidate is a substring of other
                 for i in range(len(other) - len(candidate) + 1):
                     if other[i:i+len(candidate)] == candidate:
                         is_maximal = False
@@ -122,7 +122,7 @@ def find_maximal_ngrams(words1: List[str], words2: List[str]) -> List[Tuple[str,
     return maximal
 
 def process_echo_phrases():
-    """Procesa echo-phrases."""
+    """Process echo-phrases."""
     manifest = load_manifest()
     categorized = categorize_docs(manifest)
 
@@ -139,7 +139,7 @@ def process_echo_phrases():
         if not gov_docs or not comp_docs:
             continue
 
-        # Carga y normaliza textos
+        # Load and normalize texts
         gov_texts = {}
         for doc_id in gov_docs:
             text = load_text_content(doc_id)
@@ -155,11 +155,11 @@ def process_echo_phrases():
         if not gov_texts or not comp_texts:
             continue
 
-        # Convierte a listas de palabras
+        # Convert to word lists
         gov_words = {doc_id: text.split() for doc_id, text in gov_texts.items()}
         comp_words = {doc_id: text.split() for doc_id, text in comp_texts.items()}
 
-        # Encuentra matches entre cada par gobierno-empresa
+        # Find matches between each government-company pair
         for gov_doc, gov_word_list in gov_words.items():
             for comp_doc, comp_word_list in comp_words.items():
                 maximal = find_maximal_ngrams(gov_word_list, comp_word_list)
@@ -189,7 +189,7 @@ def process_echo_phrases():
 
                     all_family_matches[family].add(ngram)
 
-    # Detecta fórmulas
+    # Detect formulaic phrases
     for echo in echoes:
         ngram = echo['ngram_tuple']
         count = sum(1 for f in FAMILIES if ngram in all_family_matches.get(f, set()))
@@ -199,7 +199,7 @@ def process_echo_phrases():
     return echoes
 
 def write_echo_csv(echoes: List[dict]):
-    """Escribe CSV de echo-phrases."""
+    """Write echo-phrases CSV."""
     with open(OUTPUT_CSV, 'w', newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=[
             'family', 'gov_doc', 'company_doc', 'n_words', 'phrase', 'published_first', 'formulaic'
@@ -209,7 +209,7 @@ def write_echo_csv(echoes: List[dict]):
             writer.writerow(echo)
 
 def write_echo_summary(echoes: List[dict]):
-    """Escribe resumen en Markdown."""
+    """Write summary in Markdown."""
     by_family = defaultdict(list)
     for echo in echoes:
         by_family[echo['family']].append(echo)

@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mapa de autoría y familias</title>
+<title>Authorship and Family Map</title>
 <style>
-  /* Diseño comprometido a un solo look oscuro (referencia visual de Frida). */
+  /* Committed to a single dark look (visual reference from the author). */
   :root{
     --bg:#14161c; --surface:#1a1d24; --ink:#e8ecf3; --ink2:#9aa7bd; --ink3:#6b7689;
     --grid:#232733; --hull:#2c3140;
@@ -50,28 +50,28 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>Mapa de autoría y familias — corpus v1 (35 documentos)</h1>
-  <div class="sub">Nodos = documentos · color = actor autor · forma = tipo de actor · tamaño = referencias entrantes ·
-    grosor de flecha = frecuencia de referencia · agrupación = familia MoU. <b>Versión preliminar</b> (referencias explícitas por alias de título; Fase 6 añade ecos y códigos compartidos).</div>
+  <h1>Authorship and family map — corpus v1 (35 documents)</h1>
+  <div class="sub">Nodes = documents · color = author actor · shape = actor type · size = inbound references ·
+    arrow thickness = reference frequency · grouping = MoU family. <b>Preliminary version</b> (explicit references by title alias; Phase 6 adds echoes and shared codes).</div>
 
   <div class="controls">
-    <label><input type="checkbox" id="tRef" checked> Referencias</label>
+    <label><input type="checkbox" id="tRef" checked> References</label>
     <label><input type="checkbox" id="tSup" checked> Supersession</label>
-    <label><input type="checkbox" id="tLbl" checked> Etiquetas</label>
-    <label>Hasta: <input type="range" id="tTime" min="0" max="100" value="100"><span id="dateLabel"></span></label>
+    <label><input type="checkbox" id="tLbl" checked> Labels</label>
+    <label>Until: <input type="range" id="tTime" min="0" max="100" value="100"><span id="dateLabel"></span></label>
   </div>
 
   <div class="stage">
-    <svg id="net" viewBox="0 0 1560 1020" role="img" aria-label="Red de relaciones entre los 35 documentos del corpus"></svg>
+    <svg id="net" viewBox="0 0 1560 1020" role="img" aria-label="Network of relationships among the corpus's 35 documents"></svg>
     <div id="tooltip"></div>
   </div>
 
   <div class="legend" id="legend"></div>
 
   <details>
-    <summary>Vista de tabla — todas las aristas (auditables)</summary>
-    <table id="edgeTable"><thead><tr><th>Cita (origen)</th><th>Citado (destino)</th><th>Tipo</th><th class="num">Menciones</th></tr></thead><tbody></tbody></table>
-    <div class="note">La evidencia textual de cada arista está en <code>analysis/networks/intertextual_v0.json</code>.</div>
+    <summary>Table view — all edges (auditable)</summary>
+    <table id="edgeTable"><thead><tr><th>Citing (source)</th><th>Cited (target)</th><th>Type</th><th class="num">Mentions</th></tr></thead><tbody></tbody></table>
+    <div class="note">The textual evidence for each edge is in <code>analysis/networks/intertextual_v0.json</code>.</div>
   </details>
 </div>
 
@@ -802,7 +802,7 @@ function shapeOf(s){ const k=actorKey(s);
   if(k==='External_adviser') return 'square';
   return 'circle'; }
 const ACTOR_LABEL = {GDS:'GDS', DSIT:'DSIT', DSIT_and_GDS:'DSIT + GDS', CDDO:'CDDO',
-  PMO:'PMO (No. 10)', External_adviser:'Asesor externo', JOINT:'MoU (DSIT + empresa)',
+  PMO:'PMO (No. 10)', External_adviser:'External adviser', JOINT:'MoU (DSIT + company)',
   Anthropic:'Anthropic', OpenAI:'OpenAI', Cohere:'Cohere', DeepMind:'Google DeepMind', ElevenLabs:'ElevenLabs'};
 
 const W=1560,H=1020;
@@ -872,7 +872,7 @@ function drawHulls(){
       fill:'#232a3a55',stroke:'var(--hull)','stroke-width':1.5,rx:8},gHull);
     const topY=Math.min(...h.map(p=>p[1]));
     const t=el('text',{x:cx,y:topY-8,'text-anchor':'middle',class:'hullLabel'},gHull);
-    t.textContent='FAMILIA '+fam.toUpperCase();
+    t.textContent=fam.toUpperCase()+' FAMILY';
   }
 }
 
@@ -889,7 +889,7 @@ function showTip(n,evt){
   tooltip.style.display='block';
   tooltip.innerHTML=`<div class="t">${n.label}</div><div class="m">${n.id}</div>
    <div class="m">${fmtDate(n.date)} · ${n.genre} · ${ACTOR_LABEL[n.key]||n.speaker}</div>
-   <div class="m">familia: ${n.family} · término: ${n.term_status} · referencias entrantes: ${n.in_degree}</div>`;
+   <div class="m">family: ${n.family} · term: ${n.term_status} · inbound references: ${n.in_degree}</div>`;
   const box=svg.parentNode.getBoundingClientRect();
   tooltip.style.left=Math.min(evt.clientX-box.left+14,box.width-310)+'px';
   tooltip.style.top=(evt.clientY-box.top+10)+'px';
@@ -960,15 +960,15 @@ function swatch(key){
      `<rect x="2.5" y="2.5" width="11" height="11" fill="${c}"/>`)+`</svg>`;
   return s; }
 legend.innerHTML=`
- <div><h3>Actores de gobierno</h3>${['GDS','DSIT','DSIT_and_GDS','CDDO','PMO','External_adviser']
+ <div><h3>Government actors</h3>${['GDS','DSIT','DSIT_and_GDS','CDDO','PMO','External_adviser']
    .map(k=>`<div class="row">${swatch(k)}${ACTOR_LABEL[k]}</div>`).join('')}</div>
- <div><h3>Empresas y MoU</h3>${['Anthropic','OpenAI','Cohere','DeepMind','ElevenLabs','JOINT']
+ <div><h3>Companies & MoUs</h3>${['Anthropic','OpenAI','Cohere','DeepMind','ElevenLabs','JOINT']
    .map(k=>`<div class="row">${swatch(k)}${ACTOR_LABEL[k]}</div>`).join('')}</div>
- <div><h3>Lectura</h3>
-   <div class="row">— gris con flecha: referencia explícita (grosor = menciones)</div>
-   <div class="row">- - blanca: supersession (el nuevo sustituye al viejo)</div>
-   <div class="row">tamaño del nodo = veces referenciado en el corpus</div>
-   <div class="row">contorno de zona = familia de partnership</div></div>`;
+ <div><h3>How to read</h3>
+   <div class="row">— gray with arrow: explicit reference (thickness = mentions)</div>
+   <div class="row">- - white: supersession (the new replaces the old)</div>
+   <div class="row">node size = times referenced in the corpus</div>
+   <div class="row">zone outline = partnership family</div></div>`;
 
 // tabla accesible
 const tb=document.querySelector('#edgeTable tbody');

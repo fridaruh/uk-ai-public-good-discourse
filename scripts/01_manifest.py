@@ -1,8 +1,8 @@
-"""Fase 0: construye data/manifest.csv desde 'Document Analysis v1.xlsx'.
+"""Phase 0: builds data/manifest.csv from 'Document Analysis v1.xlsx'.
 
-Corpus v1 = filas de 'Official_Document Selection' ANTES del marcador
-"EITHER BRING" (decisiones tomadas). Los bloques A/B pendientes no entran.
-Decisión Frida 2026-08-29: la fila CONTEXT_ entra al corpus (Speaker=External_adviser).
+Corpus v1 = rows from 'Official_Document Selection' BEFORE the
+"EITHER BRING" marker (decisions made). The pending A/B blocks are not included.
+Decision by the author 2026-08-29: the CONTEXT_ row enters the corpus (Speaker=External_adviser).
 """
 import csv
 import re
@@ -73,28 +73,28 @@ def main():
         cells = ["" if v is None else str(v).strip() for v in r]
         joined = " ".join(cells)
         if "EITHER BRING" in joined.upper():
-            notes.append(f"Marcador de corte encontrado en fila Excel {excel_row}.")
+            notes.append(f"Cutoff marker found at Excel row {excel_row}.")
             break
         if not any(cells):
             continue
         name = cells[1]
         if not name:
-            notes.append(f"Fila Excel {excel_row}: sin NVIVO_Document_Name, omitida ({joined[:80]!r}).")
+            notes.append(f"Excel row {excel_row}: no NVIVO_Document_Name, skipped ({joined[:80]!r}).")
             continue
         m = re.match(r"^(CONTEXT_)?(\d{4}-\d{2}-\d{2})_([A-Z]+)_", name)
         if not m:
-            notes.append(f"Fila Excel {excel_row}: nombre no parsea ({name!r}), REVISAR.")
+            notes.append(f"Excel row {excel_row}: name does not parse ({name!r}), REVIEW.")
             continue
         is_context_name = bool(m.group(1))
         date, genre = m.group(2), m.group(3)
         if genre not in GENRES:
-            notes.append(f"Fila Excel {excel_row}: género {genre!r} fuera del set, REVISAR.")
+            notes.append(f"Excel row {excel_row}: genre {genre!r} outside the set, REVIEW.")
         family = doc_family(name)
         actor = cells[3]
         speaker = norm_speaker(actor, genre, family)
         url = cells[6]
         if not url.startswith("http"):
-            notes.append(f"{name}: sin URL válida ({url[:60]!r}).")
+            notes.append(f"{name}: no valid URL ({url[:60]!r}).")
         archive = cells[15] if len(cells) > 15 and cells[15].startswith("http") else ""
         records.append({
             "doc_id": name,
@@ -105,13 +105,13 @@ def main():
             "speaker": speaker,
             "side": cells[4],
             "family": family,
-            "gds_tier": "",  # T1/T2/T3 — lo asigna Frida (plan NVivo, columna T)
+            "gds_tier": "",  # T1/T2/T3 — assigned by the author (NVivo plan, column T)
             "stage": cells[11].replace(".0", "") if cells[11] else "",
             "term_status": norm_term(r[12]),
             "url": url,
             "archive_url": archive,
             "corpus_version": 1,
-            "is_context": is_context_name,  # entra al corpus por decisión 2026-08-29
+            "is_context": is_context_name,  # enters the corpus per decision 2026-08-29
             "fetch_status": "pending",
         })
 
@@ -121,14 +121,14 @@ def main():
         w.writeheader()
         w.writerows(records)
 
-    print(f"Corpus v1: {len(records)} documentos -> {OUT}")
+    print(f"Corpus v1: {len(records)} documents -> {OUT}")
     from collections import Counter
     for field in ("genre", "speaker", "term_status", "family"):
         print(f"  {field}: {dict(Counter(x[field] for x in records))}")
     dupes = [d for d, c in __import__('collections').Counter(x['doc_id'] for x in records).items() if c > 1]
     if dupes:
-        print(f"  DUPLICADOS: {dupes}")
-    print("\nNotas:")
+        print(f"  DUPLICATES: {dupes}")
+    print("\nNotes:")
     for n in notes:
         print(f"  - {n}")
 
