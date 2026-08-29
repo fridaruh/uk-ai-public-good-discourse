@@ -42,6 +42,10 @@ RETRIES = 2
 CONCURRENCY = 4
 PROMPT_VERSION = 1
 MAX_DOC_CHARS = 12000
+# Safety cap for pathologically oversized units (segmentation artifacts, e.g. a
+# heading that swallowed most of a document). Genuine long sections (~7-19k
+# chars) are unaffected; this only clips true outliers (e.g. a 180k-char unit).
+MAX_UNIT_CHARS = 20000
 
 CORE_QUESTIONS = [
     "BENEFICIARY", "MECHANISM", "SAFEGUARD", "RESPONSIBILITY",
@@ -116,6 +120,32 @@ def load_prompts():
         return yaml.safe_load(f)
 
 
+def strip_json_fences(raw):
+    """Some cloud models (e.g. kimi-k3) wrap JSON in ```json ... ``` fences even
+    with format=json requested. Strip those before parsing."""
+    s = raw.strip()
+    if s.startswith("```"):
+        s = re.sub(r"^```[a-zA-Z]*\n", "", s)
+        s = re.sub(r"\n?```\s*$", "", s)
+    return s.strip()
+
+
+def parse_json_response(raw):
+    """Parse a model JSON response, tolerating markdown code fences and stray
+    text around the JSON object. Raises the original json error if all attempts fail."""
+    s = strip_json_fences(raw)
+    try:
+        return json.loads(s)
+    except Exception as e:  # noqa: BLE001
+        i, j = s.find("{"), s.rfind("}")
+        if i != -1 and j != -1 and j > i:
+            try:
+                return json.loads(s[i:j + 1])
+            except Exception:
+                pass
+        raise e
+
+
 def call_ollama(model, prompt, retries=RETRIES):
     last_err = None
     for _ in range(retries + 1):
@@ -153,8 +183,7 @@ def summarize_instance(inst):
     return "; ".join(parts)
 
 
-def code_unit_question(model, run_id, unit, qname, qdef, header):
-    passage = unit["text"]
+def code_unit_question(model, run_id, unit, qname, qdef, header, passage):
     full_prompt = header + "\n" + qdef["prompt"]
     raw, err = call_ollama(model, full_prompt)
     timestamp = datetime.now(timezone.utc).isoformat()
@@ -173,7 +202,7 @@ def code_unit_question(model, run_id, unit, qname, qdef, header):
         return [dict(base, applies=None, error=err, raw_response=raw)]
 
     try:
-        parsed = json.loads(raw)
+        parsed = parse_json_response(raw)
     except Exception as e:  # noqa: BLE001
         return [dict(base, applies=None, error=f"json_parse_error: {e}", raw_response=raw)]
 
@@ -195,7 +224,7 @@ def code_unit_question(model, run_id, unit, qname, qdef, header):
         raw2, err2 = call_ollama(model, full_prompt + CORRECTIVE_SUFFIX)
         if not err2:
             try:
-                parsed2 = json.loads(raw2)
+                parsed2 = parse_json_response(raw2)
                 instances2 = parsed2.get("instances", []) if isinstance(parsed2, dict) else []
                 if instances2:
                     instances = instances2
@@ -230,7 +259,7 @@ def code_doc_profile(model, run_id, doc_id, header):
     if err:
         return dict(base, error=err, raw_response=raw)
     try:
-        parsed = json.loads(raw)
+        parsed = parse_json_response(raw)
         return dict(base, error=None, **parsed)
     except Exception as e:  # noqa: BLE001
         return dict(base, error=f"json_parse_error: {e}", raw_response=raw)
@@ -366,27 +395,11 @@ def main():
 
     print(f"Units to code: {len(units)} across {len(doc_ids)} docs; questions: {list(questions)}")
 
-    # ---- unit x question coding ----
-    tasks = []
-    for u in units:
-        header = common_header.replace("{doc_context}", doc_contexts[u["doc_id"]]).replace("{passage}", u["text"])
-        for qname, qdef in questions.items():
-            tasks.append((u, qname, qdef, header))
+    round1_dir = os.path.join(ROOT, "coding/round1")
+    os.makedirs(round1_dir, exist_ok=True)
 
-    print(f"Total LLM calls (unit-level): {len(tasks)}")
-    all_records = []
-    with ThreadPoolExecutor(max_workers=CONCURRENCY) as ex:
-        futs = {ex.submit(code_unit_question, model, run_id, u, qname, qdef, header): (u["unit_id"], qname)
-                for (u, qname, qdef, header) in tasks}
-        done_n = 0
-        for fut in as_completed(futs):
-            recs = fut.result()
-            all_records.extend(recs)
-            done_n += 1
-            if done_n % 20 == 0:
-                print(f"  unit-level {done_n}/{len(tasks)} done")
-
-    # ---- doc profiles ----
+    # ---- doc profiles first (cheap: 1 call/doc) so this data survives even if
+    # the much larger unit-level loop below is interrupted for time reasons ----
     doc_profile_records = []
     with ThreadPoolExecutor(max_workers=CONCURRENCY) as ex:
         futs = {}
@@ -398,20 +411,6 @@ def main():
             doc_profile_records.append(fut.result())
     print(f"Doc profiles: {len(doc_profile_records)}")
 
-    # ---- write coding/round1/<doc_id>.jsonl ----
-    round1_dir = os.path.join(ROOT, "coding/round1")
-    os.makedirs(round1_dir, exist_ok=True)
-    by_doc = defaultdict(list)
-    for r in all_records:
-        by_doc[r["doc_id"]].append(r)
-    for d, recs in by_doc.items():
-        path = os.path.join(round1_dir, f"{d}.jsonl")
-        with open(path, "w", encoding="utf-8") as f:
-            for r in recs:
-                f.write(json.dumps(r, ensure_ascii=False) + "\n")
-    print(f"Wrote {len(by_doc)} coding/round1/<doc_id>.jsonl files")
-
-    # ---- doc_profiles.jsonl (merge with existing if --doc partial run) ----
     profiles_path = os.path.join(round1_dir, "doc_profiles.jsonl")
     existing_profiles = {}
     if os.path.exists(profiles_path):
@@ -425,6 +424,51 @@ def main():
         for d in sorted(existing_profiles):
             f.write(json.dumps(existing_profiles[d], ensure_ascii=False) + "\n")
     print(f"Wrote {profiles_path} ({len(existing_profiles)} docs)")
+
+    # ---- unit x question coding ----
+    tasks = []
+    n_truncated = 0
+    for u in units:
+        passage = u["text"]
+        if len(passage) > MAX_UNIT_CHARS:
+            passage = passage[:MAX_UNIT_CHARS]
+            n_truncated += 1
+            print(f"  WARNING: unit {u['unit_id']} is {len(u['text'])} chars, "
+                  f"truncated to {MAX_UNIT_CHARS} for coding (segmentation outlier)")
+        header = common_header.replace("{doc_context}", doc_contexts[u["doc_id"]]).replace("{passage}", passage)
+        for qname, qdef in questions.items():
+            tasks.append((u, qname, qdef, header, passage))
+    if n_truncated:
+        print(f"Truncated {n_truncated} oversized unit(s) to {MAX_UNIT_CHARS} chars before coding.")
+
+    print(f"Total LLM calls (unit-level): {len(tasks)}")
+
+    # Write incrementally per doc_id as calls complete, so a slow model that
+    # doesn't finish within the time budget still leaves usable partial output
+    # on disk instead of losing everything.
+    doc_file_handles = {}
+    for d in doc_ids:
+        doc_file_handles[d] = open(os.path.join(round1_dir, f"{d}.jsonl"), "w", encoding="utf-8")
+
+    all_records = []
+    with ThreadPoolExecutor(max_workers=CONCURRENCY) as ex:
+        futs = {ex.submit(code_unit_question, model, run_id, u, qname, qdef, header, passage): (u["unit_id"], qname)
+                for (u, qname, qdef, header, passage) in tasks}
+        done_n = 0
+        for fut in as_completed(futs):
+            recs = fut.result()
+            all_records.extend(recs)
+            for r in recs:
+                fh = doc_file_handles[r["doc_id"]]
+                fh.write(json.dumps(r, ensure_ascii=False) + "\n")
+                fh.flush()
+            done_n += 1
+            if done_n % 10 == 0:
+                print(f"  unit-level {done_n}/{len(tasks)} done")
+
+    for fh in doc_file_handles.values():
+        fh.close()
+    print(f"Wrote {len(doc_file_handles)} coding/round1/<doc_id>.jsonl files ({len(all_records)} records)")
 
     # ---- definitional_instances.jsonl (merge, chronological) ----
     def_path = os.path.join(round1_dir, "definitional_instances.jsonl")
