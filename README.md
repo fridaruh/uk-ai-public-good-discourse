@@ -1,82 +1,85 @@
-# AI for the public good — corpus y pipeline de análisis
-### Análisis de discurso · GDS/DSIT, Reino Unido · enero 2024 – julio 2026
+# AI for the public good — corpus and analysis pipeline
+### Discourse analysis · GDS/DSIT, United Kingdom · January 2024 – July 2026
 
-Pipeline de apoyo a la disertación de Frida sobre "AI for the public good" como
-imaginario sociotécnico en el discurso del gobierno del Reino Unido sobre IA en
-servicios públicos, anclado en el Government Digital Service.
+Pipeline supporting the author's dissertation on "AI for the public good" as a
+sociotechnical imaginary in UK government discourse on AI in public services,
+anchored in the Government Digital Service.
 
-**Principio rector: el LLM localiza y extrae; Frida interpreta y consolida.**
-Ningún resultado interpretativo es final hasta su validación (ver checkpoints).
+**Guiding principle: the LLM locates and extracts; the author interprets and
+consolidates.** No interpretive result is final until validated (see checkpoints).
 
-- **Diseño completo y restricciones (SO1/SO2/SO3):** [PLAN.md](PLAN.md)
-- **Guía de interpretación de cada entregable y supuestos:** [interpretacion.html](interpretacion.html)
-- **Hub consolidado (corpus + entregables + alta de documentos):** [index.html](index.html)
+- **Full design and constraints (SO1/SO2/SO3):** [PLAN.md](PLAN.md)
+- **Interpretation guide for each deliverable and its assumptions:** [interpretacion.html](interpretacion.html)
+- **Consolidated hub (corpus + deliverables + document intake):** [index.html](index.html)
 
-## Arranque rápido
+## Quick start
 
 ```bash
-# hub local con alta incremental de documentos (formulario "Agregar documento")
+# local hub with incremental document intake ("Add document" form)
 .venv/bin/python scripts/serve_site.py
 # → http://localhost:8765
 ```
 
-Requisitos: Python 3.14 (venv en `.venv/`, ya provisionado), [Ollama](https://ollama.com)
-corriendo en `localhost:11434` con sesión de Ollama Cloud (modelo LLM) y
+Requirements: Python 3.14 (venv in `.venv/`, already provisioned), [Ollama](https://ollama.com)
+running on `localhost:11434` with an active Ollama Cloud session (LLM model) and
 `embeddinggemma` local (embeddings).
 
-## Estructura
+## Structure
 
 ```
-data/manifest.csv        corpus congelado v1 (35 docs) + atributos; append-only (v2+ = altas)
-data/raw/                originales descargados + meta por doc (fuera de git; snapshots en archive.org)
-data/text/               texto estructurado por doc (bloques: title/pillar/heading/body/quotation)
-coding/lexicon_v1.yaml   variantes del término (nominal / variante / distributivo) — versionado
-coding/units.jsonl       53 unidades de codificación (retrieval: lexicon | semantic | full_short_doc)
-coding/prompts/          prompts de las 11 preguntas + perfil de documento, versionados
-coding/model_eval/       evaluación de modelos Ollama y decisión documentada
-coding/round1/           salida cruda de la Ronda 1 (JSONL por doc, con run metadata)
-coding/validation/       muestra para doble codificación de Frida + acuerdo
-coding/guidebook_draft.yaml  clusters candidatos de sub-códigos (DRAFT hasta que Frida los nombre)
-analysis/networks/       red intertextual v0 (JSON con evidencia) + mapa interactivo
-analysis/queries/        conteos del término, queries (zero-count, GDS-tier), ecos por familia
-analysis/metaphors_report.md  metáforas más frecuentes con sugerencia fuente/meta (a validar)
+data/manifest.csv        frozen corpus v1 (35 docs) + attributes; append-only (v2+ = new intakes)
+data/raw/                downloaded originals + metadata per doc (outside git; snapshots on archive.org)
+data/text/                structured text per doc (blocks: title/pillar/heading/body/quotation)
+coding/lexicon_v1.yaml   term variants (nominal / variant / distributive) — versioned
+coding/units.jsonl       53 coding units (retrieval: lexicon | semantic | full_short_doc)
+coding/prompts/          prompts for the 11 questions + document profile, versioned
+coding/model_eval/       Ollama model evaluation and documented decision
+coding/round1/           raw Round 1 output (JSONL per doc, with run metadata)
+coding/validation/       sample for the author's double coding + agreement
+coding/guidebook_draft.yaml  candidate sub-code clusters (DRAFT until the author names them)
+analysis/networks/       intertextual network v0 (JSON with evidence) + interactive map
+analysis/queries/        term counts, queries (zero-count, GDS-tier), echoes by family
+analysis/metaphors_report.md  most frequent metaphors with suggested source/target (to validate)
 ```
 
-## Scripts (en orden de pipeline)
+## Scripts (in pipeline order)
 
-| Script | Fase | Qué hace |
+| Script | Phase | What it does |
 |---|---|---|
-| `01_manifest.py` | 0 | Excel de selección → `data/manifest.csv` |
-| `02a/02b_fetch_*.py` | 1 | Descarga y extracción estructurada (gov / empresas) |
-| `02c_archive_snapshots.py` | 1 | Snapshots en web.archive.org |
-| `03_qa_merge.py` | 1 | QA de extracción + fusión de metadatos al manifest |
-| `04_segment.py` | 2 | Unidades de codificación + término/variantes + recuperación semántica |
-| `05_code.py` | 4 | Ronda 1 con Ollama (11 preguntas × unidad; `--doc` para uno solo) |
-| `06_consolidate.py` | 5 | Agrupación de respuestas → borrador de guidebook |
-| `06_network_v0.py` | 6 | Red de referencias explícitas (alias de título + regla MoU) |
-| `07_echo.py` / `07b_queries.py` | 6 | Echo-phrases por familia MoU + queries |
-| `08_build_site.py` | — | Regenera `index.html` desde los datos |
-| `add_document.py` | 7 | Alta incremental: checklist de admisión → fetch → recálculo |
-| `serve_site.py` | — | Hub en localhost:8765 con el formulario de alta |
+| `01_manifest.py` | 0 | Selection Excel → `data/manifest.csv` |
+| `02a/02b_fetch_*.py` | 1 | Download and structured extraction (gov / companies) |
+| `02c_archive_snapshots.py` | 1 | Snapshots on web.archive.org |
+| `03_qa_merge.py` | 1 | Extraction QA + metadata merge into the manifest |
+| `04_segment.py` | 2 | Coding units + term/variants + semantic retrieval |
+| `05_code.py` | 4 | Round 1 with Ollama (11 questions × unit; `--doc` for a single one) |
+| `06_consolidate.py` | 5 | Response grouping → guidebook draft |
+| `06_network_v0.py` | 6 | Explicit-reference network (title alias + MoU rule) |
+| `07_echo.py` / `07b_queries.py` | 6 | Echo-phrases by MoU family + queries |
+| `08_build_site.py` | — | Regenerates `index.html` from the data |
+| `add_document.py` | 7 | Incremental intake: admission checklist → fetch → recompute |
+| `serve_site.py` | — | Hub on localhost:8765 with the intake form |
 
-Todo corre con `.venv/bin/python scripts/<script>.py`.
+Everything runs with `.venv/bin/python scripts/<script>.py`.
 
-## Checkpoints de Frida (decisiones humanas, no delegables)
+## Author checkpoints (non-delegable human decisions)
 
-1. Lexicón de variantes (`coding/lexicon_v1.yaml`) — aprobar/ampliar.
-2. `gds_tier` — la asignación actual es automática provisional (columna `gds_tier_source`).
-3. Muestra de validación (`coding/validation/sample_for_frida.csv`) — doble codificación
-   y reporte de acuerdo antes de dar por buena la Ronda 1.
-4. Guidebook (`coding/guidebook_draft.yaml`) — nombrar/fusionar/rechazar sub-códigos.
-5. Metáforas (`analysis/metaphors_report.md`) — validar dominios fuente/meta sugeridos.
-6. Altas de documentos (Fase 7) — confirmar el checklist de admisión de cada URL nueva.
+1. Variant lexicon (`coding/lexicon_v1.yaml`) — approve/extend.
+2. `gds_tier` — the current assignment is automatic and provisional (column
+   `gds_tier_source`).
+3. Validation sample (`coding/validation/sample_for_author.csv`) — double coding
+   and agreement report before signing off on Round 1.
+4. Guidebook (`coding/guidebook_draft.yaml`) — name/merge/reject sub-codes.
+5. Metaphors (`analysis/metaphors_report.md`) — validate suggested source/target
+   domains.
+6. Document intake (Phase 7) — confirm the admission checklist for each new URL.
 
-## Decisiones registradas
+## Decisions on record
 
-- Corpus v1 = 35 documentos (el rango decidido del Excel contiene una fila vacía; corte
-  en la fila 38, marcador "EITHER BRING"). El doc `CONTEXT_` (AI Opportunities Action
-  Plan) **entra al corpus** con `Speaker=External_adviser` (decisión 2026-08-29).
-- LEGITIMATION (van Leeuwen) descartado: excede el marco teórico de la matriz.
-- `data/raw/` fuera de git; permanencia vía copias locales + archive.org (33/35).
-- METAPHOR anclado en Lakoff & Johnson (1980) + MIP; los dominios que produce el
-  pipeline son sugerencias.
+- Corpus v1 = 35 documents (the decided range in the Excel file contains an empty
+  row; cutoff at row 38, the "EITHER BRING" marker). The `CONTEXT_` document (AI
+  Opportunities Action Plan) **enters the corpus** with `Speaker=External_adviser`
+  (decision 2026-08-29).
+- LEGITIMATION (van Leeuwen) dropped: exceeds the matrix's theoretical framework.
+- `data/raw/` outside git; persistence via local copies + archive.org (33/35).
+- METAPHOR anchored in Lakoff & Johnson (1980) + MIP; the domains the pipeline
+  produces are suggestions.

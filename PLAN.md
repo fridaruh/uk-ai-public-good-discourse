@@ -1,314 +1,328 @@
-# Pipeline de análisis de discurso — "AI for the public good"
-### GDS / DSIT, enero 2024 – julio 2026 · Corpus congelado v1 (37 documentos)
+# Discourse analysis pipeline — "AI for the public good"
+### GDS / DSIT, January 2024 – July 2026 · Frozen corpus v1 (35 documents)
 
-Este plan operacionaliza el diseño metodológico de `Research_Alignment_Matrix.docx` y
-`Document Analysis v1.xlsx`. Dos principios rectores:
+This plan operationalises the methodological design of `Research_Alignment_Matrix.docx`
+and `Document Analysis v1.xlsx`. Two guiding principles:
 
-1. **El LLM localiza y extrae; Frida interpreta y consolida** (Saldaña 2025:
-   codificación provisional guiada por preguntas, no por lista cerrada de códigos).
-2. **Los tres objetivos específicos son la restricción dura del pipeline.** Ningún
-   componente se construye si no sirve a SO1, SO2 o SO3. Todo output lleva etiqueta
-   de objetivo (`so_tags`), y lo que solo valida el método (sin generar hallazgos)
-   se marca como QA interno.
+1. **The LLM locates and extracts; the author interprets and consolidates** (Saldaña
+   2025: provisional coding guided by questions, not by a closed list of codes).
+2. **The three specific objectives are the pipeline's hard constraint.** No
+   component is built unless it serves SO1, SO2, or SO3. Every output carries an
+   objective tag (`so_tags`), and anything that only validates the method (without
+   generating findings) is marked as internal QA.
 
 ---
 
-## Restricción: los tres objetivos y qué componente sirve a cuál
+## Constraint: the three objectives and which component serves which
 
-> **Aim.** Analizar cómo el framing de "AI for the public good" funciona como
-> imaginario sociotécnico en el discurso del gobierno del Reino Unido sobre IA en
-> servicios públicos, anclado en el Government Digital Service.
+> **Aim.** To analyse how the framing of "AI for the public good" functions as a
+> sociotechnical imaginary in UK government discourse on AI in public services,
+> anchored in the Government Digital Service.
 
-| Objetivo | Marco teórico (matriz) | Componentes del pipeline que lo sirven |
+| Objective | Theoretical framework (matrix) | Pipeline components serving it |
 |---|---|---|
-| **SO1.** Examinar el imaginario sociotécnico proyectado bajo la retórica de "AI for the public good" en los textos del GDS. | Jasanoff & Kim (imaginarios); Kaplan (narrativa/trama); Lears (hegemonía) | Codificación de las 7 preguntas (todas aplican a SO1); extractor definicional; comparación cronológica de definiciones; METAPHOR; NARRATIVE_ARC; THREAT_TYPE |
-| **SO2.** Rastrear cómo ese imaginario se mueve de declaración de principios a prioridades estratégicas, compromisos de política y reclamaciones de cara al público. | Fairclough (intertextualidad); Jasanoff & Kim; Lears (naturalización) | Red intertextual (familias + referencias + supersession); preguntas MECHANISM, PROJECTED FUTURE, NATURALISED ORDER; atributos Period y AUDIENCE; queries zero-count × Genre; recuperación semántica de la reclamación distributiva; slider temporal de la visualización |
-| **SO3.** Analizar la evolución del framing a través de los documentos de partnership entre el departamento y las empresas de IA de frontera. | Hajer (coaliciones discursivas); Lears (naturalización); Fairclough (agent deletion, nominalización, modalidad) | Echo-phrases por familia MoU; AGENCY y MODALITY; comparación intra-familia e inter-familia; preguntas SAFEGUARD, RESPONSIBILITY, ACTANTS; dominios-fuente metafóricos compartidos gobierno↔empresa; query GDS-control × GDSTier |
+| **SO1.** Examine the sociotechnical imaginary projected under the rhetoric of "AI for the public good" in GDS texts. | Jasanoff & Kim (imaginaries); Kaplan (narrative/plot); Lears (hegemony) | Coding of the 7 questions (all apply to SO1); definitional extractor; chronological comparison of definitions; METAPHOR; NARRATIVE_ARC; THREAT_TYPE |
+| **SO2.** Trace how that imaginary moves from a statement of principles to strategic priorities, policy commitments, and public-facing claims. | Fairclough (intertextuality); Jasanoff & Kim; Lears (naturalisation) | Intertextual network (families + references + supersession); MECHANISM, PROJECTED FUTURE, NATURALISED ORDER questions; Period and AUDIENCE attributes; zero-count × Genre queries; semantic retrieval of the distributive claim; visualization's temporal slider |
+| **SO3.** Analyse the evolution of the framing across the department's partnership documents with frontier AI companies. | Hajer (discourse coalitions); Lears (naturalisation); Fairclough (agent deletion, nominalisation, modality) | Echo-phrases by MoU family; AGENCY and MODALITY; intra-family and inter-family comparison; SAFEGUARD, RESPONSIBILITY, ACTANTS questions; shared metaphorical source domains government↔company; GDS-control × GDSTier query |
 
-**Regla de recorte aplicada.** Quedó fuera o degradado todo lo que no mapea:
-- **LEGITIMATION (van Leeuwen)** — descartado: amplía el marco teórico más allá de lo
-  establecido en la matriz.
-- **Detección de comunidades (Leiden) y triangulación por embeddings** — degradados a
-  **QA interno**: sirven para verificar que las agrupaciones no son artefacto, pero no
-  generan hallazgos propios ni aparecen como resultados.
-- "Descubrimiento exploratorio" con embeddings — eliminado como fin en sí mismo; los
-  embeddings solo se usan para la recuperación de la reclamación distributiva (SO1/SO2)
-  y el QA anterior.
+**Trimming rule applied.** Everything that does not map was excluded or downgraded:
+- **LEGITIMATION (van Leeuwen)** — dropped: it extends the theoretical framework
+  beyond what the matrix establishes.
+- **Community detection (Leiden) and embedding triangulation** — downgraded to
+  **internal QA**: they help verify that groupings are not an artefact, but generate
+  no findings of their own and do not appear as results.
+- Embedding-based "exploratory discovery" — eliminated as an end in itself;
+  embeddings are only used for retrieving the distributive claim (SO1/SO2) and the QA
+  above.
 
 ---
 
-## Decisiones ya tomadas
+## Decisions already made
 
-| Decisión | Valor |
+| Decision | Value |
 |---|---|
-| Corpus v1 | Solo filas con decisión tomada en `Official_Document Selection` (antes de la fila "EITHER BRING COHERE..."). Los bloques A/B pendientes NO entran a v1. |
-| Fuente de texto | Columna `Link for document` → documento completo. `Exact phrase` solo como verificación cruzada donde exista. |
-| LLM | Ollama Cloud. Se evalúan 2–3 modelos sobre una muestra y se elige el mejor (Fase 3). |
-| Códigos | Los 7 parent codes de la Tabla 3 + los nodos de la hoja `method`. Nuevos códigos: solo los alineados (ver sección Códigos); Frida decide cuáles entran antes de la corrida. |
-| Extensibilidad | Alta incremental de documentos con las reglas de admisión del corpus como filtro (ver Fase 7). |
+| Corpus v1 | Only rows with a decision made in `Official_Document Selection` (before the "EITHER BRING COHERE..." row). Pending blocks A/B do NOT enter v1. |
+| Text source | `Link for document` column → full document. `Exact phrase` only as cross-verification where it exists. |
+| LLM | Ollama Cloud. 2–3 models are evaluated on a sample and the best one is chosen (Phase 3). |
+| Codes | The 7 parent codes from Table 3 + the nodes from the `method` sheet. New codes: only aligned ones (see Codes section); the author decides which ones go in before the run. |
+| Extensibility | Incremental document intake using the corpus admission rules as a filter (see Phase 7). |
 
 ---
 
-## Estructura del proyecto
+## Project structure
 
 ```
 Tafoya/
-├── PLAN.md                       ← este documento
+├── PLAN.md                       ← this document
 ├── data/
-│   ├── manifest.csv              ← corpus congelado v1, append-only
-│   ├── raw/                      ← PDFs/HTML descargados + snapshot archive.org
-│   └── text/                     ← JSON estructurado por documento (secciones jerárquicas)
+│   ├── manifest.csv              ← frozen corpus v1, append-only
+│   ├── raw/                      ← downloaded PDFs/HTML + archive.org snapshot
+│   └── text/                     ← structured JSON per document (hierarchical sections)
 ├── coding/
-│   ├── prompts/                  ← un prompt por pregunta, versionados; cada uno declara sus so_tags
-│   ├── model_eval/               ← comparación de modelos + decisión documentada
-│   ├── round1/                   ← salida cruda del LLM, JSONL por documento
-│   ├── validation/               ← muestra codificada a mano + reporte de acuerdo
-│   └── guidebook.yaml            ← Ronda 2: sub-códigos consolidados (editado por Frida)
+│   ├── prompts/                  ← one prompt per question, versioned; each declares its so_tags
+│   ├── model_eval/                ← model comparison + documented decision
+│   ├── round1/                   ← raw LLM output, JSONL per document
+│   ├── validation/               ← hand-coded sample + agreement report
+│   └── guidebook.yaml            ← Round 2: consolidated sub-codes (edited by the author)
 ├── analysis/
-│   ├── networks/                 ← GraphML + visualización HTML interactiva
-│   ├── queries/                  ← las tres queries del plan NVivo (CSV + gráficas)
-│   ├── qa/                       ← validaciones internas (no son resultados)
-│   └── nvivo/                    ← exports listos para importar a NVivo
+│   ├── networks/                 ← GraphML + interactive HTML visualization
+│   ├── queries/                  ← the three queries from the NVivo plan (CSV + charts)
+│   ├── qa/                       ← internal validations (not results)
+│   └── nvivo/                    ← exports ready for import into NVivo
 └── scripts/
     ├── 01_manifest.py … 07_analyze.py
-    └── add_document.py           ← alta incremental con checklist de admisión
+    └── add_document.py           ← incremental intake with admission checklist
 ```
 
 ---
 
-## Fase 0 — Congelar el corpus (manifest)
+## Phase 0 — Freeze the corpus (manifest)
 
-**Entrada:** hoja `Official_Document Selection`. **Salida:** `data/manifest.csv` con:
-`doc_id` (nombre NVivo `YYYY-MM-DD_GENRE_ACTOR_Slug`), `date`, `genre`
-(STRAT/MOU/PRGOV/PRCO/BLOG/WMS/REG), `speaker` (valor limpio, columna U), `side`,
+**Input:** `Official_Document Selection` sheet. **Output:** `data/manifest.csv` with:
+`doc_id` (NVivo name `YYYY-MM-DD_GENRE_ACTOR_Slug`), `date`, `genre`
+(STRAT/MOU/PRGOV/PRCO/BLOG/WMS/REG), `speaker` (cleaned value, column U), `side`,
 `family` (Anthropic/Cohere/OpenAI/DeepMind/ElevenLabs/None), `gds_tier` (T1/T2/T3),
 `stage` (1/2), `term_status` (present/variant/absent), `url`, `archive_url`,
 `corpus_version` (=1), `is_context` (bool).
 
-Decisiones tomadas (2026-08-29): la fila `CONTEXT_..._AIOpportunitiesActionPlan`
-**entra al corpus** codificado con `Speaker = External_adviser`; se crean snapshots
-nuevos en archive.org para todo el corpus; repositorio git local con `data/raw/` en
-`.gitignore` (originales en disco + archive.org).
+Decisions made (2026-08-29): the `CONTEXT_..._AIOpportunitiesActionPlan` row
+**enters the corpus** coded with `Speaker = External_adviser`; new archive.org
+snapshots are created for the whole corpus; local git repository with `data/raw/` in
+`.gitignore` (originals on disk + archive.org).
 
-Verificaciones (se reportan a Frida, no se resuelven en silencio):
-- **Conteo**: confirmar que las filas decididas suman 37; discrepancias se listan.
-- `term_status = CHECK` (docs 7, 10): quedan marcados; la Fase 2 los resuelve con el
-  texto completo y Frida confirma.
-- Links rotos o documentos retirados → `archive_url`.
+Checks (reported to the author, not resolved silently):
+- **Count**: confirm that the decided rows add up to 37; discrepancies are listed.
+- `term_status = CHECK` (docs 7, 10): remain flagged; Phase 2 resolves them using the
+  full text and the author confirms.
+- Broken links or withdrawn documents → `archive_url`.
 
-## Fase 1 — Descarga y archivado
+## Phase 1 — Download and archiving
 
-Descarga desde `url`; fallback a web.archive.org donde el documento cambió o fue
-retirado (ya ocurrió con el Generative AI Framework); **snapshot nuevo en archive.org
-de todo lo que no lo tenga** — protección contra link rot durante la tesis.
+Download from `url`; fallback to web.archive.org where the document changed or was
+withdrawn (already happened with the Generative AI Framework); **new archive.org
+snapshot for anything that doesn't have one** — protection against link rot during
+the dissertation.
 
-Extracción de texto **preservando estructura** (PyMuPDF para PDF con jerarquía de
-headings; parsing del DOM para gov.uk/blogs con h1–h4, blockquotes y citas atribuidas).
-Cada bloque lleva `structural_position` (title / pillar_name / section_heading / body /
-quotation) — el atributo "Phrase position" de la Tabla 4 depende de esto, y la posición
-estructural es en sí un hallazgo declarado en la matriz.
+Text extraction **preserving structure** (PyMuPDF for PDFs with heading hierarchy;
+DOM parsing for gov.uk/blogs with h1–h4, blockquotes and attributed quotations).
+Each block carries `structural_position` (title / pillar_name / section_heading /
+body / quotation) — the "Phrase position" attribute from Table 4 depends on this,
+and the structural position is itself a finding declared in the matrix.
 
-## Fase 2 — Segmentación y detección del término *(SO1, SO2)*
+## Phase 2 — Segmentation and term detection *(SO1, SO2)*
 
-Fiel al método declarado: *escaneo completo → codificación detallada de la sección que
-contiene el término.*
+Faithful to the declared method: *full scan → detailed coding of the section that
+contains the term.*
 
-1. **Lexicón de variantes** versionado (aprobado por Frida): nominal ("public good",
-   "the public good", "AI for public good") y distributivo/competidores ("public
+1. Versioned **variant lexicon** (approved by the author): nominal ("public good",
+   "the public good", "AI for public good") and distributive/competing ("public
    benefit", "public interest", "benefits reach every citizen", "delivers for all",
-   "improve people's lives", "working people", "taxpayer") — espejo de los nodos
-   `PublicGood_Nominal` / `PublicBenefit_Distributive` y de los 8 nodos de beneficiario.
-   Stemming apagado (regla NVivo: no atrapar "goods").
-2. Secciones-con-término → cola de codificación detallada. Documentos sin término →
-   recuperación semántica (embeddings por párrafo) de la reclamación distributiva, para
-   que el conteo-cero venga acompañado de "y en su lugar se dice X" (SO1/SO2). Pasajes
-   recuperados por embedding se marcan `retrieval=semantic` (auditable).
-3. Embeddings vía Ollama (`nomic-embed-text` o `mxbai-embed-large`; se decide en Fase 3).
-   Índice persistente para reuso incremental. **Único uso analítico de embeddings**;
-   cualquier otro uso es QA.
-4. Actualización automática de `term_status` en el manifest (resuelve los `CHECK`).
+   "improve people's lives", "working people", "taxpayer") — mirroring the
+   `PublicGood_Nominal` / `PublicBenefit_Distributive` nodes and the 8 beneficiary
+   nodes. Stemming off (NVivo rule: don't catch "goods").
+2. Sections-with-term → detailed coding queue. Documents without the term →
+   semantic retrieval (paragraph embeddings) of the distributive claim, so that the
+   zero-count comes accompanied by "and instead X is said" (SO1/SO2). Passages
+   retrieved by embedding are flagged `retrieval=semantic` (auditable).
+3. Embeddings via Ollama (`nomic-embed-text` or `mxbai-embed-large`; decided in
+   Phase 3). Persistent index for incremental reuse. **Sole analytical use of
+   embeddings**; any other use is QA.
+4. Automatic update of `term_status` in the manifest (resolves the `CHECK` cases).
 
-## Fase 3 — Evaluación de modelos (Ollama Cloud)
+## Phase 3 — Model evaluation (Ollama Cloud)
 
-1. Muestra estratificada: ~5 documentos (1 STRAT largo, 1 MoU, 1 PRCO, 1 BLOG, 1 WMS)
-   → ~25–40 pasajes.
-2. Candidatos: 2–3 modelos grandes del catálogo de Ollama Cloud vigente al correr.
-3. Mismo prompt, temperatura 0, JSON forzado, las 7 preguntas por pasaje.
-4. Métricas de decisión:
-   - **Fidelidad extractiva**: toda cita devuelta existe verbatim en el pasaje
-     (verificación automática — el mejor detector de alucinación para esta tarea).
-   - Tasa de JSON válido y de "no aplica" correctos.
-   - **Acuerdo con Frida** sobre la muestra (o acuerdo inter-modelo + adjudicación de
-     Frida en los desacuerdos).
-5. Salida: `coding/model_eval/decision.md` — modelo, versión exacta, métricas; texto
-   casi directo para el capítulo de métodos.
+1. Stratified sample: ~5 documents (1 long STRAT, 1 MoU, 1 PRCO, 1 BLOG, 1 WMS)
+   → ~25–40 passages.
+2. Candidates: 2–3 large models from the Ollama Cloud catalogue current at run time.
+3. Same prompt, temperature 0, forced JSON, the 7 questions per passage.
+4. Decision metrics:
+   - **Extractive fidelity**: every returned quote exists verbatim in the passage
+     (automatic verification — the best hallucination detector for this task).
+   - Valid-JSON rate and correct "not applicable" rate.
+   - **Agreement with the author** on the sample (or inter-model agreement + the
+     author's adjudication on disagreements).
+5. Output: `coding/model_eval/decision.md` — model, exact version, metrics; text
+   nearly ready to drop into the methods chapter.
 
-> Los documentos son públicos: correr en Ollama Cloud no plantea problema de
-> confidencialidad; se registra igualmente proveedor, modelo y fecha.
+> The documents are public: running on Ollama Cloud poses no confidentiality issue;
+> provider, model and date are logged all the same.
 
-## Fase 4 — Codificación Ronda 1 (LLM)
+## Phase 4 — Round 1 coding (LLM)
 
-- **Un prompt por pregunta**, cada uno con: la redacción exacta de la Tabla 3, su fuente
-  teórica en una línea, sus `so_tags` según la matriz (BENEFICIARY → SO1/SO2/SO3;
-  MECHANISM → SO1/SO2; SAFEGUARD → SO1/SO3; RESPONSIBILITY → SO1/SO3; PROJECTED FUTURE
-  → SO1/SO2; ACTANTS → SO1/SO3; NATURALISED ORDER → SO1/SO2), el pasaje y el contexto
-  mínimo del documento.
-- Salida por pasaje/pregunta: `{doc_id, passage_id, question, so_tags, answer_summary,
-  verbatim_quote, applies, confidence, model, prompt_version, run_id, timestamp}`.
-- **Extractor definicional** separado (SO1): enunciados donde el documento dice qué
-  significa o exige la frase → `definitional_instances.jsonl` con posición estructural.
-  El pipeline solo alinea las instancias cronológicamente; la lectura de qué retiene,
-  suelta, añade o sustituye cada definición es análisis de Frida (así lo fija la matriz).
-- Post-chequeo: toda `verbatim_quote` se valida contra el texto fuente; las que no
-  matcheen se marcan y se reintentan o descartan.
+- **One prompt per question**, each with: the exact wording from Table 3, its
+  theoretical source in one line, its `so_tags` per the matrix (BENEFICIARY →
+  SO1/SO2/SO3; MECHANISM → SO1/SO2; SAFEGUARD → SO1/SO3; RESPONSIBILITY → SO1/SO3;
+  PROJECTED FUTURE → SO1/SO2; ACTANTS → SO1/SO3; NATURALISED ORDER → SO1/SO2), the
+  passage and minimal document context.
+- Output per passage/question: `{doc_id, passage_id, question, so_tags,
+  answer_summary, verbatim_quote, applies, confidence, model, prompt_version,
+  run_id, timestamp}`.
+- Separate **definitional extractor** (SO1): statements where the document says what
+  the phrase means or requires → `definitional_instances.jsonl` with structural
+  position. The pipeline only aligns the instances chronologically; reading what
+  each definition retains, drops, adds or replaces is the author's analysis (as the
+  matrix sets out).
+- Post-check: every `verbatim_quote` is validated against the source text; those
+  that don't match are flagged and retried or discarded.
 
-**Validación (para el capítulo de métodos):** 15–20% de pasajes, estratificado por
-género y familia, doblemente codificado (Frida + LLM); acuerdo por pregunta; los
-desacuerdos alimentan máximo una iteración de prompts, luego se congelan.
+**Validation (for the methods chapter):** 15–20% of passages, stratified by genre
+and family, double-coded (the author + LLM); per-question agreement; disagreements
+feed at most one round of prompt iteration, then are frozen.
 
-## Fase 5 — Consolidación Ronda 2 (Frida, con apoyo)
+## Phase 5 — Round 2 consolidation (the author, with support)
 
-- `06_consolidate.py` agrupa las respuestas por pregunta por similitud semántica y
-  presenta cada clúster con sus citas — materia prima para que **Frida nombre los
-  sub-códigos** en `guidebook.yaml` (nombre, definición, regla de inclusión/exclusión,
-  pasaje ejemplar). Los 8 nodos de beneficiario ya definidos en la hoja `method` entran
-  al guidebook tal cual como sub-códigos de BENEFICIARY.
-- Pase automático de asignación clúster→sub-código; Frida revisa los casos límite.
+- `06_consolidate.py` groups the responses per question by semantic similarity and
+  presents each cluster with its quotes — raw material for **the author to name the
+  sub-codes** in `guidebook.yaml` (name, definition, inclusion/exclusion rule,
+  exemplar passage). The 8 beneficiary nodes already defined in the `method` sheet
+  enter the guidebook as-is as BENEFICIARY sub-codes.
+- Automatic cluster→sub-code assignment pass; the author reviews the edge cases.
 
-## Fase 6 — Análisis: solo salidas mapeadas a objetivos
+## Phase 6 — Analysis: only outputs mapped to objectives
 
-**A. Red intertextual** *(SO2 — Fairclough)*: nodos = documentos con atributos del
-manifest; aristas dirigidas por (i) familia, (ii) referencias explícitas en el texto
-(títulos de otros documentos del corpus, enlaces gov.uk entre ellos), (iii) supersession
-declarada. Lectura: el trayecto declaración → prioridad → compromiso → reclamación pública.
+**A. Intertextual network** *(SO2 — Fairclough)*: nodes = documents with manifest
+attributes; edges directed by (i) family, (ii) explicit references in the text
+(titles of other corpus documents, gov.uk links between them), (iii) declared
+supersession. Reading: the path declaration → priority → commitment → public claim.
 
-**B. Echo-phrases** *(SO3 — Hajer)*: n-gramas compartidos (≥6 palabras) entre texto
-gubernamental y texto de empresa dentro de cada familia MoU, con quién publicó primero —
-evidencia material de préstamo interdiscursivo/coalición. Comparación intra-familia y
-entre familias por counterparty, como pide la matriz.
+**B. Echo-phrases** *(SO3 — Hajer)*: shared n-grams (≥6 words) between government
+text and company text within each MoU family, with who published first — material
+evidence of interdiscursive borrowing/coalition. Intra-family and cross-family
+comparison by counterparty, as the matrix requires.
 
-**C. Red temática** *(SO1/SO2)*: bipartita documento↔sub-código, proyectada a
-documento–documento ponderada por códigos compartidos, facetada por Period, Speaker,
-Family y TermStatus.
+**C. Thematic network** *(SO1/SO2)*: bipartite document↔sub-code, projected onto a
+weighted document–document graph by shared codes, faceted by Period, Speaker,
+Family and TermStatus.
 
-**D. Las tres queries del plan NVivo** *(replicadas tal cual)*: zero count × Genre
-(SO1/SO2); agencia × Genre — pasiva sin agente vs. agente gubernamental en primera
-persona (SO3); PublicGood_Nominal × GDSTier — la query que mata la objeción obvia (SO3).
-CSV + gráfica cada una.
+**D. The three NVivo plan queries** *(replicated as-is)*: zero count × Genre
+(SO1/SO2); agency × Genre — agentless passive vs. first-person government agent
+(SO3); PublicGood_Nominal × GDSTier — the query that kills the obvious objection
+(SO3). CSV + chart for each.
 
-**E. Exports NVivo**: pasajes codificados + classification sheet de atributos, en
-formato de importación directa.
+**E. NVivo exports**: coded passages + attribute classification sheet, in
+direct-import format.
 
-**F. Reporte de metáforas** *(SO1)*: las expresiones metafóricas más frecuentes del
-corpus, y por cada una **una sugerencia de dominio fuente y dominio meta** con su
-fórmula `TARGET IS SOURCE` propuesta, tipo L&J tentativo y pasajes de evidencia —
-presentado como propuesta para que Frida valide, corrija o renombre los mapeos (la
-asignación final de dominios es decisión interpretativa suya, no del pipeline).
+**F. Metaphor report** *(SO1)*: the corpus's most frequent metaphorical
+expressions, and for each **a suggested source domain and target domain** with its
+proposed `TARGET IS SOURCE` formula, tentative L&J type and evidence passages —
+presented as a proposal for the author to validate, correct or rename the mappings
+(the final domain assignment is her interpretive decision, not the pipeline's).
 
-**G. Visualización**: HTML interactivo autocontenido; nodos coloreables por
-Period/Speaker/Family/TermStatus, aristas por tipo (familia, referencia, eco), slider
-temporal ene-2024 → jul-2026 con el corte de julio 2024 marcado.
+**G. Visualization**: self-contained interactive HTML; nodes colourable by
+Period/Speaker/Family/TermStatus, edges by type (family, reference, echo), temporal
+slider Jan-2024 → Jul-2026 with the July 2024 cutoff marked.
 
-Vista principal ("mapa de autoría y familias", según referencia visual de Frida
-2026-08-29): **color del nodo = actor autor** (GDS / DSIT / DSIT+GDS / CDDO / PMO /
-External_adviser / cada empresa — las empresas comparten gama, distinguibles entre sí);
-**agrupación espacial = familia** (las 5 familias MoU como clústeres delimitados con
-hull/etiqueta, el tronco estrategia GDS/DSIT al centro); **tamaño del nodo = grado de
-entrada** (cuántas veces lo referencian otros documentos del corpus — proxy de
-autoridad); **grosor de arista = frecuencia de referencia**; dirección de flecha =
-quién cita a quién; tipo de línea distingue referencia explícita / familia /
-supersession / eco. Tooltip por nodo: doc_id, fecha, genre, term_status.
-*Adelanto de calendario*: esta vista se genera en versión preliminar al cierre de
-Fase 1 (solo requiere textos + manifest: extracción de referencias explícitas), y se
-enriquece en Fase 6 con echo-phrases y códigos compartidos.
+Main view ("authorship and families map", per the author's visual reference
+2026-08-29): **node colour = authoring actor** (GDS / DSIT / DSIT+GDS / CDDO / PMO /
+External_adviser / each company — companies share a palette range, distinguishable
+from one another); **spatial grouping = family** (the 5 MoU families as bounded
+clusters with hull/label, the GDS/DSIT strategy trunk at the centre); **node size =
+in-degree** (how many times other corpus documents reference it — proxy for
+authority); **edge thickness = reference frequency**; arrow direction = who cites
+whom; line type distinguishes explicit reference / family / supersession / echo.
+Per-node tooltip: doc_id, date, genre, term_status.
+*Schedule preview*: this view is generated in a preliminary version at the close of
+Phase 1 (requires only texts + manifest: extraction of explicit references), and is
+enriched in Phase 6 with echo-phrases and shared codes.
 
-**QA interno (no resultados)**: comparación Leiden vs. familias/agrupaciones y matriz
-de similitud semántica — viven en `analysis/qa/`, se citan solo si Frida decide usarlos
-como verificación de robustez en métodos.
+**Internal QA (not results)**: Leiden comparison vs. families/groupings and
+semantic similarity matrix — live in `analysis/qa/`, cited only if the author
+decides to use them as a robustness check in the methods section.
 
-## Fase 7 — Alta incremental de documentos
+## Phase 7 — Incremental document intake
 
 `add_document.py <url> [--family X --genre Y ...]`:
-1. **Checklist de admisión primero** — las reglas de la hoja `method` aplicadas como
-   filtro explícito: Rule 1 (supersession/ventana), Rule 3 (speaker, no publisher),
-   Rule 4 (frontera funcional del centro digital), Rule 5 (criterio de blogs),
-   producer-vs-scrutineer (el escrutinio parlamentario/auditoría es contexto, no corpus)
-   y written-vs-spoken (Hansard fuera). El script presenta el checklist evaluado y
-   **Frida aprueba la admisión**; nada entra automático.
-2. Fila nueva en el manifest con `corpus_version` siguiente — v1 queda intacto: el
-   análisis de la tesis siempre puede regenerarse filtrando `corpus_version == 1`.
-3. Fases 1–4 solo sobre el documento nuevo, con **prompts, modelo y guidebook
-   congelados** en la versión vigente.
-4. Respuestas sin sub-código existente → `candidate_code`, acumuladas para revisión de
-   Frida; los códigos nuevos nunca nacen sin decisión humana.
-5. Fase 6 se regenera completa (es idempotente desde los JSONL).
+1. **Admission checklist first** — the rules from the `method` sheet applied as an
+   explicit filter: Rule 1 (supersession/window), Rule 3 (speaker, not publisher),
+   Rule 4 (functional boundary of the digital centre), Rule 5 (blog criterion),
+   producer-vs-scrutineer (parliamentary scrutiny/audit is context, not corpus)
+   and written-vs-spoken (Hansard excluded). The script presents the evaluated
+   checklist and **the author approves admission**; nothing enters automatically.
+2. New row in the manifest with the next `corpus_version` — v1 stays intact: the
+   dissertation's analysis can always be regenerated by filtering
+   `corpus_version == 1`.
+3. Phases 1–4 only on the new document, with **prompts, model and guidebook
+   frozen** at the current version.
+4. Responses without an existing sub-code → `candidate_code`, accumulated for the
+   author's review; new codes never arise without a human decision.
+5. Phase 6 is regenerated in full (it is idempotent from the JSONL files).
 
-Cada corrida registra `run_id`, modelo, versión de prompts y de guidebook: cualquier
-número de la tesis es trazable a una corrida exacta.
-
----
-
-## Códigos y atributos
-
-**Se toman tal cual:** los 7 parent codes de la Tabla 3, `PublicGood_Nominal`,
-`PublicBenefit_Distributive`, los 8 nodos de beneficiario, y los atributos de la
-Tabla 4 (Period, Authorship, Side, Partnership family, Phrase position, Definitional
-status) + Genre, GDSTier, Stage, TermStatus del plan NVivo.
-
-**Adiciones propuestas — solo las que caben dentro del marco de la matriz** (Frida
-decide antes de la corrida):
-
-1. **AGENCY** *(SO3; extensible al corpus completo)* — Fairclough 2003, ya declarado en
-   la matriz para SO3: `agente_explícito / pasiva_sin_agente / nominalización`. Su
-   aplicación corpus-completo está sancionada por la query 2 del propio plan NVivo
-   (agencia × Genre).
-2. **MODALITY** *(SO3)* — Fairclough, explícito en la matriz: `deóntica`
-   (must/should/commit) vs. `epistémica/predictiva` (will/could/expected). Cruza con la
-   pregunta de "force" de la Tabla 2: distingue compromiso de profecía.
-3. **NARRATIVE_ARC** *(SO1; atributo por documento)* — Kaplan 2020 (beginnings, middles,
-   ends), ya implícito en los memos ("ARC POSITION 1"); formalizarlo lo vuelve consultable.
-4. **THREAT_TYPE** *(SO1/SO3; sub-dimensión de ACTANTS)* — Kaplan: `riesgo_tecnológico /
-   rezago_geopolítico / statu_quo_burocrático / desconfianza_pública`. La migración de
-   la amenaza a lo largo del período es un hallazgo probable (el memo del doc 1 ya la
-   detecta: "AI is the risk").
-5. **METAPHOR** *(SO1, alimenta NATURALISED ORDER de SO1/SO2)* — Lakoff & Johnson 1980;
-   procedimiento MIP/MIPVU (Pragglejaz 2007; Steen et al. 2010); puente opcional con
-   Fairclough: Charteris-Black 2004. Por instancia: expresión verbatim → dominio fuente
-   → dominio meta → fórmula `TARGET IS SOURCE` (p. ej. "turbocharge" → EL GOBIERNO ES
-   UNA MÁQUINA; "frontier AI" → EL DESARROLLO DE IA ES EXPLORACIÓN TERRITORIAL;
-   "harness" → LA IA ES UNA FUERZA QUE SE DOMA) → tipo L&J (estructural / orientacional /
-   ontológica / personificación) → **qué ilumina / qué esconde**. El campo
-   "esconde" es el mecanismo léxico de la naturalización (Lears) y alimenta directo la
-   pregunta 7. Agregados habilitados, todos dentro de los SO: dominios fuente por
-   speaker (SO1), dominios compartidos gobierno↔empresa por familia (SO3, complementa
-   ECHO), migración temporal de dominios (SO2). *Única adición que suma citas al marco:
-   requiere incorporar L&J (+ MIP) al capítulo teórico.*
-6. **ECHO** *(SO3)* — generado computacionalmente en Fase 6B (Hajer); no se codifica a mano.
-7. **AUDIENCE** *(SO2; atributo por documento)* — `parlamento / practitioners /
-   público_general / industria`; ya se registra como prosa en el memo de función
-   (Tabla 2); como valor cerrado habilita el cruce "¿ante qué audiencia aparece el
-   término y ante cuál desaparece?", que es el corazón de SO2.
-
-**Descartado por la restricción de alineación:** LEGITIMATION (van Leeuwen 2007) —
-ampliaba el marco teórico más allá de lo establecido en la matriz sin necesidad para
-ningún SO.
+Each run logs `run_id`, model, prompt version and guidebook version: any number in
+the dissertation is traceable to an exact run.
 
 ---
 
-## Orden de ejecución y puntos de control humano
+## Codes and attributes
 
-| Paso | Hace | Sirve a | Control de Frida |
+**Taken as-is:** the 7 parent codes from Table 3, `PublicGood_Nominal`,
+`PublicBenefit_Distributive`, the 8 beneficiary nodes, and the Table 4 attributes
+(Period, Authorship, Side, Partnership family, Phrase position, Definitional
+status) + Genre, GDSTier, Stage, TermStatus from the NVivo plan.
+
+**Proposed additions — only those that fit within the matrix's framework** (the
+author decides before the run):
+
+1. **AGENCY** *(SO3; extensible to the full corpus)* — Fairclough 2003, already
+   declared in the matrix for SO3: `explicit_agent / agentless_passive /
+   nominalisation`. Its corpus-wide application is sanctioned by query 2 of the
+   NVivo plan itself (agency × Genre).
+2. **MODALITY** *(SO3)* — Fairclough, explicit in the matrix: `deontic`
+   (must/should/commit) vs. `epistemic/predictive` (will/could/expected). Crosses
+   with the "force" question from Table 2: distinguishes commitment from prophecy.
+3. **NARRATIVE_ARC** *(SO1; per-document attribute)* — Kaplan 2020 (beginnings,
+   middles, ends), already implicit in the memos ("ARC POSITION 1"); formalising
+   it makes it queryable.
+4. **THREAT_TYPE** *(SO1/SO3; sub-dimension of ACTANTS)* — Kaplan:
+   `technological_risk / geopolitical_lag / bureaucratic_status_quo /
+   public_distrust`. The migration of the threat over the period is a likely
+   finding (doc 1's memo already detects it: "AI is the risk").
+5. **METAPHOR** *(SO1, feeds NATURALISED ORDER for SO1/SO2)* — Lakoff & Johnson
+   1980; MIP/MIPVU procedure (Pragglejaz 2007; Steen et al. 2010); optional bridge
+   with Fairclough: Charteris-Black 2004. Per instance: verbatim expression →
+   source domain → target domain → `TARGET IS SOURCE` formula (e.g. "turbocharge"
+   → THE GOVERNMENT IS A MACHINE; "frontier AI" → AI DEVELOPMENT IS TERRITORIAL
+   EXPLORATION; "harness" → AI IS A FORCE TO BE TAMED) → L&J type (structural /
+   orientational / ontological / personification) → **what it illuminates / what
+   it hides**. The "hides" field is the lexical mechanism of naturalisation
+   (Lears) and feeds directly into question 7. Aggregates enabled, all within the
+   SOs: source domains by speaker (SO1), shared government↔company domains by
+   family (SO3, complements ECHO), temporal migration of domains (SO2). *The only
+   addition that adds citations to the framework: requires incorporating L&J
+   (+ MIP) into the theory chapter.*
+6. **ECHO** *(SO3)* — computationally generated in Phase 6B (Hajer); not
+   hand-coded.
+7. **AUDIENCE** *(SO2; per-document attribute)* — `parliament / practitioners /
+   general_public / industry`; already recorded as prose in the function memo
+   (Table 2); as a closed value it enables the crossing "before which audience does
+   the term appear, and before which does it disappear?", which is the heart of
+   SO2.
+
+**Dropped by the alignment constraint:** LEGITIMATION (van Leeuwen 2007) —
+extended the theoretical framework beyond what the matrix establishes, without
+being needed for any SO.
+
+---
+
+## Execution order and human checkpoints
+
+| Step | Does | Serves | Author checkpoint |
 |---|---|---|---|
-| 0 | Manifest desde el Excel | base | Confirmar conteo 37 y casos marcados |
-| 1 | Descarga + archivado + texto estructurado | base | Revisar reporte de links rotos |
-| 2 | Segmentación + término/variantes + embeddings | SO1/SO2 | Confirmar `CHECK`; aprobar lexicón |
-| 3 | Evaluación de modelos | base | Codificar muestra; aprobar modelo |
-| — | — | — | **Decidir qué códigos propuestos entran** |
-| 4 | Codificación Ronda 1 | SO1/SO2/SO3 | Validación 15–20% + reporte de acuerdo |
-| 5 | Agrupación para consolidación | SO1/SO2/SO3 | **Nombrar sub-códigos (guidebook)** |
-| 6 | Redes, queries, exports, viz | SO1/SO2/SO3 | Lectura analítica — aquí empieza la interpretación |
-| 7 | Alta incremental | según doc | Aprobar admisión (checklist) y `candidate_codes` |
+| 0 | Manifest from the Excel file | base | Confirm count of 37 and flagged cases |
+| 1 | Download + archiving + structured text | base | Review broken-links report |
+| 2 | Segmentation + term/variants + embeddings | SO1/SO2 | Confirm `CHECK` cases; approve lexicon |
+| 3 | Model evaluation | base | Code the sample; approve model |
+| — | — | — | **Decide which proposed codes go in** |
+| 4 | Round 1 coding | SO1/SO2/SO3 | 15–20% validation + agreement report |
+| 5 | Clustering for consolidation | SO1/SO2/SO3 | **Name sub-codes (guidebook)** |
+| 6 | Networks, queries, exports, viz | SO1/SO2/SO3 | Analytical reading — interpretation begins here |
+| 7 | Incremental intake | per doc | Approve admission (checklist) and `candidate_codes` |
 
-Stack: Python (venv del proyecto), PyMuPDF, requests/BeautifulSoup, Ollama API (cloud
-para LLM; embeddings locales o cloud), networkx + python-igraph, visualización HTML
-autocontenida. Datos intermedios en archivos planos (CSV/JSONL/YAML) versionables.
+Stack: Python (project venv), PyMuPDF, requests/BeautifulSoup, Ollama API (cloud
+for LLM; embeddings local or cloud), networkx + python-igraph, self-contained HTML
+visualization. Intermediate data in flat files (CSV/JSONL/YAML), version-controllable.
+
+---
+
+Label language: coding labels standardised to English on 2026-08-29; prompts_v1.yaml
+already emits Spanish label values for AGENCY/MODALITY/ACTANTS — mapped at
+consolidation.
