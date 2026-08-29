@@ -109,6 +109,70 @@ def is_quotation_para(text):
     return bool(QUOTE_SPAN.search(text) and QUOTE_VERB.search(text))
 
 
+QUOTE_MARK_CHARS = "“”\""
+
+
+def _quote_marks_unbalanced(text):
+    """True if `text` ends mid-quotation (odd number of quote-mark characters)."""
+    return sum(text.count(c) for c in QUOTE_MARK_CHARS) % 2 == 1
+
+
+class _Elem:
+    """Lightweight (name, text) node so merged multi-paragraph quotations can be
+    fed through the same block-building loop as real bs4 tags."""
+
+    __slots__ = ("name", "text", "tag")
+
+    def __init__(self, name, text, tag=None):
+        self.name = name
+        self.text = text
+        self.tag = tag
+
+    def get_text(self, *_a, **_kw):
+        return self.text
+
+    def find_all(self, *a, **kw):
+        return self.tag.find_all(*a, **kw) if self.tag is not None else []
+
+
+def merge_dangling_quotes(elements):
+    """Press releases often split a single attributed quotation across several
+    <p> tags (AP style: each paragraph of a multi-para quote opens a new curly
+    quote, only the last one closes it). Detect a paragraph that ends with an
+    unmatched opening quote mark and merge it with the following paragraph(s)
+    until the quote closes, so the combined text can be classified as one
+    "quotation" block instead of leaking through as unattributed "body" text.
+    """
+    out = []
+    i = 0
+    n = len(elements)
+    while i < n:
+        el = elements[i]
+        if el.name != "p":
+            out.append(_Elem(el.name, norm_ws(el.get_text(" ", strip=True)), el))
+            i += 1
+            continue
+        text = norm_ws(el.get_text(" ", strip=True))
+        j = i
+        combined = text
+        combined_tag = el
+        # Only attempt the merge when this paragraph carries an attribution verb
+        # (e.g. "X said, “...") -- otherwise an unrelated stray/unbalanced quote
+        # mark (a typo, a scare-quoted word) could wrongly glue paragraphs together.
+        can_merge = bool(QUOTE_VERB.search(text))
+        while can_merge and _quote_marks_unbalanced(combined) and j + 1 < n and elements[j + 1].name == "p":
+            j += 1
+            nxt = norm_ws(elements[j].get_text(" ", strip=True))
+            combined = f"{combined} {nxt}"
+            combined_tag = None  # merged node no longer maps to a single source tag
+        if j > i:
+            out.append(_Elem("p", combined, combined_tag))
+        else:
+            out.append(_Elem("p", text, el))
+        i = j + 1
+    return out
+
+
 def pick_content_root(soup):
     main = soup.find("main")
     if main and len(main.find_all(["p", "li"])) >= 3:

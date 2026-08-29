@@ -57,7 +57,7 @@ PRINCIPLE_RE = re.compile(r"^(Principle|Pillar|Mission)\s+\d+\b", re.IGNORECASE)
 POINT_PLAN_RE = re.compile(r"point plan", re.IGNORECASE)
 WMS_BOILERPLATE_RE = re.compile(r"^House of (Commons|Lords):\s*Written Statement", re.IGNORECASE)
 DINGBAT_FONT_RE = re.compile(r"(dingbat|wingding|symbol)", re.IGNORECASE)
-BARE_NUMBERING_RE = re.compile(r"^\d{1,2}\.$")
+BARE_NUMBERING_RE = re.compile(r"^\d{1,4}\.?$")
 
 # Documentos ya descargados a mano vía navegador real porque el dominio está
 # detrás de un challenge JS de Cloudflare que `requests` no resuelve.
@@ -389,6 +389,20 @@ def extract_pdf_blocks(pdf_path, doc_id):
         numeric = sum(1 for t in flat if re.fullmatch(r"\d{1,4}", t.strip()))
         return numeric / len(flat) > 0.15
 
+    # detección de encabezados/pies de página repetidos ("running header"):
+    # texto corto que se repite (a veces con un número de página distinto
+    # como prefijo/sufijo) en varias páginas -> no es contenido, es chrome.
+    running_hf_counts = Counter()
+    for pno, page_blk in enumerate(pages_blocks):
+        if pno == 0 or is_toc_page(page_blk):
+            continue
+        for runs in page_blk:
+            t = clean_text("".join(r[0] for r in runs))
+            norm = re.sub(r"^\d{1,4}\s*", "", re.sub(r"\s*\d{1,4}$", "", t)).strip()
+            if norm and len(norm) < 150:
+                running_hf_counts[norm] += 1
+    running_headers_footers = {t for t, c in running_hf_counts.items() if c >= 3}
+
     blocks = []
     n = 0
 
@@ -434,6 +448,9 @@ def extract_pdf_blocks(pdf_path, doc_id):
                 continue
             full_text = clean_text("".join(t for t, _, _, _ in runs))
             if not full_text or full_text == title_text:
+                continue
+            norm_text = re.sub(r"^\d{1,4}\s*", "", re.sub(r"\s*\d{1,4}$", "", full_text)).strip()
+            if norm_text in running_headers_footers:
                 continue
             if BARE_NUMBERING_RE.match(full_text):
                 # marcador de lista numerada que quedó como bloque aislado
