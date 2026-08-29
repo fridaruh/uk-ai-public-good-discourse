@@ -209,6 +209,19 @@ asignación final de dominios es decisión interpretativa suya, no del pipeline)
 Period/Speaker/Family/TermStatus, aristas por tipo (familia, referencia, eco), slider
 temporal ene-2024 → jul-2026 con el corte de julio 2024 marcado.
 
+Vista principal ("mapa de autoría y familias", según referencia visual de Frida
+2026-08-29): **color del nodo = actor autor** (GDS / DSIT / DSIT+GDS / CDDO / PMO /
+External_adviser / cada empresa — las empresas comparten gama, distinguibles entre sí);
+**agrupación espacial = familia** (las 5 familias MoU como clústeres delimitados con
+hull/etiqueta, el tronco estrategia GDS/DSIT al centro); **tamaño del nodo = grado de
+entrada** (cuántas veces lo referencian otros documentos del corpus — proxy de
+autoridad); **grosor de arista = frecuencia de referencia**; dirección de flecha =
+quién cita a quién; tipo de línea distingue referencia explícita / familia /
+supersession / eco. Tooltip por nodo: doc_id, fecha, genre, term_status.
+*Adelanto de calendario*: esta vista se genera en versión preliminar al cierre de
+Fase 1 (solo requiere textos + manifest: extracción de referencias explícitas), y se
+enriquece en Fase 6 con echo-phrases y códigos compartidos.
+
 **QA interno (no resultados)**: comparación Leiden vs. familias/agrupaciones y matriz
 de similitud semántica — viven en `analysis/qa/`, se citan solo si Frida decide usarlos
 como verificación de robustez en métodos.
