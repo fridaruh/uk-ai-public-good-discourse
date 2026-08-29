@@ -1,0 +1,517 @@
+#!/usr/bin/env python3
+"""
+Tarea 2: Generar queries de conteos por género y por gds_tier, y crear HTML con gráficas.
+"""
+
+import csv
+from pathlib import Path
+from collections import defaultdict
+
+# Configuración
+DATA_DIR = Path(__file__).parent.parent / "data"
+MANIFEST_FILE = DATA_DIR / "manifest.csv"
+TERM_COUNTS_FILE = Path(__file__).parent.parent / "analysis" / "queries" / "term_counts.csv"
+ANALYSIS_DIR = Path(__file__).parent.parent / "analysis" / "queries"
+OUTPUT_CSV_GENRE = ANALYSIS_DIR / "zero_count_by_genre.csv"
+OUTPUT_CSV_TIER = ANALYSIS_DIR / "nominal_by_gdstier.csv"
+OUTPUT_HTML = ANALYSIS_DIR / "queries.html"
+
+# Géneros válidos y tiers
+GENRES = ['STRAT', 'MOU', 'PRGOV', 'PRCO', 'BLOG', 'WMS', 'REG']
+TIERS = ['T1', 'T2', 'T3']
+
+def load_manifest():
+    """Carga manifest como {doc_id: {columns}}."""
+    docs = {}
+    with open(MANIFEST_FILE, newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            docs[row['doc_id']] = row
+    return docs
+
+def load_term_counts():
+    """Carga term_counts como {doc_id: {n_nominal, n_variant, n_distributive}}."""
+    counts = {}
+    with open(TERM_COUNTS_FILE, newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            counts[row['doc_id']] = {
+                'n_nominal': int(row['n_nominal']) if row['n_nominal'] else 0,
+                'n_variant': int(row['n_variant']) if row['n_variant'] else 0,
+                'n_distributive': int(row['n_distributive']) if row['n_distributive'] else 0,
+            }
+    return counts
+
+def process_by_genre(manifest, term_counts):
+    """Procesa conteos por género."""
+    genre_data = defaultdict(lambda: {
+        'docs_present': 0,
+        'docs_variant': 0,
+        'docs_absent': 0,
+        'total_nominal': 0,
+        'total_variant': 0
+    })
+
+    for doc_id, row in manifest.items():
+        genre = row.get('genre', '')
+        if genre not in GENRES:
+            continue
+
+        term_status = row.get('term_status', '')
+        counts = term_counts.get(doc_id, {'n_nominal': 0, 'n_variant': 0})
+
+        if term_status == 'present':
+            genre_data[genre]['docs_present'] += 1
+        elif term_status == 'variant':
+            genre_data[genre]['docs_variant'] += 1
+        elif term_status == 'absent':
+            genre_data[genre]['docs_absent'] += 1
+
+        genre_data[genre]['total_nominal'] += counts['n_nominal']
+        genre_data[genre]['total_variant'] += counts['n_variant']
+
+    return dict(genre_data)
+
+def process_by_tier(manifest, term_counts):
+    """Procesa conteos por gds_tier."""
+    tier_data = defaultdict(lambda: {
+        'docs_present': 0,
+        'docs_variant': 0,
+        'docs_absent': 0,
+        'total_nominal': 0,
+        'total_variant': 0
+    })
+
+    for doc_id, row in manifest.items():
+        tier = row.get('gds_tier', '')
+        if tier not in TIERS:
+            continue
+
+        term_status = row.get('term_status', '')
+        counts = term_counts.get(doc_id, {'n_nominal': 0, 'n_variant': 0})
+
+        if term_status == 'present':
+            tier_data[tier]['docs_present'] += 1
+        elif term_status == 'variant':
+            tier_data[tier]['docs_variant'] += 1
+        elif term_status == 'absent':
+            tier_data[tier]['docs_absent'] += 1
+
+        tier_data[tier]['total_nominal'] += counts['n_nominal']
+        tier_data[tier]['total_variant'] += counts['n_variant']
+
+    return dict(tier_data)
+
+def write_genre_csv(genre_data):
+    """Escribe CSV de conteos por género."""
+    with open(OUTPUT_CSV_GENRE, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=[
+            'genre', 'docs_present', 'docs_variant', 'docs_absent', 'total_nominal_mentions', 'total_variant_mentions'
+        ])
+        writer.writeheader()
+        for genre in GENRES:
+            if genre in genre_data:
+                data = genre_data[genre]
+                writer.writerow({
+                    'genre': genre,
+                    'docs_present': data['docs_present'],
+                    'docs_variant': data['docs_variant'],
+                    'docs_absent': data['docs_absent'],
+                    'total_nominal_mentions': data['total_nominal'],
+                    'total_variant_mentions': data['total_variant']
+                })
+            else:
+                writer.writerow({
+                    'genre': genre,
+                    'docs_present': 0,
+                    'docs_variant': 0,
+                    'docs_absent': 0,
+                    'total_nominal_mentions': 0,
+                    'total_variant_mentions': 0
+                })
+
+def write_tier_csv(tier_data):
+    """Escribe CSV de conteos por tier con nota al pie."""
+    with open(OUTPUT_CSV_TIER, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=[
+            'gds_tier', 'docs_present', 'docs_variant', 'docs_absent', 'total_nominal_mentions', 'total_variant_mentions'
+        ])
+        writer.writeheader()
+        for tier in TIERS:
+            if tier in tier_data:
+                data = tier_data[tier]
+                writer.writerow({
+                    'gds_tier': tier,
+                    'docs_present': data['docs_present'],
+                    'docs_variant': data['docs_variant'],
+                    'docs_absent': data['docs_absent'],
+                    'total_nominal_mentions': data['total_nominal'],
+                    'total_variant_mentions': data['total_variant']
+                })
+            else:
+                writer.writerow({
+                    'gds_tier': tier,
+                    'docs_present': 0,
+                    'docs_variant': 0,
+                    'docs_absent': 0,
+                    'total_nominal_mentions': 0,
+                    'total_variant_mentions': 0
+                })
+        # Nota al pie
+        f.write("# gds_tier asignado automáticamente, provisional\n")
+
+def generate_html(genre_data, tier_data):
+    """Genera HTML con dos gráficas SVG."""
+
+    # Prepara datos para gráficas
+    genre_labels = GENRES
+    genre_present = [genre_data.get(g, {}).get('docs_present', 0) for g in genre_labels]
+    genre_variant = [genre_data.get(g, {}).get('docs_variant', 0) for g in genre_labels]
+    genre_absent = [genre_data.get(g, {}).get('docs_absent', 0) for g in genre_labels]
+
+    tier_labels = TIERS
+    tier_present = [tier_data.get(t, {}).get('docs_present', 0) for t in tier_labels]
+    tier_variant = [tier_data.get(t, {}).get('docs_variant', 0) for t in tier_labels]
+    tier_absent = [tier_data.get(t, {}).get('docs_absent', 0) for t in tier_labels]
+
+    # Genera gráficas SVG
+    genre_svg = generate_bar_chart("Agencia × género", genre_labels, genre_present, genre_variant, genre_absent)
+    tier_svg = generate_bar_chart("Nivel GDS × estatus nominal", tier_labels, tier_present, tier_variant, tier_absent)
+
+    # HTML
+    html = f"""<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Analysis</title>
+    <style>
+        :root {{
+            --bg-primary: #14161c;
+            --bg-secondary: #1a1d24;
+            --text-primary: #e8ecf3;
+            --text-secondary: #9aa7bd;
+            --border-color: #232733;
+            --color-present: #4590dd;
+            --color-variant: #b8862f;
+            --color-absent: #6b7689;
+        }}
+
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+
+        body {{
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 2rem;
+        }}
+
+        .container {{
+            max-width: 1200px;
+            margin: 0 auto;
+        }}
+
+        h1 {{
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }}
+
+        .note {{
+            background-color: var(--bg-secondary);
+            border-left: 4px solid var(--border-color);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }}
+
+        .chart-section {{
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }}
+
+        .chart-section h2 {{
+            margin-bottom: 1.5rem;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }}
+
+        .legend {{
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            font-size: 0.875rem;
+        }}
+
+        .legend-item {{
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }}
+
+        .legend-color {{
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+        }}
+
+        .table-section {{
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            overflow-x: auto;
+        }}
+
+        .table-section h2 {{
+            margin-bottom: 1rem;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }}
+
+        table {{
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }}
+
+        th {{
+            background-color: var(--bg-primary);
+            color: var(--text-secondary);
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }}
+
+        td {{
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }}
+
+        tr:hover {{
+            background-color: var(--bg-primary);
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Query Analysis: AI Agency & Innovation Terminology</h1>
+
+        <div class="note">
+            <strong>Nota:</strong> Query de agencia × género: pendiente de la Ronda 1 de codificación
+        </div>
+
+        <div class="chart-section">
+            <h2>Agencia × género</h2>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--color-present);"></div>
+                    <span>Present</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--color-variant);"></div>
+                    <span>Variant</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--color-absent);"></div>
+                    <span>Absent</span>
+                </div>
+            </div>
+            {genre_svg}
+        </div>
+
+        <div class="table-section">
+            <h2>Genre Breakdown</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Genre</th>
+                        <th>Docs Present</th>
+                        <th>Docs Variant</th>
+                        <th>Docs Absent</th>
+                        <th>Total Nominal</th>
+                        <th>Total Variant</th>
+                    </tr>
+                </thead>
+                <tbody>
+"""
+
+    # Agrega filas de género
+    for genre in GENRES:
+        data = genre_data.get(genre, {
+            'docs_present': 0,
+            'docs_variant': 0,
+            'docs_absent': 0,
+            'total_nominal': 0,
+            'total_variant': 0
+        })
+        html += f"""                    <tr>
+                        <td><strong>{genre}</strong></td>
+                        <td>{data['docs_present']}</td>
+                        <td>{data['docs_variant']}</td>
+                        <td>{data['docs_absent']}</td>
+                        <td>{data['total_nominal']}</td>
+                        <td>{data['total_variant']}</td>
+                    </tr>
+"""
+
+    html += f"""                </tbody>
+            </table>
+        </div>
+
+        <div class="chart-section">
+            <h2>Nivel GDS × estatus nominal</h2>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--color-present);"></div>
+                    <span>Present</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--color-variant);"></div>
+                    <span>Variant</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--color-absent);"></div>
+                    <span>Absent</span>
+                </div>
+            </div>
+            {tier_svg}
+        </div>
+
+        <div class="table-section">
+            <h2>GDS Tier Breakdown</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>GDS Tier</th>
+                        <th>Docs Present</th>
+                        <th>Docs Variant</th>
+                        <th>Docs Absent</th>
+                        <th>Total Nominal</th>
+                        <th>Total Variant</th>
+                    </tr>
+                </thead>
+                <tbody>
+"""
+
+    # Agrega filas de tier
+    for tier in TIERS:
+        data = tier_data.get(tier, {
+            'docs_present': 0,
+            'docs_variant': 0,
+            'docs_absent': 0,
+            'total_nominal': 0,
+            'total_variant': 0
+        })
+        html += f"""                    <tr>
+                        <td><strong>{tier}</strong></td>
+                        <td>{data['docs_present']}</td>
+                        <td>{data['docs_variant']}</td>
+                        <td>{data['docs_absent']}</td>
+                        <td>{data['total_nominal']}</td>
+                        <td>{data['total_variant']}</td>
+                    </tr>
+"""
+
+    html += """                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+    with open(OUTPUT_HTML, 'w', encoding='utf-8') as f:
+        f.write(html)
+
+def generate_bar_chart(title, categories, present, variant, absent):
+    """Genera un chart SVG de barras agrupadas."""
+    num_categories = len(categories)
+    bar_width = 20
+    group_gap = 10
+    group_width = bar_width * 3 + group_gap * 2
+    margin_left = 60
+    margin_right = 40
+    margin_top = 40
+    margin_bottom = 60
+    chart_width = margin_left + num_categories * group_width + margin_right
+    chart_height = 400
+
+    # Escala
+    max_value = max(max(present), max(variant), max(absent))
+    if max_value == 0:
+        max_value = 1
+    scale = (chart_height - margin_top - margin_bottom) / max_value
+
+    svg = f'<svg viewBox="0 0 {chart_width} {chart_height}" xmlns="http://www.w3.org/2000/svg">\n'
+
+    # Fondo
+    svg += f'  <rect width="{chart_width}" height="{chart_height}" fill="var(--bg-secondary)"/>\n'
+
+    # Eje Y
+    svg += f'  <line x1="{margin_left}" y1="{margin_top}" x2="{margin_left}" y2="{chart_height - margin_bottom}" stroke="var(--border-color)" stroke-width="1"/>\n'
+
+    # Eje X
+    svg += f'  <line x1="{margin_left}" y1="{chart_height - margin_bottom}" x2="{chart_width - margin_right}" y2="{chart_height - margin_bottom}" stroke="var(--border-color)" stroke-width="1"/>\n'
+
+    # Grid y etiquetas en Y
+    for i in range(0, int(max_value) + 2):
+        y = chart_height - margin_bottom - i * scale
+        if i > 0:
+            svg += f'  <line x1="{margin_left}" y1="{y}" x2="{chart_width - margin_right}" y2="{y}" stroke="var(--border-color)" stroke-width="0.5" opacity="0.3"/>\n'
+        svg += f'  <text x="{margin_left - 10}" y="{y + 4}" text-anchor="end" font-size="12" fill="var(--text-secondary)">{i}</text>\n'
+
+    # Barras y etiquetas en X
+    for idx, category in enumerate(categories):
+        x_base = margin_left + idx * group_width + (group_width - (bar_width * 3 + group_gap * 2)) / 2
+
+        # Barra present
+        height_present = present[idx] * scale
+        svg += f'  <rect x="{x_base}" y="{chart_height - margin_bottom - height_present}" width="{bar_width}" height="{height_present}" fill="var(--color-present)" rx="4" ry="4"/>\n'
+        if present[idx] > 0:
+            svg += f'  <text x="{x_base + bar_width/2}" y="{chart_height - margin_bottom - height_present - 5}" text-anchor="middle" font-size="11" fill="var(--text-primary)">{present[idx]}</text>\n'
+
+        # Barra variant
+        x_variant = x_base + bar_width + group_gap
+        height_variant = variant[idx] * scale
+        svg += f'  <rect x="{x_variant}" y="{chart_height - margin_bottom - height_variant}" width="{bar_width}" height="{height_variant}" fill="var(--color-variant)" rx="4" ry="4"/>\n'
+        if variant[idx] > 0:
+            svg += f'  <text x="{x_variant + bar_width/2}" y="{chart_height - margin_bottom - height_variant - 5}" text-anchor="middle" font-size="11" fill="var(--text-primary)">{variant[idx]}</text>\n'
+
+        # Barra absent
+        x_absent = x_variant + bar_width + group_gap
+        height_absent = absent[idx] * scale
+        svg += f'  <rect x="{x_absent}" y="{chart_height - margin_bottom - height_absent}" width="{bar_width}" height="{height_absent}" fill="var(--color-absent)" rx="4" ry="4"/>\n'
+        if absent[idx] > 0:
+            svg += f'  <text x="{x_absent + bar_width/2}" y="{chart_height - margin_bottom - height_absent - 5}" text-anchor="middle" font-size="11" fill="var(--text-primary)">{absent[idx]}</text>\n'
+
+        # Etiqueta X
+        x_label = x_base + (bar_width * 3 + group_gap * 2) / 2
+        svg += f'  <text x="{x_label}" y="{chart_height - margin_bottom + 20}" text-anchor="middle" font-size="12" fill="var(--text-secondary)">{category}</text>\n'
+
+    svg += '</svg>\n'
+    return svg
+
+if __name__ == '__main__':
+    manifest = load_manifest()
+    term_counts = load_term_counts()
+
+    genre_data = process_by_genre(manifest, term_counts)
+    tier_data = process_by_tier(manifest, term_counts)
+
+    write_genre_csv(genre_data)
+    write_tier_csv(tier_data)
+    generate_html(genre_data, tier_data)
+
+    print(f"Genre CSV: {OUTPUT_CSV_GENRE}")
+    print(f"Tier CSV: {OUTPUT_CSV_TIER}")
+    print(f"HTML: {OUTPUT_HTML}")
