@@ -162,7 +162,7 @@ DELIVERABLES = [
     ("analysis/metaphors_report.md", "Metaphors report (SO1)"),
     ("coding/model_eval/decision.md", "Model evaluation decision"),
     ("coding/guidebook_draft.yaml", "Guidebook — sub-codes draft"),
-    ("coding/validation/sample_for_frida.csv", "Double-coded validation sample"),
+    ("coding/validation/sample_for_author.csv", "Double-coded validation sample"),
     ("data/manifest.csv", "Corpus manifest"),
 ]
 

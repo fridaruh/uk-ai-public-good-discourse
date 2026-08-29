@@ -175,8 +175,8 @@ def generate_html(genre_data, tier_data):
     tier_absent = [tier_data.get(t, {}).get('docs_absent', 0) for t in tier_labels]
 
     # Generate SVG charts
-    genre_svg = generate_bar_chart("Agency x genre", genre_labels, genre_present, genre_variant, genre_absent)
-    tier_svg = generate_bar_chart("GDS tier x nominal status", tier_labels, tier_present, tier_variant, tier_absent)
+    genre_svg = generate_bar_chart("Zero count x genre (term status per document)", genre_labels, genre_present, genre_variant, genre_absent)
+    tier_svg = generate_bar_chart("Nominal term x GDS tier (provisional)", tier_labels, tier_present, tier_variant, tier_absent)
 
     # HTML
     html = f"""<!DOCTYPE html>
@@ -184,7 +184,7 @@ def generate_html(genre_data, tier_data):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Query Analysis</title>
+    <title>Term queries — public good</title>
     <style>
         :root {{
             --bg-primary: #ffffff;
@@ -312,14 +312,14 @@ def generate_html(genre_data, tier_data):
 </head>
 <body>
     <div class="container">
-        <h1>Query Analysis: AI Agency & Innovation Terminology</h1>
+        <h1>Term queries — &ldquo;public good&rdquo; across the corpus</h1>
 
         <div class="note">
             <strong>Note:</strong> Agency x genre query: pending Round 1 coding
         </div>
 
         <div class="chart-section">
-            <h2>Agency x genre</h2>
+            <h2>Zero count &times; genre</h2>
             <div class="legend">
                 <div class="legend-item">
                     <div class="legend-color" style="background-color: var(--color-present);"></div>
@@ -377,7 +377,7 @@ def generate_html(genre_data, tier_data):
         </div>
 
         <div class="chart-section">
-            <h2>GDS tier x nominal status</h2>
+            <h2>Nominal term &times; GDS tier (provisional)</h2>
             <div class="legend">
                 <div class="legend-item">
                     <div class="legend-color" style="background-color: var(--color-present);"></div>
@@ -446,7 +446,8 @@ def generate_bar_chart(title, categories, present, variant, absent):
     num_categories = len(categories)
     bar_width = 20
     group_gap = 10
-    group_width = bar_width * 3 + group_gap * 2
+    group_pad = 28
+    group_width = bar_width * 3 + group_gap * 2 + group_pad
     margin_left = 60
     margin_right = 40
     margin_top = 40
@@ -480,7 +481,7 @@ def generate_bar_chart(title, categories, present, variant, absent):
 
     # Bars and X labels
     for idx, category in enumerate(categories):
-        x_base = margin_left + idx * group_width + (group_width - (bar_width * 3 + group_gap * 2)) / 2
+        x_base = margin_left + idx * group_width + group_pad / 2
 
         # Present bar
         height_present = present[idx] * scale

@@ -9,7 +9,7 @@ anchored in the Government Digital Service.
 consolidates.** No interpretive result is final until validated (see checkpoints).
 
 - **Full design and constraints (SO1/SO2/SO3):** [PLAN.md](PLAN.md)
-- **Interpretation guide for each deliverable and its assumptions:** [interpretacion.html](interpretacion.html)
+- **Interpretation guide for each deliverable and its assumptions:** [interpretation.html](interpretation.html)
 - **Consolidated hub (corpus + deliverables + document intake):** [index.html](index.html)
 
 ## Quick start
