@@ -109,12 +109,20 @@ def is_quotation_para(text):
     return bool(QUOTE_SPAN.search(text) and QUOTE_VERB.search(text))
 
 
-QUOTE_MARK_CHARS = "“”\""
+def _quote_still_open(text):
+    """True if `text` ends inside an unclosed quotation.
 
-
-def _quote_marks_unbalanced(text):
-    """True if `text` ends mid-quotation (odd number of quote-mark characters)."""
-    return sum(text.count(c) for c in QUOTE_MARK_CHARS) % 2 == 1
+    AP-style multi-paragraph quotes re-open a fresh curly “ at the start of every
+    paragraph but only close with ” on the final one, so a naive even/odd count of
+    quote marks does not work (open marks keep piling up). Directional curly quotes
+    let us just compare the position of the last opener to the last closer.
+    """
+    last_open = text.rfind("“")  # “
+    last_close = text.rfind("”")  # ”
+    if last_open == -1 and last_close == -1:
+        # No curly quotes -- fall back to parity on plain double quotes, if any.
+        return text.count('"') % 2 == 1
+    return last_open > last_close
 
 
 class _Elem:
@@ -160,8 +168,16 @@ def merge_dangling_quotes(elements):
         # (e.g. "X said, “...") -- otherwise an unrelated stray/unbalanced quote
         # mark (a typo, a scare-quoted word) could wrongly glue paragraphs together.
         can_merge = bool(QUOTE_VERB.search(text))
-        while can_merge and _quote_marks_unbalanced(combined) and j + 1 < n and elements[j + 1].name == "p":
+        merges = 0
+        while (
+            can_merge
+            and _quote_still_open(combined)
+            and j + 1 < n
+            and elements[j + 1].name == "p"
+            and merges < 4  # safety cap against a runaway merge if quotes never balance
+        ):
             j += 1
+            merges += 1
             nxt = norm_ws(elements[j].get_text(" ", strip=True))
             combined = f"{combined} {nxt}"
             combined_tag = None  # merged node no longer maps to a single source tag
@@ -193,10 +209,10 @@ def extract_blocks(html_bytes):
     if h1_idx is None:
         h1 = soup.find("h1")
         title = norm_ws(h1.get_text(" ", strip=True)) if h1 else None
-        elements = all_els
+        elements = merge_dangling_quotes(all_els)
     else:
         title = norm_ws(all_els[h1_idx].get_text(" ", strip=True))
-        elements = all_els[h1_idx + 1 :]
+        elements = merge_dangling_quotes(all_els[h1_idx + 1 :])
 
     # Text of every heading in the doc, used to drop table-of-contents <li>/<p>
     # entries that merely repeat a heading (anchor-jump nav widgets).

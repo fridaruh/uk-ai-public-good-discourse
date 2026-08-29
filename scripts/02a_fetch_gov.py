@@ -390,16 +390,23 @@ def extract_pdf_blocks(pdf_path, doc_id):
         return numeric / len(flat) > 0.15
 
     # detección de encabezados/pies de página repetidos ("running header"):
-    # texto corto que se repite (a veces con un número de página distinto
-    # como prefijo/sufijo) en varias páginas -> no es contenido, es chrome.
+    # texto corto con un número de página fusionado como prefijo/sufijo
+    # (p.ej. "14A blueprint for modern digital government") que se repite
+    # en varias páginas -> no es contenido, es chrome. Solo se cuentan
+    # candidatos donde quitar el número SÍ cambia el texto, para no atrapar
+    # subtítulos legítimos que se repiten sin numeración (p.ej. "Practical
+    # recommendations").
+    def strip_page_num(t):
+        return re.sub(r"^\d{1,4}\s*", "", re.sub(r"\s*\d{1,4}$", "", t)).strip()
+
     running_hf_counts = Counter()
     for pno, page_blk in enumerate(pages_blocks):
         if pno == 0 or is_toc_page(page_blk):
             continue
         for runs in page_blk:
             t = clean_text("".join(r[0] for r in runs))
-            norm = re.sub(r"^\d{1,4}\s*", "", re.sub(r"\s*\d{1,4}$", "", t)).strip()
-            if norm and len(norm) < 150:
+            norm = strip_page_num(t)
+            if norm and norm != t and 3 < len(norm) < 150:
                 running_hf_counts[norm] += 1
     running_headers_footers = {t for t, c in running_hf_counts.items() if c >= 3}
 
@@ -449,8 +456,8 @@ def extract_pdf_blocks(pdf_path, doc_id):
             full_text = clean_text("".join(t for t, _, _, _ in runs))
             if not full_text or full_text == title_text:
                 continue
-            norm_text = re.sub(r"^\d{1,4}\s*", "", re.sub(r"\s*\d{1,4}$", "", full_text)).strip()
-            if norm_text in running_headers_footers:
+            norm_text = strip_page_num(full_text)
+            if norm_text != full_text and norm_text in running_headers_footers:
                 continue
             if BARE_NUMBERING_RE.match(full_text):
                 # marcador de lista numerada que quedó como bloque aislado

@@ -1,7 +1,7 @@
 {
   "doc_id": "2025-10-22_PRCO_OpenAI_NextChapterSovereignAI",
   "source_url": "https://openai.com/index/the-next-chapter-for-uk-sovereign-ai/",
-  "fetched_at": "2026-08-29T15:21:37.094427+00:00",
+  "fetched_at": "2026-08-29T15:24:13.323471+00:00",
   "format": "html",
   "blocks": [
     {
@@ -40,7 +40,7 @@
       "heading_path": [
         "UK Ministry of Justice"
       ],
-      "text": "The new agreement with the Ministry of Justice will bring ChatGPT to civil servants and help them save time, work more efficiently, and deliver better public services. The agreement supports the department’s AI Action Plan for Justice ⁠  and will provide 2,500 employees with access to ChatGPT Enterprise. It follows a successful pilot that showed time-saving benefits across a range of routine tasks including writing support, compliance and legal work, data and research processes, and document analysis."
+      "text": "The new agreement with the Ministry of Justice will bring ChatGPT to civil servants and help them save time, work more efficiently, and deliver better public services. The agreement supports the department’s AI Action Plan for Justice ⁠ and will provide 2,500 employees with access to ChatGPT Enterprise. It follows a successful pilot that showed time-saving benefits across a range of routine tasks including writing support, compliance and legal work, data and research processes, and document analysis."
     },
     {
       "block_id": "b007",
@@ -94,7 +94,7 @@
       "heading_path": [
         "Introducing UK data residency"
       ],
-      "text": "To find out more about data residency visit our help page here ⁠  ."
+      "text": "To find out more about data residency visit our help page here ⁠ ."
     },
     {
       "block_id": "b014",
