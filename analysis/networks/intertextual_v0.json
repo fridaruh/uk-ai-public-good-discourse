@@ -27,7 +27,7 @@
    "genre": "STRAT",
    "speaker": "DSIT",
    "family": "None",
-   "term_status": "check",
+   "term_status": "variant",
    "in_degree": 1
   },
   {
@@ -37,7 +37,7 @@
    "genre": "STRAT",
    "speaker": "DSIT",
    "family": "None",
-   "term_status": "check",
+   "term_status": "variant",
    "in_degree": 0
   },
   {
@@ -47,7 +47,7 @@
    "genre": "PRGOV",
    "speaker": "PMO",
    "family": "None",
-   "term_status": "check",
+   "term_status": "present",
    "in_degree": 0
   },
   {
@@ -67,7 +67,7 @@
    "genre": "STRAT",
    "speaker": "DSIT_and_GDS",
    "family": "None",
-   "term_status": "check",
+   "term_status": "present",
    "in_degree": 13
   },
   {
@@ -87,7 +87,7 @@
    "genre": "STRAT",
    "speaker": "External_adviser",
    "family": "None",
-   "term_status": "check",
+   "term_status": "absent",
    "in_degree": 44
   },
   {
@@ -97,7 +97,7 @@
    "genre": "STRAT",
    "speaker": "GDS",
    "family": "None",
-   "term_status": "variant",
+   "term_status": "present",
    "in_degree": 8
   },
   {
@@ -107,7 +107,7 @@
    "genre": "BLOG",
    "speaker": "GDS",
    "family": "None",
-   "term_status": "check",
+   "term_status": "absent",
    "in_degree": 0
   },
   {
@@ -117,7 +117,7 @@
    "genre": "STRAT",
    "speaker": "DSIT_and_GDS",
    "family": "None",
-   "term_status": "check",
+   "term_status": "present",
    "in_degree": 6
   },
   {
@@ -147,7 +147,7 @@
    "genre": "WMS",
    "speaker": "DSIT_and_GDS",
    "family": "None",
-   "term_status": "check",
+   "term_status": "absent",
    "in_degree": 0
   },
   {
@@ -167,7 +167,7 @@
    "genre": "BLOG",
    "speaker": "GDS",
    "family": "None",
-   "term_status": "check",
+   "term_status": "present",
    "in_degree": 1
   },
   {
@@ -187,7 +187,7 @@
    "genre": "PRCO",
    "speaker": "Anthropic",
    "family": "Anthropic",
-   "term_status": "check",
+   "term_status": "absent",
    "in_degree": 0
   },
   {
@@ -197,7 +197,7 @@
    "genre": "PRCO",
    "speaker": "Anthropic",
    "family": "Anthropic",
-   "term_status": "present",
+   "term_status": "variant",
    "in_degree": 0
   },
   {
@@ -217,7 +217,7 @@
    "genre": "PRCO",
    "speaker": "Cohere",
    "family": "Cohere",
-   "term_status": "check",
+   "term_status": "absent",
    "in_degree": 0
   },
   {
@@ -247,7 +247,7 @@
    "genre": "PRCO",
    "speaker": "OpenAI",
    "family": "OpenAI",
-   "term_status": "check",
+   "term_status": "absent",
    "in_degree": 0
   },
   {
@@ -257,7 +257,7 @@
    "genre": "PRCO",
    "speaker": "OpenAI",
    "family": "OpenAI",
-   "term_status": "check",
+   "term_status": "absent",
    "in_degree": 0
   },
   {
@@ -267,7 +267,7 @@
    "genre": "PRCO",
    "speaker": "OpenAI",
    "family": "OpenAI",
-   "term_status": "check",
+   "term_status": "absent",
    "in_degree": 2
   },
   {
@@ -297,7 +297,7 @@
    "genre": "PRCO",
    "speaker": "DeepMind",
    "family": "DeepMind",
-   "term_status": "check",
+   "term_status": "absent",
    "in_degree": 0
   },
   {
@@ -307,7 +307,7 @@
    "genre": "PRCO",
    "speaker": "DeepMind",
    "family": "DeepMind",
-   "term_status": "check",
+   "term_status": "variant",
    "in_degree": 0
   },
   {
@@ -327,7 +327,7 @@
    "genre": "PRCO",
    "speaker": "ElevenLabs",
    "family": "ElevenLabs",
-   "term_status": "check",
+   "term_status": "absent",
    "in_degree": 0
   },
   {
@@ -337,7 +337,7 @@
    "genre": "PRCO",
    "speaker": "ElevenLabs",
    "family": "ElevenLabs",
-   "term_status": "check",
+   "term_status": "absent",
    "in_degree": 0
   },
   {
