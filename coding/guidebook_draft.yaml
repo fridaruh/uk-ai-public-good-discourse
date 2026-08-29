@@ -1,0 +1,643 @@
+status: DRAFT_pending_author
+generated_from: coding/round1/*.jsonl
+similarity_threshold: 0.75
+embedding_model: embeddinggemma
+note: Clusters proposed automatically by cosine similarity of answer_summary. candidate_name is a heuristic
+  label -- the author decides the final name, definition and inclusion/exclusion rule in guidebook.yaml.
+questions:
+  BENEFICIARY:
+    n_applies_true: 12
+    n_clusters: 8
+    clusters:
+    - candidate_name: the_public
+      n_instances: 5
+      example_quotes:
+      - Maintaining meaningful human involvement in generative AI ensures that future innovation aligns
+        with human values and supports the public good.
+      - committed to advancing AI safety in the public interest
+      - AI can and must remain a force for the public good
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: Beneficiary_Taxpayer
+      n_instances: 1
+      example_quotes:
+      - If possible collect metrics to help to estimate any efficiency savings, value to your business
+        and to taxpayers and the return on investment.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: the_british_people
+      n_instances: 1
+      example_quotes:
+      - I am personally driven by a mission to improve the lives of the British people through technology
+        and innovation
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: Beneficiary_PublicGood
+      n_instances: 1
+      example_quotes:
+      - The protection, wellbeing, and autonomy of civil society and the population
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: Beneficiary_PublicGood
+      n_instances: 1
+      example_quotes:
+      - leveraging AI to improve critical aspects of our society such as democratic deliberation and consensus
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: Beneficiary_WorkingPeople
+      n_instances: 1
+      example_quotes:
+      - AI is helping to make our jobs safer and more satisfying
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: innovators
+      n_instances: 1
+      example_quotes:
+      - we are ensuring that innovators can bring new products to market safely and quickly
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: Beneficiary_PublicGood
+      n_instances: 1
+      example_quotes:
+      - Whether you are an AI developer, user, safety researcher or you represent civil society, we all
+        have a shared interest in realising the opportunities of safe AI development
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+  MECHANISM:
+    n_applies_true: 14
+    n_clusters: 14
+    clusters:
+    - candidate_name: efficiency_savings_value_for_money
+      n_instances: 1
+      example_quotes:
+      - If possible collect metrics to help to estimate any efficiency savings, value to your business
+        and to taxpayers and the return on investment.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: cost_effectiveness_finops
+      n_instances: 1
+      example_quotes:
+      - the cost of running your generative AI solutions should be monitored closely to ensure you continue
+        to operate cost-effectively, for the given model and prompts.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: improved_system_performance_and_reliabil
+      n_instances: 1
+      example_quotes:
+      - When collected during testing and development, this information will be used to improve the performance
+        of the system.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: service_quality_improvement_via_user_fee
+      n_instances: 1
+      example_quotes:
+      - Collecting and storing metrics such as performance, ease of use and occurrences of problematic
+        behaviour (including hallucinations and potential biases etc) helps to control and improve the
+        AI system.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: better_decisions
+      n_instances: 1
+      example_quotes:
+      - humans should be involved with setting up the systems, tuning and testing the model so the decision-making
+        improves
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: quality_assurance_harm_avoidance
+      n_instances: 1
+      example_quotes:
+      - You should assess the quality of AI-generated outputs to ensure they are accurate, relevant, and
+        align with societal values.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: public_trust_via_transparency
+      n_instances: 1
+      example_quotes:
+      - You should uphold the expectation ‘to be heard’ by a human when interacting and receiving services
+        from the government. This supports the principle of transparency and building public trust.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: value_alignment_public_good
+      n_instances: 1
+      example_quotes:
+      - Maintaining meaningful human involvement in generative AI ensures that future innovation aligns
+        with human values and supports the public good.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: efficiency
+      n_instances: 1
+      example_quotes:
+      - AI is helping to make our jobs safer and more satisfying, conserve our wildlife and fight climate
+        change, and make our public services more efficient.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: economic_growth_and_jobs
+      n_instances: 1
+      example_quotes:
+      - we will attract even more of the new jobs and investment that will come from this new wave of
+        technology
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: faster_innovation_speed_to_market
+      n_instances: 1
+      example_quotes:
+      - we are ensuring that innovators can bring new products to market safely and quickly
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: research_and_sectoral_advances
+      n_instances: 1
+      example_quotes:
+      - harness the power of AI in everything from mathematics to healthcare
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: improved_democratic_deliberation
+      n_instances: 1
+      example_quotes:
+      - leveraging AI to improve critical aspects of our society such as democratic deliberation and consensus
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: improved_lives_through_innovation
+      n_instances: 1
+      example_quotes:
+      - I am personally driven by a mission to improve the lives of the British people through technology
+        and innovation
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+  SAFEGUARD:
+    n_applies_true: 28
+    n_clusters: 3
+    clusters:
+    - candidate_name: documentation_and_record_keeping_for_aud
+      n_instances: 26
+      example_quotes:
+      - it is important to maintain documentation, including methodology, description of the design choices
+        and assumptions. Keep records from any architecture design reviews. This can help to support the
+        ability to audit the project and support the transparency of your use of AI.
+      - all model inputs and outputs should be logged
+      - all user engagement of the generative AI systems should be logged to ensure safe and compliant
+        use
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: cost_monitoring_finops_oversight
+      n_instances: 1
+      example_quotes:
+      - the cost of running your generative AI solutions should be monitored closely to ensure you continue
+        to operate cost-effectively, for the given model and prompts
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: alignment_with_human_values_and_intentio
+      n_instances: 1
+      example_quotes:
+      - 'Alignment: The process of ensuring an AI system’s goals and behaviours are in line with human
+        values and intentions.'
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+  RESPONSIBILITY:
+    n_applies_true: 10
+    n_clusters: 8
+    clusters:
+    - candidate_name: you_unnamed
+      n_instances: 3
+      example_quotes:
+      - You should assess the quality of AI-generated outputs to ensure they are accurate, relevant, and
+        align with societal values.
+      - You should uphold the expectation ‘to be heard’ by a human when interacting and receiving services
+        from the government.
+      - You should never use generative AI to fully automate decision making in high-risk or high-impact
+        situations.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: existing_uk_regulators
+      n_instances: 1
+      example_quotes:
+      - The proposed framework outlined five cross-sectoral principles for the UK’s existing regulators
+        to interpret and apply within their remits.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: a_new_multidisciplinary_team_within_the_
+      n_instances: 1
+      example_quotes:
+      - we have set up a central function to drive coherence in our regulatory approach across government,
+        including by recruiting a new multidisciplinary team to conduct cross-sector risk assessment and
+        monitoring to guard against existing and emerging risks in AI.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: ai_safety_institute
+      n_instances: 1
+      example_quotes:
+      - Our initial technical contribution to this international effort is through the creation of an
+        AI Safety Institute to lead evaluations and safety research in the UK government
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: regulators
+      n_instances: 1
+      example_quotes:
+      - We are asking a number of regulators to publish an update outlining their strategic approach to
+        AI by 30 April 2024.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: a_new_steering_committee_with_government
+      n_instances: 1
+      example_quotes:
+      - including a new steering committee with government and regulator representatives to support coordination
+        across the AI governance landscape
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: expert_regulators_ofcom_cma_fca_ico
+      n_instances: 1
+      example_quotes:
+      - a pilot scheme for a brand-new advisory service to support innovation run by expert regulators
+        including the Office of Communications (Ofcom), Competition and Markets Authority (CMA), Financial
+        Conduct Authority (FCA), and the Information Commissioner’s Office (ICO)
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: organisations_developing_highly_capable_
+      n_instances: 1
+      example_quotes:
+      - further targeted binding requirements on the small number of organisations developing highly capable
+        general-purpose AI systems to ensure that they are accountable for making these technologies sufficiently
+        safe
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+  PROJECTED_FUTURE:
+    n_applies_true: 13
+    n_clusters: 10
+    clusters:
+    - candidate_name: britain_becomes_the_safest_and_most_inno
+      n_instances: 3
+      example_quotes:
+      - make Britain the safest and most innovative place to develop and deploy AI in the world
+      - the UK’s ambitions to lead in safe AI and to be a Science and Technology Superpower by the end
+        of the decade
+      - the future of AI is safe AI. And by making the UK a global leader in safe AI, we will attract
+        even more of the new jobs and investment that will come from this new wave of technology
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: generative_ai_systems_whose_performance_
+      n_instances: 2
+      example_quotes:
+      - When collected during testing and development, this information will be used to improve the performance
+        of the system.
+      - When collected during use, it will be used to monitor and maintain performance.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: ai_systems_that_are_progressively_contro
+      n_instances: 1
+      example_quotes:
+      - Collecting and storing metrics such as performance, ease of use and occurrences of problematic
+        behaviour (including hallucinations and potential biases etc) helps to control and improve the
+        AI system.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: ai_adoption_that_delivers_measurable_eff
+      n_instances: 1
+      example_quotes:
+      - If possible collect metrics to help to estimate any efficiency savings, value to your business
+        and to taxpayers and the return on investment.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: continued_cost_effective_operation_of_ge
+      n_instances: 1
+      example_quotes:
+      - the cost of running your generative AI solutions should be monitored closely to ensure you continue
+        to operate cost-effectively, for the given model and prompts.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: a_future_in_which_innovation_in_generati
+      n_instances: 1
+      example_quotes:
+      - Maintaining meaningful human involvement in generative AI ensures that future innovation aligns
+        with human values and supports the public good.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: ai_remains_a_force_for_the_public_good_g
+      n_instances: 1
+      example_quotes:
+      - AI can and must remain a force for the public good, and we will ensure that is the case as we
+        develop our policy approach in this area.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: a_more_resilient_society_is_built_ready_
+      n_instances: 1
+      example_quotes:
+      - We will need to lead fields of research that will help us build a more resilient society
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: ai_is_leveraged_to_improve_critical_aspe
+      n_instances: 1
+      example_quotes:
+      - leveraging AI to improve critical aspects of our society such as democratic deliberation and consensus
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: the_lives_of_the_british_people_are_impr
+      n_instances: 1
+      example_quotes:
+      - a mission to improve the lives of the British people through technology and innovation
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+  ACTANTS:
+    n_applies_true: 24
+    n_clusters: 14
+    clusters:
+    - candidate_name: data_leakage_leaking_sensitive_informati
+      n_instances: 9
+      example_quotes:
+      - Consider using PET to prevent data leakage, and if you process personal identifiable information
+        take action to protect peoples’ data e.g. pseudonymising data to reduce the risk of leaking sensitive
+        information.
+      - Data management needs to also address data loss prevention.
+      - relying on AI to make decisions and generate content without meaningful human oversight can have
+        negative consequences
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: ai_as_a_force_for_the_public_good
+      n_instances: 3
+      example_quotes:
+      - AI can and must remain a force for the public good, and we will ensure that is the case as we
+        develop our policy approach in this area.
+      - AI is helping to make our jobs safer and more satisfying, conserve our wildlife and fight climate
+        change, and make our public services more efficient
+      - We brought together a powerful consortium of experts in our AI Safety Institute, the first government-backed
+        organisation of its kind anywhere in the world, committed to advancing AI safety in the public
+        interest.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: good_data_management
+      n_instances: 1
+      example_quotes:
+      - Good data management is crucial in supporting the successful implementation of generative AI solutions.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: grounding_data_retrieval_augmented_gener
+      n_instances: 1
+      example_quotes:
+      - To improve their performance and make them more reliable, relevant information can be used to
+        ‘ground’ the responses, for example by employing retrieval augmented generation.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: llms_outdated_and_non_knowledge_base_nat
+      n_instances: 1
+      example_quotes:
+      - LLMs are not databases of knowledge, but advanced text engines. Their contents may also be out
+        of date.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: hallucinations_and_potential_biases
+      n_instances: 1
+      example_quotes:
+      - occurrences of problematic behaviour (including hallucinations and potential biases etc) helps
+        to control and improve the AI system
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: pet_and_pseudonymisation
+      n_instances: 1
+      example_quotes:
+      - Consider using PET to prevent data leakage
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: user_feedback_and_logging
+      n_instances: 1
+      example_quotes:
+      - Collecting and storing metrics such as performance, ease of use and occurrences of problematic
+        behaviour (including hallucinations and potential biases etc) helps to control and improve the
+        AI system.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: human_involvement_human_in_the_loop_over
+      n_instances: 1
+      example_quotes:
+      - Maintaining meaningful human involvement in generative AI ensures that future innovation aligns
+        with human values and supports the public good.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: generative_ai_s_lack_of_flexibility_huma
+      n_instances: 1
+      example_quotes:
+      - Generative AI also lacks flexibility, human understanding and compassion.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: the_uk_and_its_pro_innovation_regulatory
+      n_instances: 1
+      example_quotes:
+      - The UK is leading the world in how to respond to this challenge.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: expert_regulators_empowered_by_the_agile
+      n_instances: 1
+      example_quotes:
+      - This agile, sector-based approach has empowered regulators to create bespoke measures that are
+        tailored to the various needs and risks posed by different sections of our economy.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: premature_legislation_before_risks_are_u
+      n_instances: 1
+      example_quotes:
+      - acting before we properly understand the risks and appropriate mitigations would harm our ability
+        to benefit from technological progress while leaving us unable to adapt quickly to emerging risks
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: potential_public_distrust_in_ai
+      n_instances: 1
+      example_quotes:
+      - we must ensure AI’s trustworthiness and public adoption through a strong pro-safety approach
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+  NATURALISED_ORDER:
+    n_applies_true: 16
+    n_clusters: 16
+    clusters:
+    - candidate_name: the_deployment_of_generative_ai_in_gover
+      n_instances: 1
+      example_quotes:
+      - Good data management is crucial in supporting the successful implementation of generative AI solutions.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: the_legitimacy_of_ai_use_is_framed_in_ec
+      n_instances: 1
+      example_quotes:
+      - If possible collect metrics to help to estimate any efficiency savings, value to your business
+        and to taxpayers and the return on investment.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: comprehensive_logging_and_monitoring_of_
+      n_instances: 1
+      example_quotes:
+      - Additionally, all user engagement of the generative AI systems should be logged to ensure safe
+        and compliant use.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: the_authority_to_examine_and_explain_mod
+      n_instances: 1
+      example_quotes:
+      - The recording of the outcomes and any resulting decisions will also help when examining and looking
+        to explain the model results.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: a_fixed_hierarchy_in_which_humans_design
+      n_instances: 1
+      example_quotes:
+      - humans should be involved with setting up the systems, tuning and testing the model so the decision-making
+        improves, and then actioning the decisions it suggests.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: an_essential_human_machine_binary_is_nat
+      n_instances: 1
+      example_quotes:
+      - While humans are able to take individual circumstances into account on a discretionary basis,
+        AI systems do not have this capacity.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: human_delivered_government_is_taken_as_t
+      n_instances: 1
+      example_quotes:
+      - You should uphold the expectation ‘to be heard’ by a human when interacting and receiving services
+        from the government.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: human_values_and_the_public_good_are_tre
+      n_instances: 1
+      example_quotes:
+      - Maintaining meaningful human involvement in generative AI ensures that future innovation aligns
+        with human values and supports the public good.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: ai_driven_automation_of_government_decis
+      n_instances: 1
+      example_quotes:
+      - You should never use generative AI to fully automate decision making in high-risk or high-impact
+        situations.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: frontier_ai_companies_are_positioned_as_
+      n_instances: 1
+      example_quotes:
+      - This common sense, pragmatic approach has been welcomed and endorsed both by the companies at
+        the frontier of AI development and leading AI safety experts.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: existing_sectoral_regulators_are_the_tak
+      n_instances: 1
+      example_quotes:
+      - The white paper proposed five clear principles for existing UK regulators to follow, and set out
+        our expectations for responsible AI innovation.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: all_actors_developers_users_safety_resea
+      n_instances: 1
+      example_quotes:
+      - Whether you are an AI developer, user, safety researcher or you represent civil society, we all
+        have a shared interest in realising the opportunities of safe AI development.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: the_government_is_the_natural_guarantor_
+      n_instances: 1
+      example_quotes:
+      - AI can and must remain a force for the public good, and we will ensure that is the case as we
+        develop our policy approach in this area.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: legislative_action_in_every_country_is_f
+      n_instances: 1
+      example_quotes:
+      - However, the challenges posed by AI technologies will ultimately require legislative action in
+        every country once understanding of risk has matured.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: a_near_future_in_which_the_most_powerful
+      n_instances: 1
+      example_quotes:
+      - Not only do we need to plan for the capabilities and uses of the AI systems we have today, but
+        we must also prepare for a near future where the most powerful systems are broadly accessible
+        and significantly more capable.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+    - candidate_name: frontier_ai_development_is_assumed_to_be
+      n_instances: 1
+      example_quotes:
+      - Here we lay out a pro-innovation case for further targeted binding requirements on the small number
+        of organisations developing highly capable general-purpose AI systems to ensure that they are
+        accountable for making these technologies sufficiently safe.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      status: DRAFT_pending_author
+coverage_warning: 'COVERAGE WARNING: the latest Round 1 run only succeeded on 26.4% of calls (2/35 documents
+  with at least one successful record) -- see coding/round1/run_meta.json ''status'' for why. Clusters
+  and counts below are computed ONLY from the records that did succeed and are NOT corpus-wide. Re-run
+  scripts/06_consolidate.py after completing Round 1.'

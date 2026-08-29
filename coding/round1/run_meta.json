@@ -1,0 +1,44 @@
+{
+  "runs": [
+    {
+      "run_id": "6c67d943-17cb-4e09-b91e-150fe1c149de",
+      "timestamp": "2026-08-29T16:56:06.701921+00:00",
+      "model": "kimi-k3:cloud",
+      "prompt_version": 1,
+      "doc_filter": null,
+      "questions": [
+        "BENEFICIARY",
+        "MECHANISM",
+        "SAFEGUARD",
+        "RESPONSIBILITY",
+        "PROJECTED_FUTURE",
+        "ACTANTS",
+        "NATURALISED_ORDER",
+        "AGENCY",
+        "MODALITY",
+        "METAPHOR",
+        "DEFINITIONAL"
+      ],
+      "n_units": 53,
+      "n_unit_question_calls": 583,
+      "n_records": 750,
+      "n_doc_profiles": 35,
+      "n_records_with_error": 552,
+      "pct_calls_succeeded": 26.4,
+      "n_docs_with_at_least_one_success": 2,
+      "n_docs_total": 35,
+      "docs_with_at_least_one_success": [
+        "2024-01-18_STRAT_CDDO_GenerativeAIFramework",
+        "2024-02-06_REG_DSIT_ProInnovationAIRegulation"
+      ],
+      "top_errors": [
+        [
+          "429 Client Error: Too Many Requests for url: http://localhost:11434/api/generate",
+          552
+        ]
+      ],
+      "pct_quote_verified_of_successful_calls": 100.0,
+      "status": "INCOMPLETE -- run interrupted mid-way by an Ollama Cloud account-level 'session usage limit' (HTTP 429, confirmed via direct API test: \"you (fridaruh) have reached your session usage limit\"). This is a rolling 5-hour quota shared across all cloud models on the free tier, not a bug in this script. Doc profiles (35/35) completed before the quota was hit and are complete/reliable. Unit-level coding only reached 2 of 35 documents before the quota exhausted; the remaining calls in this run recorded the 429 error verbatim (see 'error' field) rather than being silently dropped. Re-run scripts/05_code.py (no changes needed) once the quota resets to complete the corpus -- it is safe to re-run in full, or per-document via --doc for just the missing docs."
+    }
+  ]
+}

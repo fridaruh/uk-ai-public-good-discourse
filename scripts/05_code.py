@@ -28,7 +28,7 @@ import re
 import sys
 import time
 import uuid
-from collections import defaultdict
+from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 
@@ -148,7 +148,7 @@ def parse_json_response(raw):
 
 def call_ollama(model, prompt, retries=RETRIES):
     last_err = None
-    for _ in range(retries + 1):
+    for attempt in range(retries + 1):
         try:
             resp = requests.post(
                 OLLAMA_URL,
@@ -161,6 +161,15 @@ def call_ollama(model, prompt, retries=RETRIES):
                 },
                 timeout=TIMEOUT,
             )
+            if resp.status_code == 429:
+                # Ollama Cloud rate limit / session usage quota. A hard
+                # account-level quota won't clear with a short backoff, but a
+                # transient burst limit might -- back off longer than for
+                # ordinary errors, then give up (retrying a hard quota just
+                # wastes remaining budget once it clears).
+                last_err = f"429 {resp.text.strip()[:300]}"
+                time.sleep(5 * (attempt + 1))
+                continue
             resp.raise_for_status()
             data = resp.json()
             if data.get("error"):
@@ -496,6 +505,10 @@ def main():
         meta = json.load(open(meta_path, encoding="utf-8"))
     quote_checked = [r for r in all_records if r.get("quote_verified") is not None]
     pct_verified = (100 * sum(1 for r in quote_checked if r["quote_verified"]) / len(quote_checked)) if quote_checked else None
+    error_records = [r for r in all_records if r.get("error")]
+    error_counts = Counter(r["error"] for r in error_records)
+    docs_with_success = sorted(set(r["doc_id"] for r in all_records if not r.get("error")))
+    pct_calls_succeeded = (100 * (len(all_records) - len(error_records)) / len(all_records)) if all_records else None
     meta["runs"].append({
         "run_id": run_id,
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -506,8 +519,13 @@ def main():
         "n_units": len(units),
         "n_unit_question_calls": len(tasks),
         "n_records": len(all_records),
+        "n_records_with_error": len(error_records),
+        "pct_calls_succeeded": pct_calls_succeeded,
+        "n_docs_with_at_least_one_success": len(docs_with_success),
+        "n_docs_total": len(doc_ids),
+        "top_errors": error_counts.most_common(5),
         "n_doc_profiles": len(doc_profile_records),
-        "pct_quote_verified": pct_verified,
+        "pct_quote_verified_of_successful_calls": pct_verified,
     })
     with open(meta_path, "w", encoding="utf-8") as f:
         json.dump(meta, f, ensure_ascii=False, indent=2)
