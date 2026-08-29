@@ -1,39 +1,43 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Guía de interpretación — corpus v1</title>
+<title>Interpretation Guide — Corpus v1</title>
 <style>
 :root{
-  --bg:#14161c; --surface:#1a1d24; --ink:#e8ecf3; --ink2:#9aa7bd; --ink3:#6b7689;
-  --grid:#232733;
+  --canvas:#ffffff; --surface-soft:#f7f7f7; --surface-card:#ffffff; --surface-strong:#eef0f3;
+  --hairline:#dee1e6; --hairline-soft:#eef0f3;
+  --ink:#0a0b0d; --body:#5b616e; --muted:#7c828a; --muted-soft:#a8acb3;
+  --primary:#0052ff; --primary-active:#003ecc;
+  --up:#05b169; --down:#cf202f;
+  /* data colors — used only as small dots/chips next to ink text, never as text color */
   --gds:#4590dd; --dsit:#52a865; --dsitgds:#2aa8a0; --cddo:#2ba3c9; --pmo:#c2559f;
   --ext:#7c4fdd; --joint:#b8862f;
   --anthropic:#d96b45; --openai:#e0619b; --cohere:#cc4455; --deepmind:#9678e8; --elevenlabs:#b3901f;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);
+body{margin:0;background:var(--canvas);color:var(--body);
   font:15px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
   -webkit-font-smoothing:antialiased}
-a{color:var(--gds);text-decoration:none;border-bottom:1px solid #4590dd44}
-a:hover{border-bottom-color:var(--gds)}
+a{color:var(--primary);text-decoration:none;border-bottom:1px solid #0052ff33}
+a:hover{color:var(--primary-active);border-bottom-color:var(--primary-active)}
 code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;
-  background:#0f1115;border:1px solid var(--grid);border-radius:4px;padding:1px 5px;color:#cbd5e6}
-strong{color:var(--ink)}
+  background:var(--surface-strong);border:1px solid var(--hairline);border-radius:4px;padding:1px 5px;color:var(--ink)}
+strong{color:var(--ink);font-weight:600}
 
 /* ---------- layout ---------- */
 .shell{display:flex;align-items:flex-start;max-width:1520px;margin:0 auto}
 nav.toc{position:sticky;top:0;flex:0 0 268px;height:100vh;overflow-y:auto;
-  padding:26px 14px 40px 24px;border-right:1px solid var(--grid);background:var(--bg)}
-nav.toc .brand{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);
+  padding:26px 14px 40px 24px;border-right:1px solid var(--hairline);background:var(--canvas)}
+nav.toc .brand{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
   margin-bottom:14px;line-height:1.4}
-nav.toc a{display:block;padding:4px 8px;border-radius:6px;color:var(--ink2);border:none;font-size:13.5px}
-nav.toc a:hover{background:var(--surface);color:var(--ink)}
+nav.toc a{display:block;padding:4px 8px;border-radius:6px;color:var(--body);border:none;font-size:13.5px}
+nav.toc a:hover{background:var(--surface-soft);color:var(--ink)}
 nav.toc a.lv1{color:var(--ink);font-weight:600;margin-top:12px;font-size:13.5px}
 nav.toc a.lv2{padding-left:18px;font-size:13px}
-nav.toc a.lv3{padding-left:30px;font-size:12.5px;color:var(--ink3)}
+nav.toc a.lv3{padding-left:30px;font-size:12.5px;color:var(--muted)}
 main{flex:1 1 auto;min-width:0;padding:34px 40px 120px;max-width:1120px}
 @media (max-width:980px){
   nav.toc{display:none}
@@ -41,211 +45,277 @@ main{flex:1 1 auto;min-width:0;padding:34px 40px 120px;max-width:1120px}
 }
 
 /* ---------- typography ---------- */
-h1{font-size:26px;line-height:1.25;margin:0 0 6px;letter-spacing:.01em}
-.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px}
-.lede{color:var(--ink2);font-size:16px;max-width:78ch}
-h2{font-size:20px;margin:56px 0 4px;padding-top:14px;letter-spacing:.01em;
-  border-top:1px solid var(--grid)}
-h2 .num{color:var(--ink3);font-variant-numeric:tabular-nums;margin-right:10px;font-weight:400}
-h3{font-size:16px;margin:34px 0 8px;color:var(--ink)}
-h4{font-size:13.5px;margin:22px 0 6px;color:var(--ink2);letter-spacing:.02em}
+h1{font-size:26px;line-height:1.25;margin:0 0 6px;letter-spacing:.01em;color:var(--ink);font-weight:600}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.lede{color:var(--body);font-size:16px;max-width:78ch}
+h2{font-size:20px;margin:56px 0 4px;padding-top:14px;letter-spacing:.01em;color:var(--ink);font-weight:600;
+  border-top:1px solid var(--hairline)}
+h2 .num{color:var(--muted);font-variant-numeric:tabular-nums;margin-right:10px;font-weight:400}
+h3{font-size:16px;margin:34px 0 8px;color:var(--ink);font-weight:600}
+h4{font-size:13.5px;margin:22px 0 6px;color:var(--ink);font-weight:600;letter-spacing:.02em}
 p{max-width:82ch}
 ul,ol{max-width:82ch;padding-left:20px}
 li{margin:5px 0}
-.muted{color:var(--ink2)}
+.muted{color:var(--muted)}
 .small{font-size:13px}
 
 /* ---------- panels ---------- */
-.panel{background:var(--surface);border:1px solid var(--grid);border-radius:12px;
+.panel{background:var(--surface-soft);border:1px solid var(--hairline);border-radius:12px;
   padding:18px 20px;margin:16px 0}
-.panel.accent{border-left:3px solid var(--joint)}
+.panel.accent{background:var(--surface-soft);border:1px solid var(--hairline)}
 .panel h4:first-child{margin-top:0}
-.callout{background:#1a1d24;border:1px solid var(--grid);border-left:3px solid var(--ext);
-  border-radius:10px;padding:14px 18px;margin:16px 0;color:var(--ink2)}
+.callout{background:var(--surface-strong);border:1px solid var(--hairline);border-left:3px solid var(--primary);
+  border-radius:10px;padding:14px 18px;margin:16px 0;color:var(--body)}
 .callout b{color:var(--ink)}
 
 /* ---------- pills / badges ---------- */
 .pill{display:inline-block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
-  padding:2px 8px;border-radius:999px;border:1px solid var(--grid);color:var(--ink2);
-  background:#0f1115;white-space:nowrap}
-.pill.present{color:#8ed6a0;border-color:#2f5d3c}
-.pill.variant{color:#e0c778;border-color:#5c4c22}
-.pill.absent{color:#8d97ab;border-color:#333a49}
-.pill.t1{color:#8fc4f2;border-color:#2b4a68}
-.pill.t2{color:#7fd3cd;border-color:#26514e}
-.pill.t3{color:#8d97ab;border-color:#333a49}
-.pill.soft{color:var(--ink3)}
+  padding:2px 8px;border-radius:999px;border:1px solid var(--hairline);color:var(--body);
+  background:var(--surface-strong);white-space:nowrap}
+.pill.present,.pill.variant,.pill.absent,.pill.t1,.pill.t2,.pill.t3{color:var(--body);border-color:var(--hairline)}
+.pill.soft{color:var(--muted);background:transparent;border-color:transparent;padding-left:0}
 
 /* ---------- doc cards ---------- */
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(410px,1fr));gap:14px;margin-top:14px}
 @media (max-width:760px){.cards{grid-template-columns:1fr}}
-.card{background:var(--surface);border:1px solid var(--grid);border-left:3px solid var(--ink3);
+.card{background:var(--surface-card);border:1px solid var(--hairline);
   border-radius:10px;padding:14px 16px 15px}
 .card .did{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;
-  color:var(--ink);word-break:break-all;line-height:1.4;margin-bottom:7px}
+  color:var(--ink);word-break:break-all;line-height:1.4;margin-bottom:7px;position:relative;padding-left:14px}
+.card .did::before{content:"";position:absolute;left:0;top:4px;width:8px;height:8px;border-radius:2px;background:var(--muted-soft)}
 .card .meta{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}
-.card p{margin:0;font-size:13.8px;color:var(--ink2);max-width:none}
-.card .who{font-size:12.5px;color:var(--ink3);margin:0 0 8px}
-.c-gds{border-left-color:var(--gds)} .c-dsit{border-left-color:var(--dsit)}
-.c-dsitgds{border-left-color:var(--dsitgds)} .c-cddo{border-left-color:var(--cddo)}
-.c-pmo{border-left-color:var(--pmo)} .c-ext{border-left-color:var(--ext)}
-.c-joint{border-left-color:var(--joint)}
-.c-anthropic{border-left-color:var(--anthropic)} .c-openai{border-left-color:var(--openai)}
-.c-cohere{border-left-color:var(--cohere)} .c-deepmind{border-left-color:var(--deepmind)}
-.c-elevenlabs{border-left-color:var(--elevenlabs)}
+.card p{margin:0;font-size:13.8px;color:var(--body);max-width:none}
+.card .who{font-size:12.5px;color:var(--muted);margin:0 0 8px}
+.c-gds .did::before{background:var(--gds)} .c-dsit .did::before{background:var(--dsit)}
+.c-dsitgds .did::before{background:var(--dsitgds)} .c-cddo .did::before{background:var(--cddo)}
+.c-pmo .did::before{background:var(--pmo)} .c-ext .did::before{background:var(--ext)}
+.c-joint .did::before{background:var(--joint)}
+.c-anthropic .did::before{background:var(--anthropic)} .c-openai .did::before{background:var(--openai)}
+.c-cohere .did::before{background:var(--cohere)} .c-deepmind .did::before{background:var(--deepmind)}
+.c-elevenlabs .did::before{background:var(--elevenlabs)}
 
 .famhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:36px 0 2px}
 .famhead h3{margin:0}
 .famdot{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
 
 /* ---------- tables ---------- */
-.tablewrap{overflow-x:auto;border:1px solid var(--grid);border-radius:10px;margin:14px 0;
-  background:var(--surface)}
+.tablewrap{overflow-x:auto;border:1px solid var(--hairline);border-radius:10px;margin:14px 0;
+  background:var(--surface-card)}
 table{border-collapse:collapse;width:100%;min-width:640px;font-size:13.2px}
-th,td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--grid);vertical-align:top;
-  color:var(--ink2)}
-th{color:var(--ink3);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
-  white-space:nowrap;background:#171a21}
+th,td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--hairline);vertical-align:top;
+  color:var(--body)}
+th{color:var(--muted);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  white-space:nowrap;background:var(--surface-soft)}
 tbody tr:last-child td{border-bottom:none}
 td code{white-space:nowrap}
 td.k{color:var(--ink);white-space:nowrap}
 
 /* ---------- phase map ---------- */
-.phase{display:grid;grid-template-columns:64px 1fr;gap:0 18px;border-left:1px solid var(--grid);
+.phase{display:grid;grid-template-columns:64px 1fr;gap:0 18px;border-left:1px solid var(--hairline);
   margin-left:8px;padding:0 0 4px}
 .phase .ph{position:relative;padding:14px 0 14px 0}
 .phase .ph .dot{position:absolute;left:-25px;top:20px;width:11px;height:11px;border-radius:50%;
-  background:var(--bg);border:2px solid var(--ink3)}
-.phase .ph.done .dot{background:var(--dsit);border-color:var(--dsit)}
-.phase .ph.next .dot{background:var(--joint);border-color:var(--joint)}
-.ph-n{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);
+  background:var(--canvas);border:2px solid var(--muted-soft)}
+.phase .ph.done .dot{background:var(--up);border-color:var(--up)}
+.phase .ph.next .dot{background:var(--primary);border-color:var(--primary)}
+.ph-n{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
   padding:14px 0}
 .ph h4{margin:0 0 3px;color:var(--ink);font-size:15px}
-.ph .st{font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-left:8px}
-.st.ok{color:#8ed6a0} .st.pend{color:#e0c778} .st.wait{color:var(--ink3)}
+.ph .st{font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-left:8px;font-weight:600}
+.st.ok{display:inline-flex;align-items:center;gap:4px;color:var(--up);background:#05b16914;
+  border-radius:999px;padding:2px 9px 2px 7px}
+.st.ok::before{content:"✓";font-size:10px}
+.st.pend{color:var(--primary)}
+.st.wait{color:var(--muted);font-weight:400}
 .ph p{margin:5px 0 0;font-size:13.6px}
-.ph .dec{margin-top:6px;font-size:13.2px;color:var(--ink2);
-  border-left:2px solid var(--joint);padding-left:10px}
-.ph .dec b{color:#e5c98a;font-weight:600}
+.ph .dec{margin-top:6px;font-size:13.2px;color:var(--body);
+  border-left:2px solid var(--hairline);padding-left:10px}
+.ph .dec b{color:var(--ink);font-weight:600}
 
 .legendgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
 .lg h4{margin:0 0 6px}
-.lg .row{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:13px;color:var(--ink2)}
+.lg .row{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:13px;color:var(--body)}
 .sw{width:14px;height:14px;flex:none;border-radius:3px}
 .sw.circ{border-radius:50%}
 .sw.hex{border-radius:2px;transform:rotate(0deg)}
-.footer{margin-top:60px;padding-top:16px;border-top:1px solid var(--grid);
-  color:var(--ink3);font-size:12.5px}
+.footer{margin-top:60px;padding-top:16px;border-top:1px solid var(--hairline);
+  color:var(--muted);font-size:12.5px}
+
+/* ---------- view navigation ---------- */
+.view[hidden]{display:none}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin:20px 0 10px}
+.tile{display:block;background:var(--surface-card);border:1px solid var(--hairline);border-bottom:1px solid var(--hairline);
+  border-radius:12px;padding:20px 22px;color:var(--ink)}
+.tile:hover{border-color:var(--muted-soft);border-bottom-color:var(--muted-soft);
+  box-shadow:0 4px 12px rgba(0,0,0,.04)}
+.tile .count{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block}
+.tile h3{margin:0 0 6px;font-size:16px;color:var(--ink);border:none}
+.tile p{margin:0;font-size:13.5px;color:var(--body);max-width:none}
+.backbtn{background:var(--surface-strong);border:1px solid var(--hairline);color:var(--ink);border-radius:999px;
+  padding:7px 14px;font-size:13px;cursor:pointer;margin-bottom:14px;display:inline-flex;align-items:center;gap:6px}
+.backbtn:hover{background:var(--hairline);border-color:var(--muted-soft)}
+.filterbar{margin:14px 0 6px;display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.filterbar input{width:100%;max-width:420px;background:var(--canvas);border:1px solid var(--hairline);color:var(--ink);
+  border-radius:8px;padding:9px 12px;font-size:13.5px;font-family:inherit}
+.filterbar input:focus{outline:none;border-color:var(--primary)}
+.filterbar input::placeholder{color:var(--muted)}
+.filter-count{font-size:12px;color:var(--muted)}
+.docgroup.hidden-by-filter{display:none}
+.card.hidden-by-filter{display:none}
+nav.toc a.active{color:var(--ink);background:var(--surface-soft)}
 </style>
 </head>
 <body>
 <div class="shell">
 
 <nav class="toc">
-  <div class="brand">Guía de interpretación<br>Corpus v1 · 35 documentos</div>
-  <a class="lv1" href="#s1">1 · El proyecto</a>
-  <a class="lv1" href="#s2">2 · Los 35 documentos</a>
-  <a class="lv2" href="#tronco">Tronco de estrategia (18)</a>
-  <a class="lv2" href="#fam-anthropic">Familia Anthropic (3)</a>
-  <a class="lv2" href="#fam-cohere">Familia Cohere (2)</a>
-  <a class="lv2" href="#fam-openai">Familia OpenAI (5)</a>
-  <a class="lv2" href="#fam-deepmind">Familia DeepMind (4)</a>
-  <a class="lv2" href="#fam-elevenlabs">Familia ElevenLabs (3)</a>
-  <a class="lv1" href="#s3">3 · Cómo leer cada entregable</a>
-  <a class="lv2" href="#e-manifest">manifest.csv</a>
-  <a class="lv2" href="#e-units">units.jsonl</a>
-  <a class="lv2" href="#e-mapa">mapa_autoria_familias.html</a>
-  <a class="lv2" href="#e-red">intertextual_v0.json</a>
-  <a class="lv2" href="#e-queries">analysis/queries/*</a>
-  <a class="lv2" href="#e-round1">coding/round1/*</a>
-  <a class="lv2" href="#e-guidebook">guidebook_draft.yaml</a>
-  <a class="lv2" href="#e-validacion">sample_for_frida.csv</a>
-  <a class="lv2" href="#e-metaforas">metaphors_report.md</a>
-  <a class="lv1" href="#s4">4 · Supuestos y limitaciones</a>
-  <a class="lv3" href="#s4">Corpus y admisión</a>
-  <a class="lv3" href="#s4-tecnicas">Detección y recuperación</a>
-  <a class="lv3" href="#s4-captura">Captura y archivado</a>
-  <a class="lv3" href="#s4-llm">Codificación asistida</a>
-  <a class="lv1" href="#s5">5 · Mapa de fases 0–7</a>
+  <div class="brand">Interpretation Guide<br>Corpus v1 · 35 documents</div>
+  <a class="lv1" href="#home" data-nav>Home</a>
+  <a class="lv1" href="#documents" data-nav>Documents (35)</a>
+  <a class="lv2" href="#tronco" data-nav>Strategy trunk (18)</a>
+  <a class="lv2" href="#fam-anthropic" data-nav>Anthropic family (3)</a>
+  <a class="lv2" href="#fam-cohere" data-nav>Cohere family (2)</a>
+  <a class="lv2" href="#fam-openai" data-nav>OpenAI family (5)</a>
+  <a class="lv2" href="#fam-deepmind" data-nav>DeepMind family (4)</a>
+  <a class="lv2" href="#fam-elevenlabs" data-nav>ElevenLabs family (3)</a>
+  <a class="lv1" href="#deliverables" data-nav>How to read each deliverable</a>
+  <a class="lv2" href="#e-manifest" data-nav>manifest.csv</a>
+  <a class="lv2" href="#e-units" data-nav>units.jsonl</a>
+  <a class="lv2" href="#e-mapa" data-nav>mapa_autoria_familias.html</a>
+  <a class="lv2" href="#e-red" data-nav>intertextual_v0.json</a>
+  <a class="lv2" href="#e-queries" data-nav>analysis/queries/*</a>
+  <a class="lv2" href="#e-round1" data-nav>coding/round1/*</a>
+  <a class="lv2" href="#e-guidebook" data-nav>guidebook_draft.yaml</a>
+  <a class="lv2" href="#e-validacion" data-nav>sample_for_author.csv</a>
+  <a class="lv2" href="#e-metaforas" data-nav>metaphors_report.md</a>
+  <a class="lv1" href="#assumptions" data-nav>Assumptions &amp; limitations</a>
+  <a class="lv3" href="#s4" data-nav>Corpus and admission</a>
+  <a class="lv3" href="#s4-tecnicas" data-nav>Detection and retrieval</a>
+  <a class="lv3" href="#s4-captura" data-nav>Capture and archiving</a>
+  <a class="lv3" href="#s4-llm" data-nav>LLM-assisted coding</a>
+  <a class="lv1" href="#phases" data-nav>Phase map 0–7</a>
 </nav>
 
 <main>
 
-<div class="kicker">Tesis · GDS / DSIT · enero 2024 – julio 2026</div>
-<h1>Guía de interpretación del pipeline<br>“AI for the public good”</h1>
-<p class="lede">Qué contiene cada archivo del proyecto, qué puede afirmarse a partir de él y
-qué queda expresamente en manos de la investigadora. Documento de trabajo para Frida y su
-comité; las citas de los documentos van en inglés, tal como aparecen en el texto fuente.</p>
+<div class="kicker">Thesis · GDS / DSIT · January 2024 – July 2026</div>
+<h1>Interpretation guide for the<br>“AI for the public good” pipeline</h1>
+<p class="lede">What each project file contains, what can be claimed from it, and what is
+expressly left to the researcher's judgment. Working document for the author and her
+committee; quotes from the documents are given in English, exactly as they appear in the
+source text.</p>
 
-<!-- =============================================================== 1 -->
-<h2 id="s1"><span class="num">1</span>El proyecto y el principio rector</h2>
+<!-- =============================================================== HOME -->
+<div id="view-home" class="view">
 
-<p>Este repositorio operacionaliza el análisis de discurso de la tesis: rastrear cómo el
-framing <em>“AI for the public good”</em> funciona como imaginario sociotécnico en el discurso
-del gobierno del Reino Unido sobre IA en servicios públicos, anclado en el Government Digital
-Service. El corpus congelado v1 reúne <strong>35 documentos</strong> publicados entre enero de
-2024 y julio de 2026: el tronco de estrategia y guía del centro digital (CDDO → GDS) junto con
-DSIT, y las cinco familias de <em>Memorandum of Understanding</em> entre DSIT y empresas de IA
-de frontera (Anthropic, Cohere, OpenAI, Google DeepMind, ElevenLabs), cada una con sus
-comunicados de gobierno y de empresa. Todo el pipeline está restringido por los tres objetivos
-específicos declarados en <a href="PLAN.md">PLAN.md</a>: <strong>SO1</strong> (el imaginario
-proyectado en los textos del GDS), <strong>SO2</strong> (el trayecto de declaración de
-principios a compromiso de política y reclamación pública) y <strong>SO3</strong> (la
-evolución del framing en los documentos de partnership). Ningún componente existe si no sirve
-a uno de ellos; lo que solo valida el método vive en <code>analysis/qa/</code> y se marca como
-QA interno.</p>
+<h2 id="s1"><span class="num">1</span>The project and its guiding principle</h2>
+
+<p>This repository operationalizes the thesis's discourse analysis: tracing how the framing
+<em>“AI for the public good”</em> functions as a sociotechnical imaginary in UK government
+discourse on AI in public services, anchored in the Government Digital Service. The frozen v1
+corpus brings together <strong>35 documents</strong> published between January 2024 and July
+2026: the digital centre's strategy-and-guidance trunk (CDDO → GDS) alongside DSIT, and the
+five <em>Memorandum of Understanding</em> families between DSIT and frontier AI companies
+(Anthropic, Cohere, OpenAI, Google DeepMind, ElevenLabs), each with its government and
+corporate press materials. The whole pipeline is bound by the three specific objectives
+declared in <a href="PLAN.md">PLAN.md</a>: <strong>SO1</strong> (the imaginary projected in
+GDS texts), <strong>SO2</strong> (the trajectory from declared principle to policy commitment
+and public claim), and <strong>SO3</strong> (how the framing evolves across the partnership
+documents). No component exists unless it serves one of these; whatever only validates the
+method lives in <code>analysis/qa/</code> and is marked as internal QA.</p>
 
 <div class="callout">
-  <b>Principio rector: el LLM localiza y extrae; Frida interpreta y consolida.</b>
-  Los scripts encuentran dónde aparece el término y sus variantes, segmentan el pasaje,
-  extraen citas verbatim verificables y proponen agrupaciones. Nada de lo que produce el
-  modelo es un hallazgo: es materia prima localizada. Nombrar un sub-código, validar un
-  dominio metafórico, decidir qué significa un conteo-cero y leer la red intertextual son
-  actos interpretativos de la investigadora, y el pipeline está construido para dejar
-  siempre visible ese corte (campo <code>retrieval</code>, verificación
-  <code>quote_verified</code>, etiquetas <code>DRAFT</code> y <code>auto_provisional</code>).
+  <b>Guiding principle: the LLM locates and extracts; the author interprets and consolidates.</b>
+  The scripts find where the term and its variants appear, segment the passage, extract
+  verifiable verbatim quotes, and propose groupings. Nothing the model produces is a finding:
+  it is located raw material. Naming a sub-code, validating a metaphorical domain, deciding
+  what a zero count means, and reading the intertextual network are interpretive acts
+  performed by the researcher, and the pipeline is built to always keep that boundary visible
+  (the <code>retrieval</code> field, <code>quote_verified</code> checks, and the
+  <code>DRAFT</code> and <code>auto_provisional</code> labels).
 </div>
 
-<!-- =============================================================== 2 -->
-<h2 id="s2"><span class="num">2</span>Los 35 documentos del corpus</h2>
+<h2>Explore the guide</h2>
+<p>The home view is a compact overview. Each tile below opens its own view with the full
+detail.</p>
+<div class="tiles">
+  <a class="tile" href="#documents" data-nav>
+    <span class="count">35 documents</span>
+    <h3>Documents</h3>
+    <p>The strategy trunk and the five MoU families, with each card's full content, grouped
+    chronologically and by family, with a text filter.</p>
+  </a>
+  <a class="tile" href="#deliverables" data-nav>
+    <span class="count">9 deliverables</span>
+    <h3>How to read each deliverable</h3>
+    <p>manifest.csv, coding units, the authorship network, the NVivo queries, and the outputs
+    still to come.</p>
+  </a>
+  <a class="tile" href="#assumptions" data-nav>
+    <span class="count">11 points</span>
+    <h3>Assumptions &amp; limitations</h3>
+    <p>Corpus admission rules, the detection method, capture caveats, and what LLM-assisted
+    coding is not.</p>
+  </a>
+  <a class="tile" href="#phases" data-nav>
+    <span class="count">Phases 0–7</span>
+    <h3>Phase map</h3>
+    <p>Status as of August 29, 2026, and which decisions only the author can make.</p>
+  </a>
+</div>
 
-<p>Cada tarjeta lleva el <code>doc_id</code> (nombre NVivo <code>YYYY-MM-DD_GENRE_ACTOR_Slug</code>),
-la fecha, el actor o hablante tal como lo codifica el manifest, el género, la familia, el
-<code>term_status</code> resuelto por el lexicón v1 y el <code>gds_tier</code> provisional.
-El resumen está escrito a partir del texto real del documento en <code>data/text/</code>.</p>
+</div>
+
+<!-- =============================================================== DOCUMENTS -->
+<div id="view-documents" class="view" hidden>
+<button class="backbtn" type="button" data-back>&larr; Back to overview</button>
+
+<h2 id="s2"><span class="num">2</span>The 35 documents in the corpus</h2>
+
+<p>Each card carries the <code>doc_id</code> (NVivo name
+<code>YYYY-MM-DD_GENRE_ACTOR_Slug</code>), the date, the actor or speaker as coded in the
+manifest, the genre, the family, the <code>term_status</code> resolved by the lexicon v1, and
+the provisional <code>gds_tier</code>. The summary is written from the document's actual text
+in <code>data/text/</code>.</p>
 
 <div class="panel">
-  <h4>Cómo leer las etiquetas de las tarjetas</h4>
+  <h4>How to read the card labels</h4>
   <div class="legendgrid">
     <div class="lg">
       <h4>term_status</h4>
-      <div class="row"><span class="pill present">present</span> aparece la forma nominal (<em>public good</em>)</div>
-      <div class="row"><span class="pill variant">variant</span> solo el sustituto (<em>public benefit / interest</em>)</div>
-      <div class="row"><span class="pill absent">absent</span> ninguna de las dos: conteo-cero</div>
+      <div class="row"><span class="pill present">present</span> the nominal form appears (<em>public good</em>)</div>
+      <div class="row"><span class="pill variant">variant</span> only the substitute appears (<em>public benefit / interest</em>)</div>
+      <div class="row"><span class="pill absent">absent</span> neither: zero count</div>
     </div>
     <div class="lg">
       <h4>gds_tier (provisional)</h4>
-      <div class="row"><span class="pill t1">T1</span> autoría GDS / CDDO / DSIT+GDS</div>
-      <div class="row"><span class="pill t2">T2</span> GDS o i.AI nombrados en el texto</div>
-      <div class="row"><span class="pill t3">T3</span> GDS ausente del texto</div>
+      <div class="row"><span class="pill t1">T1</span> GDS / CDDO / DSIT+GDS authorship</div>
+      <div class="row"><span class="pill t2">T2</span> GDS or i.AI named in the text</div>
+      <div class="row"><span class="pill t3">T3</span> GDS absent from the text</div>
     </div>
     <div class="lg">
-      <h4>Reparto del corpus</h4>
+      <h4>Corpus breakdown</h4>
       <div class="row">12 present · 4 variant · 19 absent</div>
       <div class="row">10 T1 · 8 T2 · 17 T3</div>
-      <div class="row">18 sin familia · 17 en familias MoU</div>
+      <div class="row">18 without a family · 17 in MoU families</div>
     </div>
   </div>
 </div>
 
-<!-- ---------------- TRONCO ---------------- -->
+<div class="filterbar">
+  <input type="text" id="doc-filter" placeholder="Filter by doc_id, actor, genre, keyword…" aria-label="Filter documents">
+  <span class="filter-count" id="doc-filter-count"></span>
+</div>
+
+<!-- ---------------- TRUNK ---------------- -->
+<div class="docgroup" data-group="tronco">
 <div class="famhead" id="tronco">
   <span class="famdot" style="background:var(--gds)"></span>
-  <h3>Tronco de estrategia y guía (family = None) — 18 documentos, orden cronológico</h3>
+  <h3>Strategy and guidance trunk (family = None) — 18 documents, chronological order</h3>
 </div>
-<p class="muted small">Del marco de IA generativa del CDDO al balance de un año del Action Plan:
-la línea donde el término nominal aparece, se define y viaja entre géneros
-(estrategia → declaración ministerial → blog → nota de prensa).</p>
+<p class="muted small">From the CDDO's generative AI framework to the Action Plan's one-year
+review: the line along which the nominal term appears, gets defined, and travels across
+genres (strategy → ministerial statement → blog → press release).</p>
 
 <div class="cards">
 
@@ -255,13 +325,13 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">2024-01-18</span><span class="pill">STRAT</span>
       <span class="pill">CDDO</span><span class="pill present">present</span><span class="pill t1">T1</span>
     </div>
-    <div class="who">Central Digital and Data Office — todavía no GDS en esa fecha</div>
-    <p><em>Generative AI framework for HM Government</em>: la primera guía práctica de gobierno
-    para construir soluciones de IA generativa, con diez principios, secciones de datos,
-    seguridad, compras y gobernanza. Habla a funcionarios, no al público: el registro es de
-    manual técnico y el beneficio se enuncia como productividad y ahorro “to taxpayers”.
-    Es el punto de partida del tronco y el documento que el AI Playbook sustituye en 2025 —
-    la única arista de <em>supersession</em> declarada en la red.</p>
+    <div class="who">Central Digital and Data Office — not yet GDS at that date</div>
+    <p><em>Generative AI framework for HM Government</em>: the government's first practical
+    guidance for building generative AI solutions, with ten principles and sections on data,
+    security, procurement, and governance. It speaks to civil servants, not the public: the
+    register is that of a technical manual, and the benefit is framed as productivity and
+    savings “to taxpayers”. It is the trunk's starting point and the document the AI Playbook
+    supersedes in 2025 — the only supersession edge declared in the network.</p>
   </div>
 
   <div class="card c-dsit">
@@ -270,14 +340,14 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">2024-02-06</span><span class="pill">REG</span>
       <span class="pill">DSIT</span><span class="pill present">present</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">DSIT — respuesta a consulta presentada al Parlamento (CP 1019)</div>
-    <p>Respuesta del gobierno a la consulta del libro blanco <em>A pro-innovation approach to AI
-    regulation</em>: consolida el enfoque sectorial y basado en principios, y presenta al AI Safety
-    Institute como organismo “committed to advancing AI safety in the public interest”. Es el
-    documento del gobierno anterior y el ancla regulatoria del periodo pre-julio 2024; con 17
-    referencias entrantes es el segundo nodo más citado del corpus. Entra porque fija el
-    vocabulario (<em>public interest</em>, <em>pro-innovation</em>) contra el que se lee todo lo
-    posterior.</p>
+    <div class="who">DSIT — response to a consultation laid before Parliament (CP 1019)</div>
+    <p>The government's response to the white paper consultation <em>A pro-innovation approach
+    to AI regulation</em>: it consolidates the sector-based, principles-driven approach and
+    introduces the AI Safety Institute as a body “committed to advancing AI safety in the
+    public interest”. This is the previous government's document and the regulatory anchor for
+    the pre-July-2024 period; with 17 incoming references it is the corpus's second most-cited
+    node. It earns its place because it fixes the vocabulary (<em>public interest</em>,
+    <em>pro-innovation</em>) against which everything later is read.</p>
   </div>
 
   <div class="card c-pmo">
@@ -286,29 +356,30 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">2025-01-12</span><span class="pill">PRGOV</span>
       <span class="pill">PMO (No. 10)</span><span class="pill present">present</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">Oficina del Primer Ministro, 10 Downing Street, y DSIT</div>
-    <p>Nota de prensa que anuncia la adopción de las 50 recomendaciones del AI Opportunities Action
-    Plan. Es el documento con la densidad metafórica más alta del tronco (<em>turbocharge</em>,
-    <em>unleashed</em>, “mainlines AI into the veins of this enterprising nation”) y con el
-    beneficiario más explícitamente marcado en clave distributiva: <em>working people</em>,
-    “more money in people’s back pockets”. Muestra el término nominal una sola vez frente a
-    cinco marcas distributivas: caso claro para leer el desplazamiento del sustantivo hacia
-    la promesa de reparto.</p>
+    <div class="who">Prime Minister's Office, 10 Downing Street, and DSIT</div>
+    <p>A press release announcing the government's adoption of the AI Opportunities Action
+    Plan's 50 recommendations. It is the trunk's most metaphor-dense document
+    (<em>turbocharge</em>, <em>unleashed</em>, “mainlines AI into the veins of this
+    enterprising nation”), and the one with the most explicitly distributive beneficiary
+    marking: <em>working people</em>, “more money in people’s back pockets”. It uses the
+    nominal term only once against five distributive markers — a clear case for reading the
+    shift from the noun toward a promise of distribution.</p>
   </div>
 
   <div class="card c-ext">
     <div class="did">CONTEXT_2025-01-13_STRAT_DSIT_AIOpportunitiesActionPlan</div>
     <div class="meta">
       <span class="pill">2025-01-13</span><span class="pill">STRAT</span>
-      <span class="pill">Asesor externo</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
+      <span class="pill">External adviser</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">Matt Clifford CBE, asesor del PM en IA, comisionado por DSIT · <code>is_context = True</code></div>
-    <p><em>AI Opportunities Action Plan</em>: las 50 recomendaciones que reorganizan la política de
-    IA del gobierno laborista — infraestructura de cómputo, AI Growth Zones, National Data Library,
-    adopción sectorial, “Scan &gt; Pilot &gt; Scale”. Es el documento más citado del corpus con
-    diferencia (<strong>44 referencias entrantes</strong>): casi toda la estrategia posterior y casi
-    todos los MoU lo invocan como fuente de autoridad. No usa la forma nominal <em>public good</em>,
-    y esa ausencia en el texto más citado es en sí un dato para SO1/SO2.</p>
+    <div class="who">Matt Clifford CBE, the PM's AI adviser, commissioned by DSIT · <code>is_context = True</code></div>
+    <p><em>AI Opportunities Action Plan</em>: the 50 recommendations that reorganize the Labour
+    government's AI policy — compute infrastructure, AI Growth Zones, the National Data
+    Library, sector-by-sector adoption, “Scan &gt; Pilot &gt; Scale”. It is by far the corpus's
+    most-cited document (<strong>44 incoming references</strong>): nearly the whole of the
+    later strategy, and nearly every MoU, invokes it as an authoritative source. It never uses
+    the nominal form <em>public good</em>, and that absence in the most-cited text is itself a
+    data point for SO1/SO2.</p>
   </div>
 
   <div class="card c-dsit">
@@ -317,12 +388,12 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">2025-01-13</span><span class="pill">STRAT</span>
       <span class="pill">DSIT</span><span class="pill variant">variant</span><span class="pill t2">T2</span>
     </div>
-    <div class="who">DSIT — respuesta formal presentada al Parlamento (CP 1242), prólogo del PM</div>
-    <p>La respuesta oficial que endosa las 50 recomendaciones de Clifford. El prólogo de Keir
-    Starmer condensa la trama completa: la IA como “defining opportunity of our generation”,
-    ya presente y “materially changing lives”, frente a un gobierno que “will not sit back
-    passively” y cuya responsabilidad es “to harness it and make it work for working people”.
-    Documento bisagra: convierte un informe de asesor externo en compromiso de gobierno.</p>
+    <div class="who">DSIT — formal response laid before Parliament (CP 1242), with a foreword by the PM</div>
+    <p>The official response endorsing Clifford's 50 recommendations. Keir Starmer's foreword
+    condenses the whole plot: AI as the “defining opportunity of our generation”, already here
+    and “materially changing lives”, against a government that “will not sit back passively”
+    and whose responsibility is “to harness it and make it work for working people”. A hinge
+    document: it turns an external adviser's report into a government commitment.</p>
   </div>
 
   <div class="card c-dsit">
@@ -331,14 +402,14 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">2025-01-21</span><span class="pill">WMS</span>
       <span class="pill">DSIT</span><span class="pill present">present</span><span class="pill t2">T2</span>
     </div>
-    <div class="who">Declaración ministerial escrita, House of Commons</div>
-    <p>Presentación al Parlamento del <em>State of Digital Government Review</em> y del
-    <em>Blueprint</em>. Enuncia el plan de seis puntos y contiene la formulación más limpia del
-    término en su forma programática: <em>“We will harness the power of AI for the public good”</em>,
-    seguida de los tres compromisos que la operacionalizan (unidad de adopción de IA, capacidad
-    en gobierno, confianza y rendición de cuentas). Es el pasaje de referencia para la genealogía
-    definicional de la frase, y por género (WMS) el punto donde el imaginario se dirige al
-    Parlamento.</p>
+    <div class="who">Written ministerial statement, House of Commons</div>
+    <p>The presentation to Parliament of the <em>State of Digital Government Review</em> and
+    the <em>Blueprint</em>. It sets out the six-point plan and contains the cleanest
+    formulation of the term in its programmatic form: <em>“We will harness the power of AI for
+    the public good”</em>, followed by the three commitments that operationalize it (an AI
+    adoption unit, capability across government, trust and accountability). It is the reference
+    passage for the phrase's definitional genealogy, and, by genre (WMS), the point where the
+    imaginary is addressed directly to Parliament.</p>
   </div>
 
   <div class="card c-dsitgds">
@@ -347,13 +418,13 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">2025-01-21</span><span class="pill">STRAT</span>
       <span class="pill">DSIT + GDS</span><span class="pill present">present</span><span class="pill t1">T1</span>
     </div>
-    <div class="who">DSIT y Government Digital Service (CP 1251)</div>
-    <p>Diagnóstico del estado digital del sector público: caída de satisfacción de 79 % a 68 %,
-    47 % de servicios centrales sin ruta digital, £45 mil millones anuales de ahorros no
-    realizados, cinco causas raíz. Es el documento que construye el problema al que la IA se
-    presentará como respuesta, y la fuente de casi todas las cifras que después circulan por
-    prensa y blogs (13 referencias entrantes). Sin este texto no se entiende la necesidad
-    narrativa del Blueprint.</p>
+    <div class="who">DSIT and Government Digital Service (CP 1251)</div>
+    <p>A diagnosis of the public sector's digital state: satisfaction falling from 79% to 68%,
+    47% of central services with no digital route, £45 billion a year in unrealized savings,
+    five root causes. This is the document that constructs the problem to which AI will later
+    be presented as the answer, and the source of nearly every figure that later circulates
+    through press and blogs (13 incoming references). Without this text the Blueprint's
+    narrative need makes no sense.</p>
   </div>
 
   <div class="card c-dsitgds">
@@ -362,12 +433,12 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">2025-01-21</span><span class="pill">STRAT</span>
       <span class="pill">DSIT + GDS</span><span class="pill present">present</span><span class="pill t1">T1</span>
     </div>
-    <div class="who">DSIT y GDS — “el centro digital”, nombrado GDS en este documento (CP 1252)</div>
-    <p><em>A blueprint for modern digital government</em>: el plan de seis puntos del centro digital
-    reconstituido, con “harness the power of AI for the public good” como uno de los pilares
-    nombrados. Es el documento con más ocurrencias nominales del corpus (9) y donde la frase
-    ocupa posición estructural de pilar, no de prosa: la posición estructural es en sí un
-    hallazgo declarado en el diseño. Núcleo del SO1.</p>
+    <div class="who">DSIT and GDS — “the digital centre”, named GDS in this document (CP 1252)</div>
+    <p><em>A blueprint for modern digital government</em>: the six-point plan of the
+    reconstituted digital centre, with “harness the power of AI for the public good” as one of
+    its named pillars. It is the corpus's document with the most nominal occurrences (9), and
+    the one where the phrase holds a structural, pillar-level position rather than a prose one:
+    that structural position is itself a finding declared by the design. Core to SO1.</p>
   </div>
 
   <div class="card c-gds">
@@ -377,11 +448,12 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">GDS</span><span class="pill absent">absent</span><span class="pill t1">T1</span>
     </div>
     <div class="who">Joanna Davinson, Government Chief Digital Officer, GDS</div>
-    <p>Blog institucional que explica el rebautizo: GDS, CDDO, i.AI, el equipo geoespacial y la
-    Responsible Technology Adoption Unit se fusionan bajo el nombre GDS. Traduce el Blueprint al
-    registro de practitioners (“services should do more of the hard work on people’s behalf”) y
-    <strong>no usa el término ni su variante</strong> pese a ser autoría GDS pura. Conteo-cero de
-    alto valor para SO2: el mismo actor, la misma semana, ante otra audiencia, sin la frase.</p>
+    <p>An institutional blog explaining the rebrand: GDS, CDDO, i.AI, the geospatial team, and
+    the Responsible Technology Adoption Unit merge under the name GDS. It translates the
+    Blueprint into a practitioner register (“services should do more of the hard work on
+    people’s behalf”) and <strong>uses neither the term nor its variant</strong>, despite being
+    pure GDS authorship. A high-value zero count for SO2: the same actor, the same week,
+    addressing a different audience, without the phrase.</p>
   </div>
 
   <div class="card c-gds">
@@ -390,13 +462,13 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">2025-02-10</span><span class="pill">STRAT</span>
       <span class="pill">GDS</span><span class="pill present">present</span><span class="pill t1">T1</span>
     </div>
-    <div class="who">Government Digital Service — 1 123 bloques, el documento más extenso del corpus</div>
-    <p><em>Artificial Intelligence Playbook for the UK Government</em>: sucede y amplía el
-    Generative AI Framework del CDDO a toda la gama de tecnologías de IA. El log de actualización
-    declara explícitamente una sección nueva llamada <em>“Societal wellbeing and public good”</em>:
-    es el único documento del corpus donde la frase se convierte en encabezado de una sección de
-    guía operativa, con 9 ocurrencias de variante frente a 4 nominales. Pieza central para leer
-    qué exige la frase cuando tiene que volverse instrucción.</p>
+    <div class="who">Government Digital Service — 1,123 blocks, the corpus's longest document</div>
+    <p><em>Artificial Intelligence Playbook for the UK Government</em>: it supersedes and
+    extends the CDDO's Generative AI Framework to the full range of AI technologies. The
+    changelog explicitly declares a new section titled <em>“Societal wellbeing and public
+    good”</em>: it is the only document in the corpus where the phrase becomes the heading of
+    an operational guidance section, with 9 variant occurrences against 4 nominal ones. A
+    central piece for reading what the phrase demands once it has to become an instruction.</p>
   </div>
 
   <div class="card c-gds">
@@ -406,11 +478,11 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">GDS</span><span class="pill absent">absent</span><span class="pill t1">T1</span>
     </div>
     <div class="who">Government Digital Service</div>
-    <p>Anuncio del lanzamiento del Playbook: a quién sirve, qué contiene, cómo se articula con los
-    cursos de Civil Service Learning. El beneficio se enuncia como “putting AI to good use —
-    making things run better […] and giving the economy a boost”, sin usar ni la forma nominal ni
-    la variante. Par de comparación directa con el Playbook que anuncia: el mismo contenido
-    pierde la frase al pasar de guía a blog.</p>
+    <p>The announcement of the Playbook's launch: who it serves, what it contains, how it links
+    to Civil Service Learning courses. The benefit is framed as “putting AI to good use —
+    making things run better […] and giving the economy a boost”, without using either the
+    nominal form or the variant. A direct comparison pair with the Playbook it announces: the
+    same content loses the phrase when it moves from guidance to blog.</p>
   </div>
 
   <div class="card c-dsit">
@@ -420,12 +492,12 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">DSIT</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
     </div>
     <div class="who">DSIT, AI Security Institute, Rt Hon Peter Kyle MP</div>
-    <p>Nota de prensa que renombra el AI Safety Institute como <em>AI Security Institute</em>,
-    crea el equipo de uso criminal con el Home Office y anuncia, en el mismo comunicado, el
-    acuerdo con Anthropic. El giro léxico de <em>safety</em> a <em>security</em> —y la aclaración
-    de que el instituto “will not focus on bias or freedom of speech”— es un movimiento de
-    THREAT_TYPE observable en un solo texto. Documento puente entre el tronco y la familia
-    Anthropic.</p>
+    <p>A press release renaming the AI Safety Institute as the <em>AI Security Institute</em>,
+    creating a criminal-misuse team with the Home Office, and announcing, in the same release,
+    the agreement with Anthropic. The lexical shift from <em>safety</em> to <em>security</em> —
+    and the clarification that the institute “will not focus on bias or freedom of speech” — is
+    a THREAT_TYPE move observable within a single text. A bridge document between the trunk and
+    the Anthropic family.</p>
   </div>
 
   <div class="card c-gds">
@@ -435,11 +507,11 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">GDS</span><span class="pill present">present</span><span class="pill t1">T1</span>
     </div>
     <div class="who">Government Digital Service</div>
-    <p>Explica el AI Exemplars Programme del Primer Ministro como “portfolio approach”: varios
-    casos de uso simultáneos, aprendizaje rápido de éxitos y fracasos, marco “Scan &gt; Pilot &gt;
-    Scale” tomado del Action Plan. Aquí la frase aparece en su forma abreviada <em>AI for public
-    good</em> (sin artículo), en un texto de gestión de cartera: útil para rastrear la
-    banalización del término al volverse etiqueta de programa.</p>
+    <p>Explains the Prime Minister's AI Exemplars Programme as a “portfolio approach”: several
+    simultaneous use cases, fast learning from successes and failures, the “Scan &gt; Pilot
+    &gt; Scale” framework taken from the Action Plan. Here the phrase appears in its shortened
+    form, <em>AI for public good</em> (no article), inside a portfolio-management text — useful
+    for tracking the term's banalization as it becomes a programme label.</p>
   </div>
 
   <div class="card c-dsitgds">
@@ -448,13 +520,13 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">2026-01-19</span><span class="pill">WMS</span>
       <span class="pill">DSIT + GDS</span><span class="pill absent">absent</span><span class="pill t1">T1</span>
     </div>
-    <div class="who">Ministro de DSIT ante los Comunes, en nombre de DSIT y GDS</div>
-    <p>Declaración ministerial escrita que presenta el <em>Roadmap for modern digital government
-    2025-2030</em>: National Data Library, reforma de compras, transparencia algorítmica, y el
-    inventario de logros (app GOV.UK, GOV.UK Wallet, One Login con 13,2 millones de personas).
-    <strong>Contraste decisivo:</strong> el WMS de 2025 abría con “AI for the public good” y el
-    WMS de 2026, mismo género y misma audiencia parlamentaria, no contiene la frase. Es el par
-    más limpio del corpus para el argumento temporal de SO2.</p>
+    <div class="who">DSIT minister addressing the Commons, on behalf of DSIT and GDS</div>
+    <p>A written ministerial statement presenting the <em>Roadmap for modern digital government
+    2025-2030</em>: the National Data Library, procurement reform, algorithmic transparency,
+    and an inventory of achievements (the GOV.UK app, GOV.UK Wallet, One Login with 13.2
+    million people). <strong>A decisive contrast:</strong> the 2025 WMS opened with “AI for the
+    public good”, and the 2026 WMS — same genre, same parliamentary audience — does not contain
+    the phrase. It is the corpus's cleanest pair for SO2's temporal argument.</p>
   </div>
 
   <div class="card c-dsitgds">
@@ -463,12 +535,12 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">2026-01-20</span><span class="pill">STRAT</span>
       <span class="pill">DSIT + GDS</span><span class="pill present">present</span><span class="pill t1">T1</span>
     </div>
-    <div class="who">GDS y DSIT — sitio de campaña, seis pilares</div>
-    <p>El roadmap como producto web: mensaje de la Secretaria de Estado Liz Kendall (“politics
-    should tread lightly on people’s lives”) y seis pilares, uno de ellos el heredero directo del
-    pilar de IA del Blueprint. Documento corto y muy estructurado: los <code>pillar_name</code>
-    permiten leer la frase en posición de encabezado y compararla con la del Blueprint un año
-    antes.</p>
+    <div class="who">GDS and DSIT — campaign site, six pillars</div>
+    <p>The roadmap as a web product: a message from Secretary of State Liz Kendall (“politics
+    should tread lightly on people’s lives”) and six pillars, one of them the direct heir to
+    the Blueprint's AI pillar. A short, tightly structured document: the
+    <code>pillar_name</code> fields let the phrase be read in heading position and compared
+    with the Blueprint's a year earlier.</p>
   </div>
 
   <div class="card c-gds">
@@ -477,13 +549,13 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">2026-01-20</span><span class="pill">BLOG</span>
       <span class="pill">GDS</span><span class="pill present">present</span><span class="pill t1">T1</span>
     </div>
-    <div class="who">Emily Middleton y Christine Bellamy, Directoras Generales, GDS</div>
-    <p>Blog de lanzamiento del roadmap con el balance del primer año del Blueprint: kickstarters,
-    app GOV.UK, Wallet con la Veteran Card, One Login, el nuevo equipo CustomerFirst. Su segundo
-    encabezado es literalmente <em>“Harnessing AI for public good”</em> — la única vez en el
-    corpus en que la frase encabeza una sección de blog. Comparar con
-    <code>SameNameNewAmbitions</code> (2025), el blog equivalente que no la usaba, sostiene la
-    lectura de que el término se consolida en el registro GDS con un año de retraso.</p>
+    <div class="who">Emily Middleton and Christine Bellamy, Director Generals, GDS</div>
+    <p>The roadmap's launch blog, with a review of the Blueprint's first year: kickstarters,
+    the GOV.UK app, Wallet with the Veteran Card, One Login, the new CustomerFirst team. Its
+    second heading is literally <em>“Harnessing AI for public good”</em> — the only time in the
+    corpus that the phrase heads a blog section. Comparing it with
+    <code>SameNameNewAmbitions</code> (2025), the equivalent blog that did not use it, supports
+    the reading that the term settles into the GDS register a year late.</p>
   </div>
 
   <div class="card c-dsit">
@@ -492,13 +564,13 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">2026-01-27</span><span class="pill">PRGOV</span>
       <span class="pill">DSIT</span><span class="pill present">present</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">DSIT — nota de prensa, ministro Ian Murray</div>
-    <p>Anuncia una cohorte de AI fellows financiada con $1 millón de Meta a través del Alan Turing
-    Institute, y en el mismo comunicado el arranque de la colaboración con Anthropic para el
-    asistente de GOV.UK. Usa la frase en su forma más ceremonial: la semana de acción muestra cómo
-    la tecnología “are being put to work for the public good, benefitting hardworking people at
-    the point of delivery”. Nota gubernamental gemela del comunicado de Anthropic del mismo día:
-    par obligatorio para echo-phrases.</p>
+    <div class="who">DSIT — press release, Minister Ian Murray</div>
+    <p>Announces a cohort of AI fellows funded with $1 million from Meta through the Alan
+    Turing Institute, and, in the same release, the start of the collaboration with Anthropic
+    on the GOV.UK assistant. It uses the phrase in its most ceremonial form: the action week
+    shows how the technology “are being put to work for the public good, benefitting
+    hardworking people at the point of delivery”. The government's twin release to Anthropic's
+    own on the same day: a required pair for echo-phrases.</p>
   </div>
 
   <div class="card c-dsit">
@@ -507,25 +579,29 @@ la línea donde el término nominal aparece, se define y viaja entre géneros
       <span class="pill">2026-01-29</span><span class="pill">STRAT</span>
       <span class="pill">DSIT</span><span class="pill variant">variant</span><span class="pill t2">T2</span>
     </div>
-    <div class="who">DSIT — balance de un año, prólogos del PM y de la Secretaria de Estado</div>
-    <p>Rendición de cuentas del Action Plan organizada en tres ejes (“Putting people first”,
-    “Rewiring the state”, “Supercharging the economy”) con cifras de entrega: 2,4 millones de
-    radiografías asistidas por IA, cinco AI Growth Zones, £2 mil millones de cómputo, Sovereign
-    AI Unit. Cierra el arco temporal del corpus por el lado de la estrategia. El texto sostiene
-    la promesa distributiva (“benefits everyone”, “work for everyone”) sin recurrir a la forma
-    nominal: caso de <em>variant</em> en el género donde antes había <em>present</em>.</p>
+    <div class="who">DSIT — one-year review, forewords by the PM and the Secretary of State</div>
+    <p>The Action Plan's accountability review, organized around three axes (“Putting people
+    first”, “Rewiring the state”, “Supercharging the economy”) with delivery figures: 2.4
+    million AI-assisted X-rays, five AI Growth Zones, £2 billion in compute, the Sovereign AI
+    Unit. It closes out the corpus's timeline on the strategy side. The text sustains the
+    distributive promise (“benefits everyone”, “work for everyone”) without resorting to the
+    nominal form — a <em>variant</em> case in a genre that previously carried
+    <em>present</em>.</p>
   </div>
 
 </div>
+</div>
 
 <!-- ---------------- ANTHROPIC ---------------- -->
+<div class="docgroup" data-group="anthropic">
 <div class="famhead" id="fam-anthropic">
   <span class="famdot" style="background:var(--anthropic)"></span>
-  <h3>Familia Anthropic — 3 documentos</h3>
-  <span class="pill soft">MoU feb-2025 → asociación GOV.UK ene-2026</span>
+  <h3>Anthropic family — 3 documents</h3>
+  <span class="pill soft">MoU Feb 2025 → GOV.UK partnership Jan 2026</span>
 </div>
-<p class="muted small">La familia con el arco más largo: del memorando exploratorio al primer
-producto contratado. Es la única familia donde la variante reaparece del lado de la empresa.</p>
+<p class="muted small">The family with the longest arc: from the exploratory memorandum to the
+first contracted product. It is the only family where the variant resurfaces on the company
+side.</p>
 
 <div class="cards">
   <div class="card c-joint">
@@ -534,12 +610,12 @@ producto contratado. Es la única familia donde la variante reaparece del lado d
       <span class="pill">2025-02-14</span><span class="pill">MOU</span>
       <span class="pill">DSIT + Anthropic</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">Rt Hon Peter Kyle MP (DSIT) y Dario Amodei (Anthropic)</div>
-    <p>Primer MoU del corpus, en tres secciones: potencial transformador de la IA, ambiciones de
-    colaboración (mejorar el acceso de la ciudadanía a información y servicios de gobierno,
-    buenas prácticas de despliegue responsable) y trabajo futuro (ciencia, cadena de suministro,
-    economía de innovación). Declara explícitamente que “is voluntary, not legally binding”: el
-    texto que fija la modalidad característica del género. Sin término ni variante.</p>
+    <div class="who">Rt Hon Peter Kyle MP (DSIT) and Dario Amodei (Anthropic)</div>
+    <p>The corpus's first MoU, in three sections: AI's transformative potential, collaboration
+    ambitions (improving citizens' access to government information and services, good
+    practice for responsible deployment), and future work (science, the supply chain, the
+    innovation economy). It explicitly states that it “is voluntary, not legally binding” — the
+    text that fixes the genre's characteristic modality. No term, no variant.</p>
   </div>
   <div class="card c-anthropic">
     <div class="did">2025-02-14_PRCO_Anthropic_SignsMOUUKGov</div>
@@ -547,12 +623,13 @@ producto contratado. Es la única familia donde la variante reaparece del lado d
       <span class="pill">2025-02-14</span><span class="pill">PRCO</span>
       <span class="pill">Anthropic</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">Anthropic — comunicado corporativo del mismo día</div>
-    <p>Versión de empresa del MoU: Claude para mejorar el acceso a servicios, colaboración con el
-    AI Security Institute, y una lista de referencias internacionales (Distrito de Columbia,
-    Parlamento Europeo, Palantir/AWS en entornos clasificados) que funciona como prueba social.
-    Publicado el mismo día que el MoU y que la nota de prensa de DSIT sobre el AI Security
-    Institute: tríada ideal para leer quién dice primero qué en la coalición discursiva.</p>
+    <div class="who">Anthropic — corporate release, same day</div>
+    <p>The corporate version of the MoU: Claude for improving access to services, collaboration
+    with the AI Security Institute, and a list of international references (the District of
+    Columbia, the European Parliament, Palantir/AWS in classified environments) that functions
+    as social proof. Published the same day as the MoU and as DSIT's press release on the AI
+    Security Institute: an ideal triad for reading who says what first within the discursive
+    coalition.</p>
   </div>
   <div class="card c-anthropic">
     <div class="did">2026-01-27_PRCO_Anthropic_GOVUKPartnership</div>
@@ -560,23 +637,25 @@ producto contratado. Es la única familia donde la variante reaparece del lado d
       <span class="pill">2026-01-27</span><span class="pill">PRCO</span>
       <span class="pill">Anthropic</span><span class="pill variant">variant</span><span class="pill t2">T2</span>
     </div>
-    <div class="who">Anthropic — asociación para el asistente de GOV.UK</div>
-    <p>Anthropic es seleccionada por DSIT para construir y pilotear un asistente de IA para
-    GOV.UK, con primer caso de uso en empleo. Es el documento de familia que más se acerca al
-    lenguaje del centro digital: nombra al Government Digital Service (ingenieros de Anthropic
-    trabajando junto a funcionarios), invoca el marco “Scan, Pilot, Scale” y el AI Opportunities
-    Action Plan. Cierra el trayecto declaración → compromiso → producto para SO2 y SO3.</p>
+    <div class="who">Anthropic — partnership for the GOV.UK assistant</div>
+    <p>Anthropic is selected by DSIT to build and pilot an AI assistant for GOV.UK, with its
+    first use case in employment. It is the family document closest to the digital centre's own
+    language: it names the Government Digital Service (Anthropic engineers working alongside
+    civil servants), invokes the “Scan, Pilot, Scale” framework and the AI Opportunities Action
+    Plan. It closes the declaration → commitment → product arc for SO2 and SO3.</p>
   </div>
+</div>
 </div>
 
 <!-- ---------------- COHERE ---------------- -->
+<div class="docgroup" data-group="cohere">
 <div class="famhead" id="fam-cohere">
   <span class="famdot" style="background:var(--cohere)"></span>
-  <h3>Familia Cohere — 2 documentos</h3>
-  <span class="pill soft">La empresa publica un día antes que el gobierno</span>
+  <h3>Cohere family — 2 documents</h3>
+  <span class="pill soft">The company publishes one day before the government</span>
 </div>
-<p class="muted small">Familia pequeña pero con la inversión de orden más notable del corpus:
-el comunicado corporativo (15 jun) precede al MoU publicado en gov.uk (16 jun).</p>
+<p class="muted small">A small family, but with the corpus's most notable order reversal: the
+corporate release (15 June) precedes the MoU published on gov.uk (16 June).</p>
 
 <div class="cards">
   <div class="card c-cohere">
@@ -585,12 +664,12 @@ el comunicado corporativo (15 jun) precede al MoU publicado en gov.uk (16 jun).<
       <span class="pill">2025-06-15</span><span class="pill">PRCO</span>
       <span class="pill">Cohere</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">Cohere — anuncio conjunto Canadá y Reino Unido</div>
-    <p>Cohere anuncia acuerdos simultáneos con los gobiernos de Canadá y del Reino Unido, con
-    una reunión trilateral entre Aidan Gomez y los primeros ministros Carney y Starmer. El
-    encuadre dominante no es el beneficio público sino la <em>soberanía nacional</em> y la
-    seguridad: “advancing national sovereignty and economic growth”. Único documento del corpus
-    donde el Reino Unido aparece como uno de dos clientes estatales en el mismo texto.</p>
+    <div class="who">Cohere — joint Canada and UK announcement</div>
+    <p>Cohere announces simultaneous agreements with the governments of Canada and the UK,
+    alongside a trilateral meeting between Aidan Gomez and Prime Ministers Carney and Starmer.
+    The dominant frame is not public benefit but <em>national sovereignty</em> and security:
+    “advancing national sovereignty and economic growth”. The only document in the corpus where
+    the UK appears as one of two state clients within the same text.</p>
   </div>
   <div class="card c-joint">
     <div class="did">2025-06-16_MOU_Cohere_AIOpportunities</div>
@@ -598,24 +677,27 @@ el comunicado corporativo (15 jun) precede al MoU publicado en gov.uk (16 jun).<
       <span class="pill">2025-06-16</span><span class="pill">MOU</span>
       <span class="pill">DSIT + Cohere</span><span class="pill absent">absent</span><span class="pill t2">T2</span>
     </div>
-    <div class="who">Rt Hon Peter Kyle MP (DSIT) y Aidan Gomez (Cohere)</div>
-    <p>MoU estructurado en adopción del sector público, ecosistema de talento y seguridad de IA.
-    Es el único MoU que <strong>nombra explícitamente al GDS y al i.AI</strong> como equipos con
-    los que podría colaborarse — de ahí su <code>gds_tier = T2</code> y su valor para la query
-    de PublicGood_Nominal × GDSTier. Abre con la fórmula “meaningfully improve people’s lives”:
-    la reclamación distributiva sin el sustantivo.</p>
+    <div class="who">Rt Hon Peter Kyle MP (DSIT) and Aidan Gomez (Cohere)</div>
+    <p>An MoU structured around public-sector adoption, the talent ecosystem, and AI safety. It
+    is the only MoU that <strong>explicitly names GDS and i.AI</strong> as teams it could
+    collaborate with — hence its <code>gds_tier = T2</code> and its value for the
+    PublicGood_Nominal × GDSTier query. It opens with the formula “meaningfully improve
+    people’s lives”: the distributive claim without the noun.</p>
   </div>
+</div>
 </div>
 
 <!-- ---------------- OPENAI ---------------- -->
+<div class="docgroup" data-group="openai">
 <div class="famhead" id="fam-openai">
   <span class="famdot" style="background:var(--openai)"></span>
-  <h3>Familia OpenAI — 5 documentos</h3>
-  <span class="pill soft">La familia más extensa: MoU + infraestructura + cliente departamental</span>
+  <h3>OpenAI family — 5 documents</h3>
+  <span class="pill soft">The largest family: MoU + infrastructure + a departmental client</span>
 </div>
-<p class="muted small">Tres comunicados de empresa contra uno de gobierno y un MoU. La progresión
-va del memorando a la infraestructura (Stargate UK) y de ahí a un contrato concreto con el
-Ministerio de Justicia: el mejor caso para observar cómo el compromiso se materializa.</p>
+<p class="muted small">Three corporate releases against one from government and one MoU. The
+progression runs from the memorandum to infrastructure (Stargate UK) and from there to a
+concrete contract with the Ministry of Justice: the best case for observing how commitment
+turns into materialization.</p>
 
 <div class="cards">
   <div class="card c-joint">
@@ -624,12 +706,12 @@ Ministerio de Justicia: el mejor caso para observar cómo el compromiso se mater
       <span class="pill">2025-07-21</span><span class="pill">MOU</span>
       <span class="pill">DSIT + OpenAI</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">Rt Hon Peter Kyle MP (DSIT) y Sam Altman (OpenAI)</div>
-    <p>Cuatro secciones: potencial transformador, adopción pública y privada, infraestructura e
-    intercambio técnico de información. Contiene la formulación que después se repite casi
-    palabra por palabra en los textos de empresa — “a world-leading UK AI ecosystem rooted in
-    democratic values” — y anticipa la de ElevenLabs de 2026. Con 4 referencias entrantes es el
-    MoU más citado del corpus.</p>
+    <div class="who">Rt Hon Peter Kyle MP (DSIT) and Sam Altman (OpenAI)</div>
+    <p>Four sections: transformative potential, public and private adoption, infrastructure,
+    and technical information exchange. It contains the formulation later repeated almost word
+    for word in the corporate texts — “a world-leading UK AI ecosystem rooted in democratic
+    values” — anticipating ElevenLabs's own in 2026. With 4 incoming references, it is the
+    corpus's most-cited MoU.</p>
   </div>
   <div class="card c-dsit">
     <div class="did">2025-07-21_PRGOV_DSIT_OpenAIExpandUKOffice</div>
@@ -637,12 +719,12 @@ Ministerio de Justicia: el mejor caso para observar cómo el compromiso se mater
       <span class="pill">2025-07-21</span><span class="pill">PRGOV</span>
       <span class="pill">DSIT</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">DSIT — nota de prensa gubernamental, family = OpenAI</div>
-    <p>Versión gubernamental del acuerdo: expansión de la oficina de Londres, exploración de
-    inversión en centros de datos y AI Growth Zones, intercambio técnico con el AI Security
-    Institute. El beneficiario nombrado no es “the public” sino <em>taxpayer-funded services</em>
-    —tres marcas distributivas, ninguna nominal—: contraste directo con la nota gubernamental
-    de DeepMind de diciembre, que sí usa la frase.</p>
+    <div class="who">DSIT — government press release, family = OpenAI</div>
+    <p>The government's version of the agreement: expanding the London office, exploring
+    investment in data centres and AI Growth Zones, technical exchange with the AI Security
+    Institute. The named beneficiary is not “the public” but <em>taxpayer-funded services</em>
+    — three distributive markers, none of them nominal — a direct contrast with DeepMind's
+    government release in December, which does use the phrase.</p>
   </div>
   <div class="card c-openai">
     <div class="did">2025-07-21_PRCO_OpenAI_StrategicPartnership</div>
@@ -650,11 +732,11 @@ Ministerio de Justicia: el mejor caso para observar cómo el compromiso se mater
       <span class="pill">2025-07-21</span><span class="pill">PRCO</span>
       <span class="pill">OpenAI</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">OpenAI — comunicado del mismo día que el MoU y la nota de DSIT</div>
-    <p>Anuncio corporativo con citas atribuidas de Peter Kyle y Sam Altman: “AI is a core
-    technology for nation building”. Reproduce la lista de compromisos no vinculantes del MoU en
-    el mismo orden. Tríada perfecta del 21 de julio (MoU + PRGOV + PRCO) para medir préstamo
-    interdiscursivo por n-gramas compartidos.</p>
+    <div class="who">OpenAI — release on the same day as the MoU and DSIT's own</div>
+    <p>A corporate announcement with attributed quotes from Peter Kyle and Sam Altman: “AI is a
+    core technology for nation building”. It reproduces the MoU's list of non-binding
+    commitments in the same order. A perfect 21 July triad (MoU + PRGOV + PRCO) for measuring
+    interdiscursive borrowing through shared n-grams.</p>
   </div>
   <div class="card c-openai">
     <div class="did">2025-09-16_PRCO_OpenAI_StargateUK</div>
@@ -662,12 +744,12 @@ Ministerio de Justicia: el mejor caso para observar cómo el compromiso se mater
       <span class="pill">2025-09-16</span><span class="pill">PRCO</span>
       <span class="pill">OpenAI</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">OpenAI — con NVIDIA y Nscale</div>
-    <p>Stargate UK: capacidad de cómputo soberana en suelo británico, hasta 8 000 GPU en el primer
-    trimestre de 2026 con potencial de 31 000, ubicada en la AI Growth Zone del noreste. El
-    beneficio público se enuncia por vía indirecta —casos de uso en servicios públicos críticos e
-    industrias reguladas— y se acompaña de OpenAI Academy para alfabetización en IA. Documento
-    donde el imaginario se vuelve infraestructura física.</p>
+    <div class="who">OpenAI — with NVIDIA and Nscale</div>
+    <p>Stargate UK: sovereign compute capacity on British soil, up to 8,000 GPUs in Q1 2026
+    with a potential 31,000, sited in the north-east AI Growth Zone. Public benefit is stated
+    indirectly — use cases in critical public services and regulated industries — accompanied
+    by OpenAI Academy for AI literacy. The document where the imaginary becomes physical
+    infrastructure.</p>
   </div>
   <div class="card c-openai">
     <div class="did">2025-10-22_PRCO_OpenAI_NextChapterSovereignAI</div>
@@ -675,23 +757,25 @@ Ministerio de Justicia: el mejor caso para observar cómo el compromiso se mater
       <span class="pill">2025-10-22</span><span class="pill">PRCO</span>
       <span class="pill">OpenAI</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">OpenAI — acuerdo con el Ministerio de Justicia</div>
-    <p>ChatGPT Enterprise para 2 500 personas del Ministry of Justice, residencia de datos en el
-    Reino Unido, y mención de las herramientas ya en uso en Whitehall (‘Humphrey’, ‘Consult’).
-    Cita al Viceprimer Ministro David Lammy: la asociación pone a Gran Bretaña “firmly in the
-    driving seat of the global tech revolution”. Es el punto más avanzado del arco de esta
-    familia: de intención declarada a licencia contratada.</p>
+    <div class="who">OpenAI — agreement with the Ministry of Justice</div>
+    <p>ChatGPT Enterprise for 2,500 people at the Ministry of Justice, UK data residency, and a
+    mention of tools already in use across Whitehall (‘Humphrey’, ‘Consult’). It quotes Deputy
+    Prime Minister David Lammy: the partnership puts Britain “firmly in the driving seat of the
+    global tech revolution”. The furthest point in this family's arc: from declared intention
+    to a contracted license.</p>
   </div>
+</div>
 </div>
 
 <!-- ---------------- DEEPMIND ---------------- -->
+<div class="docgroup" data-group="deepmind">
 <div class="famhead" id="fam-deepmind">
   <span class="famdot" style="background:var(--deepmind)"></span>
-  <h3>Familia Google DeepMind — 4 documentos</h3>
-  <span class="pill soft">Tres publicaciones en tres días (10–11 dic 2025)</span>
+  <h3>Google DeepMind family — 4 documents</h3>
+  <span class="pill soft">Three releases in three days (10–11 Dec 2025)</span>
 </div>
-<p class="muted small">La familia más densa en el tiempo y la única cuyo MoU incorpora
-la seguridad al título. Los dos comunicados de DeepMind no contienen ninguna cita atribuida.</p>
+<p class="muted small">The most time-dense family, and the only one whose MoU works security
+into its title. DeepMind's two press releases contain no attributed quotes at all.</p>
 
 <div class="cards">
   <div class="card c-deepmind">
@@ -700,13 +784,12 @@ la seguridad al título. Los dos comunicados de DeepMind no contienen ninguna ci
       <span class="pill">2025-12-10</span><span class="pill">PRCO</span>
       <span class="pill">Google DeepMind</span><span class="pill variant">variant</span><span class="pill t2">T2</span>
     </div>
-    <div class="who">Google DeepMind — publicado un día antes que el MoU</div>
-    <p>Anuncia el laboratorio automatizado en el Reino Unido para 2026 (ciencia de materiales,
-    superconductores) y el acceso prioritario a AlphaEvolve, AlphaGenome, AI co-scientist y
-    WeatherNext. Es el único texto de empresa que usa la expresión <em>public benefit</em> de
-    forma directa: el Reino Unido está “uniquely positioned to translate AI innovation into
-    public benefit”. La analogía con el microscopio y el telescopio es un candidato metafórico
-    de primer orden para SO1.</p>
+    <div class="who">Google DeepMind — published one day before the MoU</div>
+    <p>Announces the automated laboratory coming to the UK in 2026 (materials science,
+    superconductors) and priority access to AlphaEvolve, AlphaGenome, AI co-scientist, and
+    WeatherNext. It is the only corporate text to use the expression <em>public benefit</em>
+    directly: the UK is “uniquely positioned to translate AI innovation into public benefit”.
+    The microscope-and-telescope analogy is a first-order metaphor candidate for SO1.</p>
   </div>
   <div class="card c-joint">
     <div class="did">2025-12-11_MOU_DeepMind_AIOpportunitiesSecurity</div>
@@ -714,12 +797,12 @@ la seguridad al título. Los dos comunicados de DeepMind no contienen ninguna ci
       <span class="pill">2025-12-11</span><span class="pill">MOU</span>
       <span class="pill">DSIT + DeepMind</span><span class="pill absent">absent</span><span class="pill t2">T2</span>
     </div>
-    <div class="who">Rt Hon Liz Kendall MP (DSIT) y Demis Hassabis (Google DeepMind)</div>
-    <p>Único MoU cuyo título incorpora <em>and security</em>. Tres secciones: adopción responsable
-    para transformar servicios públicos, aceleración del descubrimiento científico, y seguridad y
-    preparación. Nombra al i.AI como posible receptor de apoyo de ingeniería (de ahí T2) y se
-    ancla en el US-UK Tech Prosperity Deal, el único documento del corpus que introduce un marco
-    bilateral externo.</p>
+    <div class="who">Rt Hon Liz Kendall MP (DSIT) and Demis Hassabis (Google DeepMind)</div>
+    <p>The only MoU whose title works in <em>and security</em>. Three sections: responsible
+    adoption to transform public services, accelerating scientific discovery, and security and
+    preparedness. It names i.AI as a possible recipient of engineering support (hence T2) and
+    anchors itself in the US-UK Tech Prosperity Deal — the only document in the corpus that
+    brings in an external bilateral framework.</p>
   </div>
   <div class="card c-dsit">
     <div class="did">2025-12-11_PRGOV_DSIT_NationalRenewalDeepMind</div>
@@ -727,14 +810,14 @@ la seguridad al título. Los dos comunicados de DeepMind no contienen ninguna ci
       <span class="pill">2025-12-11</span><span class="pill">PRGOV</span>
       <span class="pill">DSIT</span><span class="pill present">present</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">DSIT — nota de prensa gubernamental, family = DeepMind</div>
-    <p>El único documento de familia con <code>term_status = present</code> y cuatro ocurrencias
-    nominales. Presenta el acuerdo como “national renewal”: laboratorio automatizado, fusión
-    nuclear, Gemini for Government, Gemini en educación, ampliación del acuerdo con el AI Security
-    Institute. El beneficiario es “hardworking people”, que “will enjoy public services fit for
-    the modern age”. Comparado con la nota gubernamental de OpenAI (julio, sin la frase), es la
-    evidencia más nítida de que el término entra a la familia por el lado del gobierno, no de la
-    empresa.</p>
+    <div class="who">DSIT — government press release, family = DeepMind</div>
+    <p>The only family document with <code>term_status = present</code>, carrying four nominal
+    occurrences. It frames the agreement as “national renewal”: the automated laboratory,
+    nuclear fusion, Gemini for Government, Gemini in education, an expanded agreement with the
+    AI Security Institute. The beneficiary is “hardworking people”, who “will enjoy public
+    services fit for the modern age”. Compared with OpenAI's government release (July, without
+    the phrase), it is the clearest evidence that the term enters the family from the
+    government side, not the company's.</p>
   </div>
   <div class="card c-deepmind">
     <div class="did">2025-12-11_PRCO_DeepMind_DeepeningAISIPartnership</div>
@@ -742,22 +825,25 @@ la seguridad al título. Los dos comunicados de DeepMind no contienen ninguna ci
       <span class="pill">2025-12-11</span><span class="pill">PRCO</span>
       <span class="pill">Google DeepMind</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">Google DeepMind — colaboración con el AI Security Institute</div>
-    <p>MoU específico de investigación con el AISI: acceso a modelos y datos propietarios,
-    publicaciones conjuntas, trabajo sobre <em>Chain of Thought Monitorability</em>. El beneficio
-    se enuncia en registro universalista y no estatal —“benefits everyone”, “benefit humanity”—:
-    contraste útil frente al “hardworking people” de la nota gubernamental del mismo día.</p>
+    <div class="who">Google DeepMind — collaboration with the AI Security Institute</div>
+    <p>A research-specific MoU with the AISI: access to proprietary models and data, joint
+    publications, work on <em>Chain of Thought Monitorability</em>. The benefit is stated in a
+    universalist, non-state register — “benefits everyone”, “benefit humanity” — a useful
+    contrast against the “hardworking people” of the government release on the same day.</p>
   </div>
+</div>
 </div>
 
 <!-- ---------------- ELEVENLABS ---------------- -->
+<div class="docgroup" data-group="elevenlabs">
 <div class="famhead" id="fam-elevenlabs">
   <span class="famdot" style="background:var(--elevenlabs)"></span>
-  <h3>Familia ElevenLabs — 3 documentos</h3>
-  <span class="pill soft">La familia más reciente: cierra el corpus en junio de 2026</span>
+  <h3>ElevenLabs family — 3 documents</h3>
+  <span class="pill soft">The most recent family: it closes out the corpus in June 2026</span>
 </div>
-<p class="muted small">Primero la investigación con el AI Security Institute (feb 2026),
-después el MoU ampliado (jun 2026). Es la única familia cuyo eje declarado es la accesibilidad.</p>
+<p class="muted small">First the research collaboration with the AI Security Institute (Feb
+2026), then the expanded MoU (June 2026). It is the only family whose declared axis is
+accessibility.</p>
 
 <div class="cards">
   <div class="card c-elevenlabs">
@@ -766,12 +852,12 @@ después el MoU ampliado (jun 2026). Es la única familia cuyo eje declarado es 
       <span class="pill">2026-02-18</span><span class="pill">PRCO</span>
       <span class="pill">ElevenLabs</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">ElevenLabs — asociación de investigación a tres años con el AISI</div>
-    <p>Investigación controlada sobre si las personas distinguen una voz humana de una sintética y
-    cómo ese conocimiento cambia su comportamiento. El documento más corto del corpus (8 bloques).
-    Contiene la cita ministerial que reformula la frase en clave instrumental: las asociaciones
-    de este tipo son cómo “we harness AI as a techn[ology]…”. Antecede al MoU y explica su
-    sección de seguridad.</p>
+    <div class="who">ElevenLabs — three-year research partnership with the AISI</div>
+    <p>Controlled research into whether people can tell a human voice from a synthetic one, and
+    how that knowledge changes their behaviour. The shortest document in the corpus (8 blocks).
+    It contains the ministerial quote that reformulates the phrase in instrumental terms:
+    partnerships of this kind are how “we harness AI as a techn[ology]…”. It precedes the MoU
+    and explains its security section.</p>
   </div>
   <div class="card c-joint">
     <div class="did">2026-06-08_MOU_ElevenLabs_AIOpportunities</div>
@@ -779,13 +865,14 @@ después el MoU ampliado (jun 2026). Es la única familia cuyo eje declarado es 
       <span class="pill">2026-06-08</span><span class="pill">MOU</span>
       <span class="pill">DSIT + ElevenLabs</span><span class="pill absent">absent</span><span class="pill t2">T2</span>
     </div>
-    <div class="who">Kanishka Narayan MP (DSIT) y Mateusz Staniszewski (ElevenLabs)</div>
-    <p>Último documento del corpus por fecha. Adopción en el sector público con foco en
-    accesibilidad e inclusión (personas ciegas, baja alfabetización, comunidades multilingües),
-    talento y economía creativa. Es el único MoU que cita una norma operativa concreta del centro
-    digital —<em>Service Standard 5, “make sure everyone can use the service”</em>—, lo que lo
-    convierte en el caso más fuerte de traducción del imaginario a obligación técnica. Repite
-    la fórmula de OpenAI: “In the hands of UK citizens, AI will be a powerful tool…”.</p>
+    <div class="who">Kanishka Narayan MP (DSIT) and Mateusz Staniszewski (ElevenLabs)</div>
+    <p>The corpus's most recent document by date. Public-sector adoption focused on
+    accessibility and inclusion (blind people, low literacy, multilingual communities), talent,
+    and the creative economy. It is the only MoU that cites a concrete operational standard
+    from the digital centre — <em>Service Standard 5, “make sure everyone can use the
+    service”</em> — making it the strongest case of the imaginary translating into a technical
+    obligation. It repeats OpenAI's own formula: “In the hands of UK citizens, AI will be a
+    powerful tool…”.</p>
   </div>
   <div class="card c-elevenlabs">
     <div class="did">2026-06-08_PRCO_ElevenLabs_UKMOUExpansion</div>
@@ -793,503 +880,605 @@ después el MoU ampliado (jun 2026). Es la única familia cuyo eje declarado es 
       <span class="pill">2026-06-08</span><span class="pill">PRCO</span>
       <span class="pill">ElevenLabs</span><span class="pill absent">absent</span><span class="pill t3">T3</span>
     </div>
-    <div class="who">ElevenLabs — comunicado del mismo día que el MoU</div>
-    <p>Versión corporativa: los tres ejes del MoU resumidos, más el anuncio de la nueva sede en
-    Londres (triple tamaño) y la duplicación de plantilla a 200 personas. Incluye cita atribuida
-    del ministro Kanishka Narayan sobre voz e IA para personas con discapacidad visual, baja
-    alfabetización y personas mayores. Par MoU/PRCO del mismo día: material directo para
-    echo-phrases.</p>
+    <div class="who">ElevenLabs — release on the same day as the MoU</div>
+    <p>The corporate version: the MoU's three axes summarized, plus the announcement of a new
+    London headquarters (triple the size) and headcount doubling to 200 people. It includes an
+    attributed quote from Minister Kanishka Narayan on voice and AI for people with visual
+    impairments, low literacy, and older people. An MoU/PRCO pair from the same day: direct
+    material for echo-phrases.</p>
   </div>
 </div>
+</div>
 
-<!-- =============================================================== 3 -->
-<h2 id="s3"><span class="num">3</span>Cómo leer cada entregable</h2>
+</div>
 
-<p>Los entregables ya generados llevan enlace relativo; los que aún no existen se documentan
-igual con su formato esperado y la marca <span class="pill variant">en generación (Fase 4-5)</span>.</p>
+<!-- =============================================================== DELIVERABLES -->
+<div id="view-deliverables" class="view" hidden>
+<button class="backbtn" type="button" data-back>&larr; Back to overview</button>
+
+<h2 id="s3"><span class="num">3</span>How to read each deliverable</h2>
+
+<p>Deliverables that already exist carry a relative link; those that don't exist yet are
+documented all the same, with their expected format and the
+<span class="pill variant">in progress (Phase 4-5)</span> label.</p>
 
 <!-- manifest -->
 <h3 id="e-manifest"><a href="data/manifest.csv">data/manifest.csv</a></h3>
-<p>El corpus congelado. Append-only: v1 nunca se edita, las altas futuras suben
-<code>corpus_version</code>. Filtrar por <code>corpus_version == 1</code> siempre regenera
-el análisis de la tesis.</p>
+<p>The frozen corpus. Append-only: v1 is never edited; future additions bump
+<code>corpus_version</code>. Filtering by <code>corpus_version == 1</code> always regenerates
+the thesis analysis.</p>
 <div class="tablewrap"><table>
-<thead><tr><th>Columna</th><th>Qué contiene</th><th>Qué hay que saber al leerla</th></tr></thead>
+<thead><tr><th>Column</th><th>What it contains</th><th>What to know when reading it</th></tr></thead>
 <tbody>
-<tr><td class="k"><code>doc_id</code></td><td>Nombre NVivo <code>YYYY-MM-DD_GENRE_ACTOR_Slug</code></td><td>Clave primaria en todo el pipeline; el prefijo <code>CONTEXT_</code> marca el documento admitido como contexto.</td></tr>
-<tr><td class="k"><code>excel_row</code></td><td>Fila de origen en <em>Document Analysis v1.xlsx</em></td><td>Trazabilidad hacia la hoja <em>Official_Document Selection</em>. Va de 2 a 36.</td></tr>
-<tr><td class="k"><code>date</code></td><td>Fecha de publicación</td><td>Eje del slider temporal y del atributo Period; el corte de julio 2024 se marca sobre esta columna.</td></tr>
-<tr><td class="k"><code>genre</code></td><td>STRAT · MOU · PRGOV · PRCO · BLOG · WMS · REG</td><td>8 STRAT, 5 MOU, 5 PRGOV, 10 PRCO, 4 BLOG, 2 WMS, 1 REG. Es la faceta de las tres queries del plan NVivo.</td></tr>
-<tr><td class="k"><code>actor_raw</code></td><td>Cadena original del Excel, sin limpiar</td><td>Conserva matices que <code>speaker</code> pierde (cargos, nombres propios, notas). Consultar antes de afirmar autoría.</td></tr>
-<tr><td class="k"><code>speaker</code></td><td>Valor limpio: GDS · DSIT · DSIT_and_GDS · CDDO · PMO · External_adviser · DSIT_and_&lt;Empresa&gt; · &lt;Empresa&gt;</td><td>Regla 3 de la hoja <em>method</em>: quien habla, no quien publica. Color del nodo en la visualización.</td></tr>
-<tr><td class="k"><code>side</code></td><td>Public · Private · Private (partnership) · Public, led by external actor</td><td>Distingue el lado enunciativo. 19 Public, 10 Private, 5 partnership, 1 externo.</td></tr>
-<tr><td class="k"><code>family</code></td><td>Anthropic · Cohere · OpenAI · DeepMind · ElevenLabs · None</td><td>18 sin familia (tronco) y 17 en familias. Define los hulls de la visualización y la comparación intra/inter familia de SO3.</td></tr>
-<tr><td class="k"><code>gds_tier</code></td><td>T1 / T2 / T3</td><td><strong>Asignación automática provisional</strong> (ver limitaciones). T1 = autoría GDS/CDDO; T2 = GDS o i.AI nombrados en el texto; T3 = ausente.</td></tr>
-<tr><td class="k"><code>stage</code></td><td>1 / 2 / vacío</td><td>Etapa del plan de lectura heredada del Excel; 20 filas la tienen vacía.</td></tr>
-<tr><td class="k"><code>term_status</code></td><td>present / variant / absent</td><td>Resuelto en Fase 2 por el lexicón v1 sobre el texto completo. Sustituyó los <code>CHECK</code> originales.</td></tr>
-<tr><td class="k"><code>url</code> · <code>archive_url</code></td><td>Fuente viva y snapshot</td><td><code>archive_url</code> se llena solo cuando se logró snapshot fresco; el inventario completo está en <code>data/raw/archive_urls.json</code>.</td></tr>
-<tr><td class="k"><code>corpus_version</code> · <code>is_context</code></td><td>1 · booleano</td><td>Un solo documento con <code>is_context = True</code>: el AI Opportunities Action Plan.</td></tr>
-<tr><td class="k"><code>fetch_status</code> · <code>source</code></td><td>ok · direct / browser_prefetch</td><td>35/35 en <code>ok</code>. Dos capturados por navegador (parliament.uk).</td></tr>
-<tr><td class="k"><code>n_blocks</code> · <code>n_quotes</code> · <code>n_pillars</code> · <code>total_chars</code></td><td>Métricas de la extracción estructurada</td><td><code>n_quotes</code> = citas atribuidas detectadas; <code>n_pillars</code> = encabezados de pilar (solo Blueprint, Playbook, Framework y Roadmap tienen).</td></tr>
-<tr><td class="k"><code>gds_tier_source</code></td><td><code>auto_provisional</code> en las 35 filas</td><td>Cambia a revisión manual cuando Frida confirme o corrija cada tier.</td></tr>
+<tr><td class="k"><code>doc_id</code></td><td>NVivo name <code>YYYY-MM-DD_GENRE_ACTOR_Slug</code></td><td>Primary key across the whole pipeline; the <code>CONTEXT_</code> prefix marks the document admitted as context.</td></tr>
+<tr><td class="k"><code>excel_row</code></td><td>Source row in <em>Document Analysis v1.xlsx</em></td><td>Traceability back to the <em>Official_Document Selection</em> sheet. Runs from 2 to 36.</td></tr>
+<tr><td class="k"><code>date</code></td><td>Publication date</td><td>The axis for the timeline slider and the Period attribute; the July 2024 cutoff is marked against this column.</td></tr>
+<tr><td class="k"><code>genre</code></td><td>STRAT · MOU · PRGOV · PRCO · BLOG · WMS · REG</td><td>8 STRAT, 5 MOU, 5 PRGOV, 10 PRCO, 4 BLOG, 2 WMS, 1 REG. This is the facet used by all three queries in the NVivo plan.</td></tr>
+<tr><td class="k"><code>actor_raw</code></td><td>The original, uncleaned string from the Excel file</td><td>Preserves nuances that <code>speaker</code> loses (titles, proper names, notes). Check it before making any authorship claim.</td></tr>
+<tr><td class="k"><code>speaker</code></td><td>Cleaned value: GDS · DSIT · DSIT_and_GDS · CDDO · PMO · External_adviser · DSIT_and_&lt;Company&gt; · &lt;Company&gt;</td><td>Rule 3 of the <em>method</em> sheet: who speaks, not who publishes. Determines the node colour in the visualization.</td></tr>
+<tr><td class="k"><code>side</code></td><td>Public · Private · Private (partnership) · Public, led by external actor</td><td>Distinguishes the enunciative side. 19 Public, 10 Private, 5 partnership, 1 external.</td></tr>
+<tr><td class="k"><code>family</code></td><td>Anthropic · Cohere · OpenAI · DeepMind · ElevenLabs · None</td><td>18 without a family (trunk) and 17 within families. Defines the visualization's hulls and SO3's intra/inter-family comparison.</td></tr>
+<tr><td class="k"><code>gds_tier</code></td><td>T1 / T2 / T3</td><td><strong>Provisional automatic assignment</strong> (see limitations). T1 = GDS/CDDO authorship; T2 = GDS or i.AI named in the text; T3 = absent.</td></tr>
+<tr><td class="k"><code>stage</code></td><td>1 / 2 / empty</td><td>Reading-plan stage inherited from the Excel file; 20 rows leave it empty.</td></tr>
+<tr><td class="k"><code>term_status</code></td><td>present / variant / absent</td><td>Resolved in Phase 2 by the lexicon v1 over the full text. It replaced the original <code>CHECK</code> values.</td></tr>
+<tr><td class="k"><code>url</code> · <code>archive_url</code></td><td>Live source and snapshot</td><td><code>archive_url</code> is populated only when a fresh snapshot succeeded; the full inventory is in <code>data/raw/archive_urls.json</code>.</td></tr>
+<tr><td class="k"><code>corpus_version</code> · <code>is_context</code></td><td>1 · boolean</td><td>Only one document has <code>is_context = True</code>: the AI Opportunities Action Plan.</td></tr>
+<tr><td class="k"><code>fetch_status</code> · <code>source</code></td><td>ok · direct / browser_prefetch</td><td>35/35 are <code>ok</code>. Two were captured via browser (parliament.uk).</td></tr>
+<tr><td class="k"><code>n_blocks</code> · <code>n_quotes</code> · <code>n_pillars</code> · <code>total_chars</code></td><td>Metrics from the structured extraction</td><td><code>n_quotes</code> = attributed quotes detected; <code>n_pillars</code> = pillar headings (only the Blueprint, Playbook, Framework, and Roadmap have any).</td></tr>
+<tr><td class="k"><code>gds_tier_source</code></td><td><code>auto_provisional</code> in all 35 rows</td><td>Switches to manual review once the author confirms or corrects each tier.</td></tr>
 </tbody>
 </table></div>
 
 <!-- units -->
-<h3 id="e-units"><a href="coding/units.jsonl">coding/units.jsonl</a> — 53 unidades sobre 35 documentos</h3>
-<p>Una <strong>unidad de codificación</strong> es una sección: los bloques contiguos bajo el mismo
-encabezado de nivel superior. Es la implementación literal del método declarado —escaneo
-completo del documento, codificación detallada de la sección que contiene el término— y evita
-tanto el pasaje descontextualizado como el documento entero como unidad.</p>
-<p>Cada línea es un JSON con <code>unit_id</code> (<code>&lt;doc_id&gt;::sNN</code> o
+<h3 id="e-units"><a href="coding/units.jsonl">coding/units.jsonl</a> — 53 units across 35 documents</h3>
+<p>A <strong>coding unit</strong> is a section: the contiguous blocks under the same top-level
+heading. It is the literal implementation of the declared method — a full scan of the
+document, detailed coding of the section that contains the term — and it avoids both the
+decontextualized passage and the whole document as a unit.</p>
+<p>Each line is a JSON object with <code>unit_id</code> (<code>&lt;doc_id&gt;::sNN</code> or
 <code>::full</code>), <code>doc_id</code>, <code>heading</code>, <code>block_ids</code>,
-<code>text</code>, <code>retrieval</code> y las listas <code>hits_nominal</code>,
-<code>hits_variant</code>, <code>hits_distributive</code> con las coincidencias literales.</p>
+<code>text</code>, <code>retrieval</code>, and the <code>hits_nominal</code>,
+<code>hits_variant</code>, <code>hits_distributive</code> lists holding the literal matches.</p>
 <div class="tablewrap"><table>
-<thead><tr><th>retrieval</th><th>n</th><th>Cómo llegó la unidad</th><th>Qué implica al interpretar</th></tr></thead>
+<thead><tr><th>retrieval</th><th>n</th><th>How the unit was retrieved</th><th>What it implies when interpreting</th></tr></thead>
 <tbody>
-<tr><td class="k"><code>lexicon</code></td><td>36</td><td>La sección contiene al menos una coincidencia del lexicón v1 (nominal, variante o distributiva).</td><td>Evidencia léxica directa y auditable: las coincidencias exactas están en el propio registro.</td></tr>
-<tr><td class="k"><code>semantic</code></td><td>3</td><td>El documento no tiene forma nominal; se recuperaron hasta 2 secciones por similitud coseno con las sondas de beneficiario (embeddinggemma, umbral 0,52). Lleva campo <code>similarity</code>.</td><td>Es una <em>propuesta</em> de dónde está la reclamación distributiva, no una detección. Verificar el pasaje antes de citarlo; el conteo-cero queda acompañado de “y en su lugar se dice X”.</td></tr>
-<tr><td class="k"><code>full_short_doc</code></td><td>14</td><td>Documento corto (≤ 9 000 caracteres) sin ninguna unidad previa: el documento completo es la unidad.</td><td>Garantiza cobertura de SO3: la comparación intra-familia necesita todos los MoU y comunicados, tengan o no el término. La unidad es todo el texto, no una sección.</td></tr>
+<tr><td class="k"><code>lexicon</code></td><td>36</td><td>The section contains at least one match from the lexicon v1 (nominal, variant, or distributive).</td><td>Direct, auditable lexical evidence: the exact matches are in the record itself.</td></tr>
+<tr><td class="k"><code>semantic</code></td><td>3</td><td>The document has no nominal form; up to 2 sections were retrieved by cosine similarity against the beneficiary probes (embeddinggemma, 0.52 threshold). Carries a <code>similarity</code> field.</td><td>It is a <em>proposal</em> of where the distributive claim might be, not a detection. Verify the passage before quoting it; the zero count comes annotated with “and in its place it says X”.</td></tr>
+<tr><td class="k"><code>full_short_doc</code></td><td>14</td><td>A short document (≤ 9,000 characters) with no prior unit: the whole document is the unit.</td><td>Guarantees SO3 coverage: the intra-family comparison needs every MoU and press release, whether or not it carries the term. The unit is the whole text, not a section.</td></tr>
 </tbody>
 </table></div>
 
 <!-- mapa -->
 <h3 id="e-mapa"><a href="analysis/networks/mapa_autoria_familias.html">analysis/networks/mapa_autoria_familias.html</a></h3>
-<p>Vista principal, versión preliminar de cierre de Fase 1. Se abre directamente en el
-navegador; es autocontenida.</p>
+<p>The main view, a preliminary version closing out Phase 1. It opens directly in the browser;
+it is self-contained.</p>
 <div class="panel">
   <div class="legendgrid">
     <div class="lg">
-      <h4>Color = actor autor</h4>
+      <h4>Colour = authoring actor</h4>
       <div class="row"><span class="sw circ" style="background:var(--gds)"></span> GDS</div>
       <div class="row"><span class="sw circ" style="background:var(--dsit)"></span> DSIT</div>
       <div class="row"><span class="sw circ" style="background:var(--dsitgds)"></span> DSIT + GDS</div>
       <div class="row"><span class="sw circ" style="background:var(--cddo)"></span> CDDO</div>
       <div class="row"><span class="sw circ" style="background:var(--pmo)"></span> PMO (No. 10)</div>
-      <div class="row"><span class="sw" style="background:var(--ext)"></span> Asesor externo</div>
+      <div class="row"><span class="sw" style="background:var(--ext)"></span> External adviser</div>
     </div>
     <div class="lg">
-      <h4>Empresas y MoU</h4>
+      <h4>Companies and MoUs</h4>
       <div class="row"><span class="sw hex" style="background:var(--anthropic)"></span> Anthropic</div>
       <div class="row"><span class="sw hex" style="background:var(--openai)"></span> OpenAI</div>
       <div class="row"><span class="sw hex" style="background:var(--cohere)"></span> Cohere</div>
       <div class="row"><span class="sw hex" style="background:var(--deepmind)"></span> Google DeepMind</div>
       <div class="row"><span class="sw hex" style="background:var(--elevenlabs)"></span> ElevenLabs</div>
-      <div class="row"><span class="sw" style="background:var(--joint);transform:rotate(45deg)"></span> MoU (DSIT + empresa)</div>
+      <div class="row"><span class="sw" style="background:var(--joint);transform:rotate(45deg)"></span> MoU (DSIT + company)</div>
     </div>
     <div class="lg">
-      <h4>Forma = tipo de actor</h4>
-      <div class="row">círculo — actor de gobierno</div>
-      <div class="row">hexágono — empresa</div>
-      <div class="row">rombo — MoU conjunto</div>
-      <div class="row">cuadrado — asesor externo</div>
+      <h4>Shape = actor type</h4>
+      <div class="row">circle — government actor</div>
+      <div class="row">hexagon — company</div>
+      <div class="row">diamond — joint MoU</div>
+      <div class="row">square — external adviser</div>
     </div>
     <div class="lg">
-      <h4>Tamaño y aristas</h4>
-      <div class="row"><b>Tamaño del nodo</b> = referencias entrantes (proxy de autoridad)</div>
-      <div class="row"><b>Línea gris con flecha</b> = referencia explícita; grosor = nº de menciones</div>
-      <div class="row"><b>Línea blanca punteada</b> = supersession (el nuevo sustituye al viejo)</div>
-      <div class="row"><b>Contorno de zona (hull)</b> = familia de partnership; el tronco queda al centro</div>
+      <h4>Size and edges</h4>
+      <div class="row"><b>Node size</b> = incoming references (a proxy for authority)</div>
+      <div class="row"><b>Grey arrow</b> = explicit reference; thickness = number of mentions</div>
+      <div class="row"><b>White dashed line</b> = supersession (the new document replaces the old one)</div>
+      <div class="row"><b>Zone outline (hull)</b> = partnership family; the trunk sits at the centre</div>
     </div>
   </div>
 </div>
-<p><strong>Controles.</strong> Casillas para mostrar u ocultar referencias, supersession y
-etiquetas; <em>slider</em> temporal que oculta todo documento posterior a la fecha de corte
-(ene-2024 → jul-2026) y permite ver cómo se construye la red. El tooltip por nodo da doc_id,
-fecha, género y term_status. Al pie, un <code>&lt;details&gt;</code> despliega la tabla completa
-de aristas ordenada por número de menciones: es la vista auditable y accesible del mismo dato.</p>
-<p class="muted small"><strong>Cuidado al leer:</strong> el tamaño mide cuántas veces un documento
-es citado <em>dentro del corpus</em>, no su importancia general. El AI Opportunities Action Plan
-(44 entradas) y el <em>State of Digital Government Review</em> (13) dominan la vista porque son
-las fuentes que todos invocan.</p>
+<p><strong>Controls.</strong> Checkboxes to show or hide references, supersession, and labels;
+a timeline slider that hides every document past the cutoff date (Jan 2024 → Jul 2026) and
+lets you watch the network build up. The per-node tooltip gives doc_id, date, genre, and
+term_status. At the bottom, a <code>&lt;details&gt;</code> element unfolds the full edge table
+sorted by mention count: the auditable, accessible view of the same data.</p>
+<p class="muted small"><strong>Careful reading note:</strong> size measures how many times a
+document is cited <em>within the corpus</em>, not its overall importance. The AI Opportunities
+Action Plan (44 entries) and the <em>State of Digital Government Review</em> (13) dominate the
+view because they are the sources everyone invokes.</p>
 
 <!-- red json -->
-<h3 id="e-red"><a href="analysis/networks/intertextual_v0.json">analysis/networks/intertextual_v0.json</a> — 35 nodos, 51 aristas</h3>
-<p>La red intertextual v0 en crudo, y la <strong>evidencia textual de cada arista</strong>. Es el
-archivo que hay que abrir cuando una relación de la visualización necesita respaldo citable.</p>
+<h3 id="e-red"><a href="analysis/networks/intertextual_v0.json">analysis/networks/intertextual_v0.json</a> — 35 nodes, 51 edges</h3>
+<p>The raw v0 intertextual network, plus the <strong>textual evidence for each edge</strong>.
+This is the file to open whenever a relationship in the visualization needs citable support.</p>
 <ul>
-<li><code>nodes[]</code>: <code>id</code>, <code>label</code> (slug corto), <code>date</code>,
+<li><code>nodes[]</code>: <code>id</code>, <code>label</code> (short slug), <code>date</code>,
 <code>genre</code>, <code>speaker</code>, <code>family</code>, <code>term_status</code>,
 <code>in_degree</code>.</li>
 <li><code>edges[]</code>: <code>source</code> → <code>target</code>, <code>type</code>
-(<code>reference</code> · 50, <code>supersession</code> · 1), <code>count</code> = número de
-menciones detectadas, y <code>evidence</code> = la ventana de texto donde la mención ocurre.
-Varias aristas pueden compartir el mismo par origen/destino cuando la referencia usa alias
-distintos del título; agrupadas, son 45 relaciones únicas.</li>
+(<code>reference</code> · 50, <code>supersession</code> · 1), <code>count</code> = number of
+detected mentions, and <code>evidence</code> = the text window where the mention occurs.
+Several edges can share the same source/target pair when the reference uses different aliases
+for the title; grouped together, they amount to 45 unique relationships.</li>
 </ul>
-<p>La única arista de supersession está declarada a mano y documentada: el AI Playbook (feb 2025)
-sustituye al Generative AI Framework del CDDO (ene 2024).</p>
-<p class="muted small"><strong>Nota de consistencia:</strong> los <code>term_status</code> dentro
-de este JSON se escribieron antes de que la Fase 2 resolviera los <code>CHECK</code>. El valor
-válido es siempre el de <code>data/manifest.csv</code>; al regenerar la red con
-<code>06_network_v0.py</code> quedan sincronizados.</p>
+<p>The single supersession edge is hand-declared and documented: the AI Playbook (Feb 2025)
+supersedes the CDDO's Generative AI Framework (Jan 2024).</p>
+<p class="muted small"><strong>Consistency note:</strong> the <code>term_status</code> values
+inside this JSON were written before Phase 2 resolved the <code>CHECK</code> values. The valid
+value is always the one in <code>data/manifest.csv</code>; regenerating the network with
+<code>06_network_v0.py</code> keeps them in sync.</p>
 
 <!-- queries -->
 <h3 id="e-queries">analysis/queries/*</h3>
-<p><a href="analysis/queries/term_counts.csv">term_counts.csv</a> es la base de las tres queries
-del plan NVivo: una fila por documento con <code>doc_id</code>, <code>genre</code>,
+<p><a href="analysis/queries/term_counts.csv">term_counts.csv</a> is the basis for the three
+queries in the NVivo plan: one row per document with <code>doc_id</code>, <code>genre</code>,
 <code>speaker</code>, <code>family</code>, <code>n_nominal</code>, <code>n_variant</code>,
-<code>n_distributive</code> y <code>nominal_forms</code> (las formas literales encontradas,
-normalizadas a minúsculas).</p>
+<code>n_distributive</code>, and <code>nominal_forms</code> (the literal forms found,
+lowercased).</p>
 <div class="tablewrap"><table>
-<thead><tr><th>Query</th><th>Pregunta que responde</th><th>SO</th><th>Estado</th></tr></thead>
+<thead><tr><th>Query</th><th>Question it answers</th><th>SO</th><th>Status</th></tr></thead>
 <tbody>
-<tr><td class="k">zero count × Genre</td><td>¿En qué géneros desaparece la forma nominal, y qué se dice en su lugar? Se lee cruzando <code>n_nominal = 0</code> con las unidades <code>semantic</code> y <code>full_short_doc</code> del mismo documento.</td><td>SO1 · SO2</td><td><span class="pill present">datos listos</span> gráfica en Fase 6</td></tr>
-<tr><td class="k">agencia × Genre</td><td>¿Dónde hay pasiva sin agente o nominalización y dónde un agente gubernamental en primera persona? Depende del código AGENCY de la Ronda 1.</td><td>SO3</td><td><span class="pill variant">en generación (Fase 4-6)</span></td></tr>
-<tr><td class="k">PublicGood_Nominal × GDSTier</td><td>La query que responde la objeción obvia: ¿la frase aparece solo donde el GDS escribe, o también donde el GDS solo es nombrado o está ausente? Requiere el <code>gds_tier</code> validado.</td><td>SO3</td><td><span class="pill variant">pendiente de revisión de gds_tier</span></td></tr>
+<tr><td class="k">zero count × Genre</td><td>In which genres does the nominal form disappear, and what gets said in its place? Read by crossing <code>n_nominal = 0</code> against the <code>semantic</code> and <code>full_short_doc</code> units of the same document.</td><td>SO1 · SO2</td><td><span class="pill present">data ready</span> chart in Phase 6</td></tr>
+<tr><td class="k">agency × Genre</td><td>Where is there agentless passive voice or nominalization, and where is there a first-person government agent? Depends on the AGENCY code from Round 1.</td><td>SO3</td><td><span class="pill variant">in progress (Phase 4-6)</span></td></tr>
+<tr><td class="k">PublicGood_Nominal × GDSTier</td><td>The query that answers the obvious objection: does the phrase appear only where GDS writes, or also where GDS is merely named or altogether absent? Requires a validated <code>gds_tier</code>.</td><td>SO3</td><td><span class="pill variant">pending gds_tier review</span></td></tr>
 </tbody>
 </table></div>
 
 <!-- round1 -->
-<h3 id="e-round1">coding/round1/* <span class="pill variant">en generación (Fase 4)</span></h3>
-<p>Directorio creado y vacío. Salida cruda de la codificación asistida: un JSONL por documento,
-un registro por pasaje × pregunta, generado con
-<a href="coding/prompts/prompts_v1.yaml">prompts_v1.yaml</a> (11 preguntas por pasaje —
+<h3 id="e-round1">coding/round1/* <span class="pill variant">in progress (Phase 4)</span></h3>
+<p>Directory created and empty. Raw output of the assisted coding: one JSONL file per document,
+one record per passage × question, generated with
+<a href="coding/prompts/prompts_v1.yaml">prompts_v1.yaml</a> (11 questions per passage —
 BENEFICIARY, MECHANISM, SAFEGUARD, RESPONSIBILITY, PROJECTED_FUTURE, ACTANTS,
-NATURALISED_ORDER, AGENCY, MODALITY, METAPHOR, DEFINITIONAL — más DOC_PROFILE a nivel de
-documento).</p>
+NATURALISED_ORDER, AGENCY, MODALITY, METAPHOR, DEFINITIONAL — plus DOC_PROFILE at the document
+level).</p>
 <div class="panel">
-<h4>Formato esperado de cada registro</h4>
+<h4>Expected format for each record</h4>
 <p class="small"><code>{doc_id, passage_id, question, so_tags, answer_summary, verbatim_quote,
 applies, confidence, model, prompt_version, run_id, timestamp, quote_verified}</code></p>
 <h4>quote_verified</h4>
-<p class="small"><code>quote_verified</code> es el resultado de comprobar, carácter por carácter,
-que <code>verbatim_quote</code> existe literalmente en el texto del pasaje. Es el mejor detector
-de alucinación disponible para esta tarea: si es <code>false</code>, el registro se reintenta o
-se descarta, y <strong>ninguna cita no verificada puede llegar a la tesis</strong>. Al leer la
-Ronda 1, filtrar siempre por <code>quote_verified == true</code> antes de citar.</p>
-<h4>Campos que NO son hallazgos</h4>
-<p class="small"><code>answer_summary</code> es una descripción del modelo, no una
-interpretación validada; <code>confidence</code> es autorreportada por el modelo y sirve para
-priorizar la revisión, no como medida de calidad. Lo único citable sin mediación es
-<code>verbatim_quote</code> con <code>quote_verified == true</code>.</p>
+<p class="small"><code>quote_verified</code> is the result of checking, character by character,
+that <code>verbatim_quote</code> literally exists in the passage's text. It is the best
+hallucination detector available for this task: if it is <code>false</code>, the record is
+retried or discarded, and <strong>no unverified quote can make it into the thesis</strong>.
+When reading Round 1, always filter by <code>quote_verified == true</code> before citing.</p>
+<h4>Fields that are NOT findings</h4>
+<p class="small"><code>answer_summary</code> is the model's own description, not a validated
+interpretation; <code>confidence</code> is self-reported by the model and is useful for
+prioritizing review, not as a quality measure. The only thing citable without mediation is
+<code>verbatim_quote</code> with <code>quote_verified == true</code>.</p>
 </div>
-<p>El extractor definicional va aparte, en
-<code>coding/round1/definitional_instances.jsonl</code>: enunciados donde el documento dice qué
-significa o qué exige la frase, con su posición estructural. El pipeline solo los alinea
-cronológicamente; leer qué retiene, suelta, añade o sustituye cada definición es análisis de
-Frida.</p>
+<p>The definitional extractor runs separately, into
+<code>coding/round1/definitional_instances.jsonl</code>: statements where the document says
+what the phrase means or requires, with their structural position. The pipeline only aligns
+them chronologically; reading what each definition keeps, drops, adds, or replaces is the
+author's analysis.</p>
 
 <!-- guidebook -->
-<h3 id="e-guidebook">coding/guidebook_draft.yaml <span class="pill variant">en generación (Fase 5)</span></h3>
-<p>Todavía no existe. Será la salida de agrupar por similitud semántica las respuestas de la
-Ronda 1 dentro de cada pregunta, y presentar cada clúster con sus citas. <strong>Los clústeres
-son candidatos, no códigos.</strong> El archivo llega con nombres provisionales tipo
-<code>BENEFICIARY_cluster_03</code> y la marca <code>status: DRAFT</code>; Frida los renombra,
-fusiona, divide o descarta, y al hacerlo produce el <code>guidebook.yaml</code> consolidado.</p>
+<h3 id="e-guidebook">coding/guidebook_draft.yaml <span class="pill variant">in progress (Phase 5)</span></h3>
+<p>Does not exist yet. It will be the output of grouping Round 1's answers by semantic
+similarity within each question, and presenting each cluster with its quotes.
+<strong>Clusters are candidates, not codes.</strong> The file arrives with provisional names
+like <code>BENEFICIARY_cluster_03</code> and the <code>status: DRAFT</code> label; the author
+renames, merges, splits, or discards them, and in doing so produces the consolidated
+<code>guidebook.yaml</code>.</p>
 <div class="panel">
-<h4>Estructura esperada por sub-código</h4>
+<h4>Expected structure per sub-code</h4>
 <ul class="small">
-<li><code>parent</code> — la pregunta / parent code de la que cuelga.</li>
-<li><code>name</code> — <em>lo escribe Frida</em>; en el draft viene como <code>null</code> o autogenerado.</li>
-<li><code>definition</code> — <em>lo escribe Frida</em>.</li>
-<li><code>inclusion_rule</code> / <code>exclusion_rule</code> — criterios explícitos, para replicabilidad.</li>
-<li><code>exemplar</code> — pasaje ejemplar con su <code>unit_id</code>.</li>
-<li><code>members</code> — registros de la Ronda 1 asignados al clúster, con su similitud.</li>
-<li><code>status</code> — <code>DRAFT</code> → <code>CONFIRMED</code> cuando Frida lo valida.</li>
+<li><code>parent</code> — the question / parent code it hangs from.</li>
+<li><code>name</code> — <em>written by the author</em>; in the draft it comes as
+<code>null</code> or auto-generated.</li>
+<li><code>definition</code> — <em>written by the author</em>.</li>
+<li><code>inclusion_rule</code> / <code>exclusion_rule</code> — explicit criteria, for
+replicability.</li>
+<li><code>exemplar</code> — an exemplary passage with its <code>unit_id</code>.</li>
+<li><code>members</code> — Round 1 records assigned to the cluster, with their similarity
+score.</li>
+<li><code>status</code> — <code>DRAFT</code> → <code>CONFIRMED</code> once the author validates
+it.</li>
 </ul>
-<p class="small">Los 8 nodos de beneficiario ya definidos en la hoja <em>method</em> entran al
-guidebook tal cual como sub-códigos de BENEFICIARY: no se re-descubren, se importan.</p>
+<p class="small">The 8 beneficiary nodes already defined in the <em>method</em> sheet enter the
+guidebook as-is, as BENEFICIARY sub-codes: they are not rediscovered, they are imported.</p>
 </div>
 
 <!-- validacion -->
-<h3 id="e-validacion">coding/validation/sample_for_frida.csv <span class="pill variant">en generación (Fase 4)</span></h3>
-<p>Todavía no existe. Será la muestra para la doble codificación que sostiene el capítulo de
-métodos: <strong>15–20 % de los pasajes, estratificados por género y familia</strong>.</p>
+<h3 id="e-validacion">coding/validation/sample_for_author.csv <span class="pill variant">in progress (Phase 4)</span></h3>
+<p>Does not exist yet. It will be the sample for the double coding that supports the methods
+chapter: <strong>15–20% of the passages, stratified by genre and family</strong>.</p>
 <div class="panel">
-<h4>Cómo se hace la doble codificación</h4>
+<h4>How the double coding is done</h4>
 <ol class="small">
-<li>El CSV llega con las columnas de contexto (<code>unit_id</code>, <code>doc_id</code>,
-<code>genre</code>, <code>family</code>, <code>question</code>, <code>passage_text</code>) y una
-columna vacía por respuesta a codificar. <strong>La respuesta del LLM viene oculta o en un
-archivo aparte</strong>: codificar a ciegas es lo que hace válido el acuerdo.</li>
-<li>Frida codifica su columna sin mirar la del modelo.</li>
-<li>El script de acuerdo une ambas y reporta concordancia <strong>por pregunta</strong>, no
-global: el acuerdo en BENEFICIARY y el acuerdo en NATURALISED_ORDER no son comparables y no
-deben promediarse.</li>
-<li>Los desacuerdos alimentan <strong>como máximo una</strong> iteración de prompts. Después los
-prompts se congelan: si se itera hasta que el modelo coincida, el acuerdo deja de medir nada.</li>
-<li>El reporte de acuerdo queda en <code>coding/validation/</code> y es texto casi directo para
-el capítulo de métodos.</li>
+<li>The CSV arrives with the context columns (<code>unit_id</code>, <code>doc_id</code>,
+<code>genre</code>, <code>family</code>, <code>question</code>, <code>passage_text</code>) and
+one empty column to code the answer into. <strong>The LLM's answer is hidden or kept in a
+separate file</strong>: coding blind is what makes the agreement valid.</li>
+<li>The author codes her column without looking at the model's.</li>
+<li>The agreement script merges both and reports concordance <strong>per question</strong>,
+not globally: agreement on BENEFICIARY and agreement on NATURALISED_ORDER are not comparable
+and should not be averaged.</li>
+<li>Disagreements feed at most <strong>one</strong> round of prompt iteration. After that the
+prompts are frozen: if you iterate until the model agrees, the agreement measure stops
+measuring anything.</li>
+<li>The agreement report lives in <code>coding/validation/</code> and is nearly drop-in text
+for the methods chapter.</li>
 </ol>
 </div>
 
 <!-- metaforas -->
-<h3 id="e-metaforas">analysis/metaphors_report.md <span class="pill variant">en generación (Fase 6F)</span></h3>
-<p>Todavía no existe. Reunirá las expresiones metafóricas más frecuentes del corpus y, por cada
-una, <strong>una sugerencia</strong> de dominio fuente y dominio meta con su fórmula
-<code>TARGET IS SOURCE</code>, tipo Lakoff &amp; Johnson tentativo (estructural / orientacional /
-ontológica / personificación), los campos “qué ilumina” y “qué esconde”, y los pasajes de
-evidencia con su <code>unit_id</code>.</p>
+<h3 id="e-metaforas">analysis/metaphors_report.md <span class="pill variant">in progress (Phase 6F)</span></h3>
+<p>Does not exist yet. It will gather the corpus's most frequent metaphorical expressions and,
+for each one, <strong>a suggested</strong> source domain and target domain with its
+<code>TARGET IS SOURCE</code> formula, a tentative Lakoff &amp; Johnson type (structural /
+orientational / ontological / personification), the “what it illuminates” and “what it hides”
+fields, and the evidence passages with their <code>unit_id</code>.</p>
 <div class="callout">
-<b>Todo en este reporte es propuesta.</b> El procedimiento MIP/MIPVU identifica candidatos por
-contraste entre significado contextual y significado básico; la asignación de dominios es una
-decisión interpretativa. Frida valida, corrige o renombra cada mapeo, y el campo “esconde” —el
-mecanismo léxico de la naturalización— es precisamente el que no puede delegarse. Candidatos ya
-visibles en el corpus: <em>turbocharge</em>, <em>mainlines AI into the veins</em>,
+<b>Everything in this report is a proposal.</b> The MIP/MIPVU procedure identifies candidates
+by contrasting contextual meaning against basic meaning; assigning domains is an interpretive
+decision. The author validates, corrects, or renames each mapping, and the “hides” field — the
+lexical mechanism of naturalization — is precisely the one that cannot be delegated. Candidates
+already visible in the corpus: <em>turbocharge</em>, <em>mainlines AI into the veins</em>,
 <em>unleash</em>, <em>harness</em>, <em>frontier</em>, <em>rewiring the state</em>,
-<em>blueprint</em>, <em>the microscope or telescope</em>. Esta es la única adición del diseño que
-suma citas al marco teórico: requiere incorporar L&amp;J (+ MIP) al capítulo teórico.
+<em>blueprint</em>, <em>the microscope or telescope</em>. This is the only design addition that
+adds citations to the theoretical framework: it requires bringing L&amp;J (+ MIP) into the
+theory chapter.
 </div>
 
-<!-- =============================================================== 4 -->
-<h2 id="s4"><span class="num">4</span>Supuestos y limitaciones técnicas</h2>
-<p>Sección para leer antes de escribir cualquier afirmación con estos datos. Todo lo que sigue
-es una decisión tomada o una restricción real del método, no un accidente.</p>
-
-<h3>Corpus y reglas de admisión</h3>
-<div class="panel accent">
-<h4>El corpus v1 tiene 35 documentos, no 37</h4>
-<p>El diseño anticipaba 37 filas decididas en la hoja <em>Official_Document Selection</em>. Al
-leer el rango efectivamente decidido (hasta antes de la fila “EITHER BRING COHERE…”) el conteo
-real es <strong>35</strong>: hay una fila vacía dentro del rango. No se eliminó ningún documento
-ni se aplicó ningún filtro adicional. Cualquier mención a “37 documentos” en material previo
-—incluido el encabezado de <code>PLAN.md</code>— está desactualizada; la cifra correcta para la
-tesis es 35.</p>
-</div>
-<div class="panel accent">
-<h4>El documento CONTEXT_ entra al corpus, con hablante “asesor externo”</h4>
-<p>El <em>AI Opportunities Action Plan</em> lo escribió Matt Clifford CBE, asesor del Primer
-Ministro en IA, por encargo del Secretario de Estado de DSIT y con apoyo del departamento. Por
-decisión de Frida del 2026-08-29 <strong>entra al corpus</strong> codificado con
-<code>Speaker = External_adviser</code>, <code>side = "Public, led by external actor"</code> e
-<code>is_context = True</code>. Consecuencia analítica: es el nodo más citado del corpus (44
-referencias entrantes) y no es texto del gobierno hablando en primera persona. Toda afirmación
-sobre “el discurso del gobierno” que se apoye en este nodo debe declarar esa condición.</p>
-</div>
-<div class="panel accent">
-<h4>gds_tier es una asignación automática provisional</h4>
-<p>La regla aplicada por <code>04_segment.py</code> es mecánica: <strong>T1</strong> si el
-<code>speaker</code> es GDS, CDDO o DSIT_and_GDS; <strong>T2</strong> si el texto menciona GDS,
-Government Digital Service, i.AI, Incubator for AI, AI Playbook o Service Standard;
-<strong>T3</strong> en cualquier otro caso. Las 35 filas llevan
-<code>gds_tier_source = auto_provisional</code>. La regla es deliberadamente literal y por lo
-tanto frágil: no distingue una mención de paso de una atribución de responsabilidad.
-<strong>La query PublicGood_Nominal × GDSTier no puede reportarse hasta que Frida revise fila
-por fila.</strong></p>
 </div>
 
-<h3 id="s4-tecnicas">Detección del término y recuperación</h3>
+<!-- =============================================================== ASSUMPTIONS -->
+<div id="view-assumptions" class="view" hidden>
+<button class="backbtn" type="button" data-back>&larr; Back to overview</button>
+
+<h2 id="s4"><span class="num">4</span>Assumptions and technical limitations</h2>
+<p>Read this section before writing any claim from this data. Everything that follows is
+either a decision that was made or a real constraint of the method, not an accident.</p>
+
+<h3>Corpus and admission rules</h3>
 <div class="panel accent">
-<h4>La red intertextual v0 detecta referencias por alias de título</h4>
-<p><code>06_network_v0.py</code> busca menciones de los títulos de otros documentos del corpus
-(y sus alias frecuentes) en el texto de cada documento. Esto detecta bien la cita nominal
-—“the AI Opportunities Action Plan”, “the Blueprint”— y <strong>subestima sistemáticamente la
-paráfrasis</strong>: un documento que reproduce el argumento de otro sin nombrarlo no genera
-arista. Las 51 aristas son por tanto un <em>piso</em>, no un censo. La versión de Fase 6 añade
-echo-phrases (n-gramas ≥ 6 palabras) y códigos compartidos, que capturan parte de lo que esta
-versión pierde.</p>
+<h4>The v1 corpus has 35 documents, not 37</h4>
+<p>The design anticipated 37 decided rows in the <em>Official_Document Selection</em> sheet.
+Reading the range that was actually decided (up to but not including the “EITHER BRING
+COHERE…” row), the real count is <strong>35</strong>: there is one empty row inside the range.
+No document was removed and no additional filter was applied. Any mention of “37 documents” in
+earlier material — including the heading of <code>PLAN.md</code> — is out of date; the correct
+figure for the thesis is 35.</p>
 </div>
 <div class="panel accent">
-<h4>term_status se resolvió con el lexicón v1</h4>
-<p><a href="coding/lexicon_v1.yaml">lexicon_v1.yaml</a> es regex, no NLP.
-<strong>Stemming apagado por diseño</strong>, siguiendo la regla del plan NVivo: el patrón
-nominal es <code>public good(?!s)</code>, de modo que “goods” queda excluido y no contamina el
-conteo. Tres capas: nominal (<em>public good</em>, <em>the public good</em>, <em>AI for (the)
-public good</em>) → <code>present</code>; variante nominal (<em>public benefit</em>,
-<em>public interest</em>, <em>societal wellbeing</em>, <em>social good</em>) →
-<code>variant</code>; distributiva (<em>working people</em>, <em>taxpayer</em>, <em>benefit
-all/everyone</em>, <em>improve people’s lives</em>…), que se cuenta pero no cambia el estatus.
-Limitación conocida: la capa distributiva es generosa —<em>taxpayer</em> aparece en contextos
-puramente contables— y sus conteos se leen como señal, no como medida. Cualquier cambio al
-lexicón genera una v2; no se edita en sitio.</p>
+<h4>The CONTEXT_ document enters the corpus, with speaker “external adviser”</h4>
+<p>The <em>AI Opportunities Action Plan</em> was written by Matt Clifford CBE, the Prime
+Minister's AI adviser, commissioned by the DSIT Secretary of State with departmental support.
+By <strong>the author's decision, 2026-08-29</strong>, it enters the corpus coded with
+<code>Speaker = External_adviser</code>, <code>side = "Public, led by external actor"</code>,
+and <code>is_context = True</code>. Analytical consequence: it is the corpus's most-cited node
+(44 incoming references) and it is not government text speaking in the first person. Any claim
+about “government discourse” that leans on this node must declare that condition.</p>
 </div>
 <div class="panel accent">
-<h4>El umbral semántico 0,52 está calibrado empíricamente</h4>
-<p>La recuperación semántica usa <code>embeddinggemma</code> vía Ollama, con tres sondas de
-beneficiario y un umbral coseno de <strong>0,52</strong>, máximo 2 pasajes por documento. El
-umbral no es un valor canónico: se calibró sobre los documentos <code>absent</code> observando
-que los aciertos caen en el rango 0,52–0,63 en la escala de <em>ese</em> modelo. Cambiar de
-modelo de embeddings invalida el umbral. Las 3 unidades <code>semantic</code> resultantes van
-marcadas con su <code>similarity</code> y deben verificarse a mano antes de usarse como
-evidencia.</p>
+<h4>gds_tier is a provisional automatic assignment</h4>
+<p>The rule applied by <code>04_segment.py</code> is mechanical: <strong>T1</strong> if
+<code>speaker</code> is GDS, CDDO, or DSIT_and_GDS; <strong>T2</strong> if the text mentions
+GDS, Government Digital Service, i.AI, Incubator for AI, AI Playbook, or Service Standard;
+<strong>T3</strong> in every other case. All 35 rows carry
+<code>gds_tier_source = auto_provisional</code>. The rule is deliberately literal and therefore
+brittle: it cannot distinguish a passing mention from an attribution of responsibility.
+<strong>The PublicGood_Nominal × GDSTier query cannot be reported until the author reviews it
+row by row.</strong></p>
 </div>
 
-<h3 id="s4-captura">Captura, archivado y rasgos de los textos</h3>
+<h3 id="s4-tecnicas">Term detection and retrieval</h3>
 <div class="panel accent">
-<h4>El documento de Cohere requirió renderizado JS</h4>
-<p>El sitio de Cohere y sus snapshots sirven una página vacía sin JavaScript. El texto de
-<code>2025-06-15_PRCO_Cohere_CanadaUKPartnerships</code> se obtuvo mediante renderizado JS
-(<code>r.jina.ai</code>) sobre la URL directa. El contenido es el de la página pública, pero la
-ruta de obtención es distinta a la del resto y debe declararse si el comité pregunta por
-reproducibilidad.</p>
+<h4>The v0 intertextual network detects references by title alias</h4>
+<p><code>06_network_v0.py</code> looks for mentions of other corpus documents' titles (and
+their common aliases) within each document's text. This detects the nominal citation well —
+“the AI Opportunities Action Plan”, “the Blueprint” — and <strong>systematically underestimates
+paraphrase</strong>: a document that reproduces another's argument without naming it generates
+no edge. The 51 edges are therefore a <em>floor</em>, not a census. The Phase 6 version adds
+echo-phrases (n-grams ≥ 6 words) and shared codes, which capture part of what this version
+misses.</p>
 </div>
 <div class="panel accent">
-<h4>Los dos documentos de parliament.uk se capturaron vía navegador</h4>
-<p><code>2025-01-21_WMS_DSIT_BlueprintMinisterialStatement</code> y
-<code>2026-01-19_WMS_DSIT_RoadmapMinisterialStatement</code> están detrás de Cloudflare y se
-capturaron con navegador (<code>source = browser_prefetch</code>). <strong>No se refrescan
-automáticamente</strong>: si esos textos cambian en origen, el pipeline no lo detecta. Hay copia
-local en <code>data/raw/</code>.</p>
+<h4>term_status was resolved using the lexicon v1</h4>
+<p><a href="coding/lexicon_v1.yaml">lexicon_v1.yaml</a> is regex, not NLP.
+<strong>Stemming is switched off by design</strong>, following the NVivo plan's rule: the
+nominal pattern is <code>public good(?!s)</code>, so that “goods” is excluded and doesn't
+contaminate the count. Three layers: nominal (<em>public good</em>, <em>the public good</em>,
+<em>AI for (the) public good</em>) → <code>present</code>; nominal variant (<em>public
+benefit</em>, <em>public interest</em>, <em>societal wellbeing</em>, <em>social good</em>) →
+<code>variant</code>; distributive (<em>working people</em>, <em>taxpayer</em>, <em>benefit
+all/everyone</em>, <em>improve people’s lives</em>…), which is counted but does not change the
+status. Known limitation: the distributive layer is generous — <em>taxpayer</em> shows up in
+purely accounting contexts — and its counts should be read as a signal, not a measurement. Any
+change to the lexicon produces a v2; it is never edited in place.</p>
 </div>
 <div class="panel accent">
-<h4>Los dos comunicados de DeepMind no tienen citas atribuidas</h4>
-<p><code>n_quotes = 0</code> en <code>2025-12-10_PRCO_DeepMind_StrengtheningPartnership</code> y
-<code>2025-12-11_PRCO_DeepMind_DeepeningAISIPartnership</code>. <strong>Es un rasgo real del
-texto, no un fallo de extracción</strong>: DeepMind publica en voz institucional de primera
-persona del plural, sin declaraciones atribuidas a personas nombradas — a diferencia de OpenAI,
-ElevenLabs o las notas gubernamentales, que sí las incluyen. Es un dato para AGENCY y para la
-comparación inter-familia de SO3, no una laguna del corpus.</p>
-</div>
-<div class="panel accent">
-<h4>Snapshots en archive.org: 33 de 35</h4>
-<p>Todos los documentos tienen snapshot salvo dos, para los que archive.org no devolvió ninguno:
-el <strong>WMS del Blueprint</strong> (2025-01-21) y el <strong>MoU de ElevenLabs</strong>
-(2026-06-08). Ambos tienen copia local en <code>data/raw/</code>. En los 33 restantes el estado
-es <code>partial</code>: existe snapshot previo pero no se logró generar uno nuevo en la corrida.
-El inventario completo, con timestamps, está en
-<code>data/raw/archive_urls.json</code>. <code>data/raw/</code> está en <code>.gitignore</code>:
-los originales viven en disco y en archive.org, no en el repositorio.</p>
-</div>
-
-<h3 id="s4-llm">Codificación asistida</h3>
-<div class="panel accent">
-<h4>La Ronda 1 es asistida por LLM y no es resultado final</h4>
-<p>La codificación de la Ronda 1 corre en <strong>Ollama Cloud</strong>, con temperatura 0, JSON
-forzado y verificación automática de cada cita contra el texto fuente. Los documentos son
-públicos, así que no hay problema de confidencialidad; se registra igualmente proveedor, modelo
-exacto y fecha, y cada corrida lleva <code>run_id</code>, versión de prompts y versión de
-guidebook, de modo que cualquier número de la tesis es trazable a una corrida concreta.</p>
-<p><strong>Nada de la Ronda 1 es resultado hasta que ocurran dos cosas:</strong> (1) la
-validación de Frida sobre la muestra del 15–20 % con su reporte de acuerdo por pregunta, y (2)
-su consolidación del guidebook en la Fase 5. Antes de eso, la Ronda 1 es localización de
-pasajes, no codificación.</p>
-</div>
-<div class="panel accent">
-<h4>Los sub-códigos y los dominios de metáfora son sugerencias</h4>
-<p>Los clústeres de <code>guidebook_draft.yaml</code> y los pares fuente/meta de
-<code>metaphors_report.md</code> llegan explícitamente marcados como propuesta. Un clúster
-semántico agrupa respuestas parecidas; no dice qué tienen en común conceptualmente, y esa es
-justamente la operación analítica. Los códigos nuevos nunca nacen sin decisión humana: en la
-Fase 7 las respuestas sin sub-código existente se acumulan como <code>candidate_code</code> para
-revisión, nunca se crean automáticamente.</p>
+<h4>The semantic threshold of 0.52 is empirically calibrated</h4>
+<p>Semantic retrieval uses <code>embeddinggemma</code> via Ollama, with three beneficiary
+probes and a cosine threshold of <strong>0.52</strong>, up to 2 passages per document. The
+threshold is not a canonical value: it was calibrated over the <code>absent</code> documents by
+observing that true positives fall in the 0.52–0.63 range on that model's scale. Switching
+embedding models invalidates the threshold. The resulting 3 <code>semantic</code> units are
+tagged with their <code>similarity</code> and must be verified by hand before being used as
+evidence.</p>
 </div>
 
-<!-- =============================================================== 5 -->
-<h2 id="s5"><span class="num">5</span>Mapa de fases 0–7</h2>
-<p>Estado al 29 de agosto de 2026. Los puntos de control marcados en dorado son decisiones que
-no puede tomar el pipeline.</p>
+<h3 id="s4-captura">Capture, archiving, and text characteristics</h3>
+<div class="panel accent">
+<h4>The Cohere document required JS rendering</h4>
+<p>Cohere's site, and its snapshots, serve an empty page without JavaScript. The text of
+<code>2025-06-15_PRCO_Cohere_CanadaUKPartnerships</code> was obtained through JS rendering
+(<code>r.jina.ai</code>) over the direct URL. The content matches the public page, but the
+retrieval route differs from the rest and must be disclosed if the committee asks about
+reproducibility.</p>
+</div>
+<div class="panel accent">
+<h4>The two parliament.uk documents were captured via browser</h4>
+<p><code>2025-01-21_WMS_DSIT_BlueprintMinisterialStatement</code> and
+<code>2026-01-19_WMS_DSIT_RoadmapMinisterialStatement</code> sit behind Cloudflare and were
+captured with a browser (<code>source = browser_prefetch</code>). <strong>They do not refresh
+automatically</strong>: if those texts change at the source, the pipeline will not detect it. A
+local copy exists in <code>data/raw/</code>.</p>
+</div>
+<div class="panel accent">
+<h4>DeepMind's two press releases carry no attributed quotes</h4>
+<p><code>n_quotes = 0</code> in <code>2025-12-10_PRCO_DeepMind_StrengtheningPartnership</code>
+and <code>2025-12-11_PRCO_DeepMind_DeepeningAISIPartnership</code>. <strong>This is a real
+feature of the text, not an extraction failure</strong>: DeepMind publishes in an institutional
+first-person-plural voice, with no statements attributed to named individuals — unlike OpenAI,
+ElevenLabs, or the government releases, which do include them. It is a data point for AGENCY
+and for SO3's inter-family comparison, not a gap in the corpus.</p>
+</div>
+<div class="panel accent">
+<h4>Archive.org snapshots: 33 of 35</h4>
+<p>Every document has a snapshot except two, for which archive.org returned none: the
+<strong>Blueprint's WMS</strong> (2025-01-21) and the <strong>ElevenLabs MoU</strong>
+(2026-06-08). Both have a local copy in <code>data/raw/</code>. For the remaining 33 the status
+is <code>partial</code>: a prior snapshot exists but no new one could be generated during this
+run. The full inventory, with timestamps, is in <code>data/raw/archive_urls.json</code>.
+<code>data/raw/</code> is in <code>.gitignore</code>: the originals live on disk and on
+archive.org, not in the repository.</p>
+</div>
+
+<h3 id="s4-llm">LLM-assisted coding</h3>
+<div class="panel accent">
+<h4>Round 1 is LLM-assisted and is not a final result</h4>
+<p>Round 1 coding runs on <strong>Ollama Cloud</strong>, with temperature 0, forced JSON, and
+automatic verification of every quote against the source text. The documents are public, so
+there is no confidentiality concern; the provider, exact model, and date are logged all the
+same, and every run carries a <code>run_id</code>, prompt version, and guidebook version, so
+any number in the thesis can be traced back to a specific run.</p>
+<p><strong>None of Round 1 counts as a result until two things happen:</strong> (1) the
+author's validation over the 15–20% sample, with its per-question agreement report, and (2) her
+consolidation of the guidebook in Phase 5. Before that, Round 1 is passage location, not
+coding.</p>
+</div>
+<div class="panel accent">
+<h4>The sub-codes and metaphor domains are suggestions</h4>
+<p>The clusters in <code>guidebook_draft.yaml</code> and the source/target pairs in
+<code>metaphors_report.md</code> arrive explicitly marked as proposals. A semantic cluster
+groups similar answers; it does not say what they have in common conceptually, and that is
+precisely the analytical operation. New codes are never born without a human decision: in
+Phase 7, answers with no existing sub-code accumulate as <code>candidate_code</code> for
+review — they are never created automatically.</p>
+</div>
+
+</div>
+
+<!-- =============================================================== PHASES -->
+<div id="view-phases" class="view" hidden>
+<button class="backbtn" type="button" data-back>&larr; Back to overview</button>
+
+<h2 id="s5"><span class="num">5</span>Phase map 0–7</h2>
+<p>Status as of August 29, 2026. The bordered callouts below each phase are decisions the
+pipeline cannot make on its own.</p>
 
 <div class="phase">
-  <div class="ph-n">Fase 0</div>
+  <div class="ph-n">Phase 0</div>
   <div class="ph done"><span class="dot"></span>
-    <h4>Congelar el corpus <span class="st ok">completada</span></h4>
-    <p><code>data/manifest.csv</code> con 35 filas, 22 columnas, append-only. Decisiones tomadas
-    el 2026-08-29: entra el documento CONTEXT_ como <code>External_adviser</code>; repositorio
-    git local con <code>data/raw/</code> en <code>.gitignore</code>.</p>
-    <div class="dec"><b>Decisión de Frida:</b> confirmar que el conteo correcto es 35 y no 37, y
-    revisar los casos marcados. Pendiente de acta.</div>
+    <h4>Freeze the corpus <span class="st ok">complete</span></h4>
+    <p><code>data/manifest.csv</code> with 35 rows, 22 columns, append-only. Decisions made on
+    2026-08-29: the CONTEXT_ document enters as <code>External_adviser</code>; a local git
+    repository with <code>data/raw/</code> in <code>.gitignore</code>.</p>
+    <div class="dec"><b>The author's decision:</b> confirm the correct count is 35, not 37, and
+    review the flagged cases. Pending sign-off.</div>
   </div>
 
-  <div class="ph-n">Fase 1</div>
+  <div class="ph-n">Phase 1</div>
   <div class="ph done"><span class="dot"></span>
-    <h4>Descarga, archivado y texto estructurado <span class="st ok">completada</span></h4>
-    <p>35/35 documentos con <code>fetch_status = ok</code>. Texto extraído preservando jerarquía
-    (PyMuPDF para PDF, parsing del DOM para gov.uk y blogs), con
-    <code>structural_position</code> por bloque: title, pillar_name, section_heading, body,
+    <h4>Download, archiving, and structured text <span class="st ok">complete</span></h4>
+    <p>35/35 documents with <code>fetch_status = ok</code>. Text extracted while preserving
+    hierarchy (PyMuPDF for PDFs, DOM parsing for gov.uk and blogs), with a
+    <code>structural_position</code> per block: title, pillar_name, section_heading, body,
     quotation. Snapshots 33/35.</p>
-    <div class="dec"><b>Decisión de Frida:</b> revisar el reporte de captura — los 2 documentos
-    sin snapshot, el de Cohere con renderizado JS y los 2 de parliament.uk que no se
-    autoactualizan.</div>
+    <div class="dec"><b>The author's decision:</b> review the capture report — the 2 documents
+    without a snapshot, the Cohere one with JS rendering, and the 2 parliament.uk ones that
+    don't self-refresh.</div>
   </div>
 
-  <div class="ph-n">Fase 2</div>
+  <div class="ph-n">Phase 2</div>
   <div class="ph done"><span class="dot"></span>
-    <h4>Segmentación y detección del término <span class="st ok">completada</span></h4>
-    <p>53 unidades de codificación (36 lexicón, 3 semánticas, 14 documento completo).
-    <code>term_status</code> resuelto: 12 present, 4 variant, 19 absent — todos los
-    <code>CHECK</code> quedaron cerrados. <code>gds_tier</code> provisional asignado: 10 T1,
-    8 T2, 17 T3. Salidas: <code>coding/units.jsonl</code> y
-    <code>analysis/queries/term_counts.csv</code>. Adelanto de calendario: el mapa de autoría y
-    familias ya está generado en versión preliminar.</p>
-    <div class="dec"><b>Decisiones de Frida:</b> aprobar el lexicón v1 (o pedir v2); confirmar
-    los <code>term_status</code> resueltos automáticamente; <b>revisar el <code>gds_tier</code>
-    de las 35 filas</b> — la query de SO3 depende de eso.</div>
+    <h4>Segmentation and term detection <span class="st ok">complete</span></h4>
+    <p>53 coding units (36 lexicon, 3 semantic, 14 full-document). <code>term_status</code>
+    resolved: 12 present, 4 variant, 19 absent — every <code>CHECK</code> value is closed out.
+    Provisional <code>gds_tier</code> assigned: 10 T1, 8 T2, 17 T3. Outputs:
+    <code>coding/units.jsonl</code> and <code>analysis/queries/term_counts.csv</code>. Ahead of
+    schedule: the authorship-and-families map already exists in a preliminary version.</p>
+    <div class="dec"><b>The author's decisions:</b> approve the lexicon v1 (or request a v2);
+    confirm the automatically resolved <code>term_status</code> values; <b>review the
+    <code>gds_tier</code> of all 35 rows</b> — SO3's query depends on it.</div>
   </div>
 
-  <div class="ph-n">Fase 3</div>
+  <div class="ph-n">Phase 3</div>
   <div class="ph next"><span class="dot"></span>
-    <h4>Evaluación de modelos (Ollama Cloud) <span class="st pend">siguiente</span></h4>
-    <p>Muestra estratificada de ~5 documentos (1 STRAT largo, 1 MoU, 1 PRCO, 1 BLOG, 1 WMS) →
-    25–40 pasajes; 2–3 modelos candidatos con el mismo prompt, temperatura 0 y JSON forzado.
-    Métricas: fidelidad extractiva (cita verbatim verificable), tasa de JSON válido, “no aplica”
-    correctos, y acuerdo con Frida. Salida: <code>coding/model_eval/decision.md</code>
-    (directorio ya creado, vacío).</p>
-    <div class="dec"><b>Decisiones de Frida:</b> codificar la muestra de evaluación; aprobar el
-    modelo; y <b>antes de la corrida, decidir qué códigos propuestos entran</b> — AGENCY,
-    MODALITY, NARRATIVE_ARC, THREAT_TYPE, METAPHOR, AUDIENCE. METAPHOR es la única que obliga a
-    ampliar el marco teórico con Lakoff &amp; Johnson y MIP.</div>
+    <h4>Model evaluation (Ollama Cloud) <span class="st pend">next</span></h4>
+    <p>A stratified sample of ~5 documents (1 long STRAT, 1 MoU, 1 PRCO, 1 BLOG, 1 WMS) →
+    25–40 passages; 2–3 candidate models with the same prompt, temperature 0, forced JSON.
+    Metrics: extractive fidelity (verifiable verbatim quote), valid-JSON rate, correct “not
+    applicable” calls, and agreement with the author. Output:
+    <code>coding/model_eval/decision.md</code> (directory already created, empty).</p>
+    <div class="dec"><b>The author's decisions:</b> code the evaluation sample; approve the
+    model; and, <b>before the run, decide which proposed codes make it in</b> — AGENCY,
+    MODALITY, NARRATIVE_ARC, THREAT_TYPE, METAPHOR, AUDIENCE. METAPHOR is the only one that
+    forces an expansion of the theoretical framework to include Lakoff &amp; Johnson and MIP.</div>
   </div>
 
-  <div class="ph-n">Fase 4</div>
+  <div class="ph-n">Phase 4</div>
   <div class="ph"><span class="dot"></span>
-    <h4>Codificación Ronda 1 (LLM) <span class="st wait">pendiente</span></h4>
-    <p>Las 11 preguntas por pasaje más DOC_PROFILE por documento, con
-    <code>prompts_v1.yaml</code>. Salidas a <code>coding/round1/</code>: JSONL por documento más
-    <code>definitional_instances.jsonl</code>. Post-chequeo de toda cita contra el texto fuente
-    (<code>quote_verified</code>). Se genera además
-    <code>coding/validation/sample_for_frida.csv</code> con el 15–20 % estratificado.</p>
-    <div class="dec"><b>Decisión de Frida:</b> la doble codificación a ciegas de la muestra y la
-    lectura del reporte de acuerdo por pregunta. Los desacuerdos permiten <b>una sola</b>
-    iteración de prompts; después se congelan.</div>
+    <h4>Round 1 coding (LLM) <span class="st wait">pending</span></h4>
+    <p>All 11 questions per passage plus DOC_PROFILE per document, using
+    <code>prompts_v1.yaml</code>. Outputs go to <code>coding/round1/</code>: one JSONL per
+    document plus <code>definitional_instances.jsonl</code>. Every quote gets post-checked
+    against the source text (<code>quote_verified</code>). It also generates
+    <code>coding/validation/sample_for_author.csv</code> with the stratified 15–20% sample.</p>
+    <div class="dec"><b>The author's decision:</b> the blind double coding of the sample and
+    reading the per-question agreement report. Disagreements allow <b>a single</b> round of
+    prompt iteration; after that they are frozen.</div>
   </div>
 
-  <div class="ph-n">Fase 5</div>
+  <div class="ph-n">Phase 5</div>
   <div class="ph"><span class="dot"></span>
-    <h4>Consolidación Ronda 2 <span class="st wait">pendiente</span></h4>
-    <p>Agrupación por similitud semántica de las respuestas dentro de cada pregunta, con sus
-    citas, hacia <code>coding/guidebook_draft.yaml</code>. Los 8 nodos de beneficiario de la hoja
-    <em>method</em> entran tal cual como sub-códigos de BENEFICIARY. Después, pase automático de
-    asignación clúster → sub-código.</p>
-    <div class="dec"><b>Decisión de Frida — la más sustantiva del pipeline:</b> nombrar y definir
-    cada sub-código en <code>guidebook.yaml</code> (nombre, definición, regla de inclusión y de
-    exclusión, pasaje ejemplar) y revisar los casos límite de la asignación automática.</div>
+    <h4>Round 2 consolidation <span class="st wait">pending</span></h4>
+    <p>Grouping Round 1's answers by semantic similarity within each question, with their
+    quotes, into <code>coding/guidebook_draft.yaml</code>. The 8 beneficiary nodes from the
+    <em>method</em> sheet enter as-is, as BENEFICIARY sub-codes. After that, an automatic pass
+    assigns cluster → sub-code.</p>
+    <div class="dec"><b>The author's decision — the pipeline's most substantive one:</b> naming
+    and defining each sub-code in <code>guidebook.yaml</code> (name, definition, inclusion and
+    exclusion rule, exemplary passage) and reviewing the automatic assignment's edge cases.</div>
   </div>
 
-  <div class="ph-n">Fase 6</div>
+  <div class="ph-n">Phase 6</div>
   <div class="ph"><span class="dot"></span>
-    <h4>Análisis <span class="st wait">pendiente</span> <span class="st ok">· A y G en preliminar</span></h4>
-    <p><b>A.</b> Red intertextual completa (SO2) — hay versión v0.
-    <b>B.</b> Echo-phrases: n-gramas ≥ 6 palabras compartidos entre texto gubernamental y
-    corporativo dentro de cada familia, con quién publicó primero (SO3).
-    <b>C.</b> Red temática documento ↔ sub-código (SO1/SO2).
-    <b>D.</b> Las tres queries del plan NVivo, CSV y gráfica cada una.
-    <b>E.</b> Exports NVivo a <code>analysis/nvivo/</code>.
+    <h4>Analysis <span class="st wait">pending</span> <span class="st ok">· A and G in preliminary form</span></h4>
+    <p><b>A.</b> Full intertextual network (SO2) — a v0 version exists.
+    <b>B.</b> Echo-phrases: n-grams ≥ 6 words shared between government and corporate text
+    within each family, plus who published first (SO3).
+    <b>C.</b> Thematic network, document ↔ sub-code (SO1/SO2).
+    <b>D.</b> The three NVivo-plan queries, each with a CSV and a chart.
+    <b>E.</b> NVivo exports to <code>analysis/nvivo/</code>.
     <b>F.</b> <code>analysis/metaphors_report.md</code> (SO1).
-    <b>G.</b> Visualización interactiva — hay versión preliminar.
-    QA interno (Leiden vs. familias, matriz de similitud) a <code>analysis/qa/</code>: no son
-    resultados.</p>
-    <div class="dec"><b>Decisión de Frida:</b> aquí empieza la interpretación propiamente dicha —
-    la lectura analítica de redes y queries, y la validación uno por uno de los mapeos
-    metafóricos.</div>
+    <b>G.</b> Interactive visualization — a preliminary version exists.
+    Internal QA (Leiden vs. families, similarity matrix) goes to <code>analysis/qa/</code>:
+    these are not results.</p>
+    <div class="dec"><b>The author's decision:</b> this is where the actual interpretation
+    begins — the analytical reading of networks and queries, and validating the metaphorical
+    mappings one by one.</div>
   </div>
 
-  <div class="ph-n">Fase 7</div>
+  <div class="ph-n">Phase 7</div>
   <div class="ph"><span class="dot"></span>
-    <h4>Alta incremental de documentos <span class="st wait">pendiente</span></h4>
-    <p><code>add_document.py</code> con checklist de admisión primero: Regla 1
-    (supersession/ventana), Regla 3 (hablante, no editor), Regla 4 (frontera funcional del centro
-    digital), Regla 5 (criterio de blogs), productor vs. escrutinador (el escrutinio
-    parlamentario y la auditoría son contexto, no corpus) y escrito vs. hablado (Hansard fuera).
-    El documento nuevo sube <code>corpus_version</code>; v1 queda intacto. Prompts, modelo y
-    guidebook congelados; Fase 6 se regenera completa desde los JSONL.</p>
-    <div class="dec"><b>Decisión de Frida:</b> aprobar la admisión de cada documento con el
-    checklist evaluado a la vista, y revisar los <code>candidate_code</code> acumulados. Nada
-    entra automático.</div>
+    <h4>Incremental document intake <span class="st wait">pending</span></h4>
+    <p><code>add_document.py</code> with an admission checklist run first: Rule 1
+    (supersession/window), Rule 3 (speaker, not publisher), Rule 4 (the digital centre's
+    functional boundary), Rule 5 (the blog criterion), producer vs. scrutinizer (parliamentary
+    scrutiny and audit are context, not corpus), and written vs. spoken (Hansard is out). The
+    new document bumps <code>corpus_version</code>; v1 stays intact. Prompts, model, and
+    guidebook are frozen; Phase 6 regenerates in full from the JSONL files.</p>
+    <div class="dec"><b>The author's decision:</b> approve each document's admission with the
+    checklist evaluated in full view, and review the accumulated <code>candidate_code</code>
+    entries. Nothing gets in automatically.</div>
   </div>
+</div>
+
 </div>
 
 <div class="footer">
-  Guía de interpretación · corpus v1 (35 documentos) · generada el 2026-08-29 ·
-  Fuentes: <a href="PLAN.md">PLAN.md</a>, <a href="data/manifest.csv">data/manifest.csv</a>,
+  Interpretation guide · corpus v1 (35 documents) · generated on 2026-08-29 ·
+  Sources: <a href="PLAN.md">PLAN.md</a>, <a href="data/manifest.csv">data/manifest.csv</a>,
   <a href="coding/units.jsonl">coding/units.jsonl</a>,
   <a href="analysis/networks/intertextual_v0.json">intertextual_v0.json</a>,
-  <a href="analysis/queries/term_counts.csv">term_counts.csv</a> y los 35 JSON de
+  <a href="analysis/queries/term_counts.csv">term_counts.csv</a>, and the 35 JSON files in
   <code>data/text/</code>.
 </div>
 
 </main>
 </div>
+
+<script>
+(function(){
+  var views = ['home','documents','deliverables','assumptions','phases'];
+  var anchorToView = {
+    's1':'home',
+    's2':'documents','tronco':'documents','fam-anthropic':'documents','fam-cohere':'documents',
+    'fam-openai':'documents','fam-deepmind':'documents','fam-elevenlabs':'documents',
+    's3':'deliverables','e-manifest':'deliverables','e-units':'deliverables','e-mapa':'deliverables',
+    'e-red':'deliverables','e-queries':'deliverables','e-round1':'deliverables',
+    'e-guidebook':'deliverables','e-validacion':'deliverables','e-metaforas':'deliverables',
+    's4':'assumptions','s4-tecnicas':'assumptions','s4-captura':'assumptions','s4-llm':'assumptions',
+    's5':'phases'
+  };
+
+  function currentTarget(){
+    var hash = location.hash.replace('#','');
+    if(!hash) return {view:'home', anchor:null};
+    if(views.indexOf(hash) !== -1) return {view:hash, anchor:null};
+    if(anchorToView[hash]) return {view:anchorToView[hash], anchor:hash};
+    return {view:'home', anchor:null};
+  }
+
+  function showView(viewName, anchor){
+    views.forEach(function(v){
+      var el = document.getElementById('view-'+v);
+      if(el) el.hidden = (v !== viewName);
+    });
+    document.querySelectorAll('nav.toc a[data-nav]').forEach(function(a){
+      var h = a.getAttribute('href').replace('#','');
+      var t = views.indexOf(h) !== -1 ? h : anchorToView[h];
+      a.classList.toggle('active', t === viewName);
+    });
+    if(anchor){
+      var target = document.getElementById(anchor);
+      if(target){ window.setTimeout(function(){ target.scrollIntoView(); }, 0); return; }
+    }
+    window.scrollTo(0,0);
+  }
+
+  function handleHash(){
+    var t = currentTarget();
+    showView(t.view, t.anchor);
+  }
+
+  window.addEventListener('hashchange', handleHash);
+  document.addEventListener('DOMContentLoaded', function(){
+    handleHash();
+
+    document.querySelectorAll('[data-back]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        location.hash = 'home';
+      });
+    });
+
+    var filterInput = document.getElementById('doc-filter');
+    var filterCount = document.getElementById('doc-filter-count');
+    if(filterInput){
+      filterInput.addEventListener('input', function(){
+        var q = filterInput.value.trim().toLowerCase();
+        var totalVisible = 0;
+        document.querySelectorAll('#view-documents .docgroup').forEach(function(group){
+          var groupHasMatch = false;
+          group.querySelectorAll('.card').forEach(function(card){
+            var match = !q || card.textContent.toLowerCase().indexOf(q) !== -1;
+            card.classList.toggle('hidden-by-filter', !match);
+            if(match){ groupHasMatch = true; totalVisible++; }
+          });
+          group.classList.toggle('hidden-by-filter', !groupHasMatch);
+        });
+        filterCount.textContent = q ? (totalVisible + ' of 35 shown') : '';
+      });
+    }
+  });
+})();
+</script>
+
 </body>
 </html>

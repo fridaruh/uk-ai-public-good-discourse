@@ -1,23 +1,23 @@
 #!/usr/bin/env python
-"""Fase 4 -- Codificacion Ronda 1 (LLM).
+"""Phase 4 -- Round 1 coding (LLM).
 
-Corre las 11 preguntas de coding/prompts/prompts_v1.yaml sobre las 53 unidades
-de coding/units.jsonl, y DOC_PROFILE sobre el texto completo de cada uno de
-los 35 documentos. Usa el modelo ganador de la Fase 3 (coding/model_eval/decision.md).
+Runs the 11 questions from coding/prompts/prompts_v1.yaml over the 53 units in
+coding/units.jsonl, and DOC_PROFILE over the full text of each of the 35
+documents. Uses the winning model from Phase 3 (coding/model_eval/decision.md).
 
-Uso:
-    .venv/bin/python scripts/05_code.py                  # corrida completa
-    .venv/bin/python scripts/05_code.py --doc <doc_id>    # solo un documento
-    .venv/bin/python scripts/05_code.py --questions core  # solo las 7 preguntas nucleo
-    .venv/bin/python scripts/05_code.py --model <name>    # forzar modelo
+Usage:
+    .venv/bin/python scripts/05_code.py                  # full run
+    .venv/bin/python scripts/05_code.py --doc <doc_id>    # single document only
+    .venv/bin/python scripts/05_code.py --questions core  # 7 core questions only
+    .venv/bin/python scripts/05_code.py --model <name>    # force a model
 
-Salidas:
-    coding/round1/<doc_id>.jsonl              -- registros pregunta x instancia
-    coding/round1/doc_profiles.jsonl           -- un registro DOC_PROFILE por doc
-    coding/round1/definitional_instances.jsonl -- applies=true de DEFINITIONAL, orden cronologico
-    coding/round1/run_meta.json                -- metadatos de la corrida
-    coding/validation/sample_for_frida.csv     -- muestra 15-20% para doble codificacion
-      (solo se regenera en corrida completa, no con --doc)
+Outputs:
+    coding/round1/<doc_id>.jsonl              -- one record per question x instance
+    coding/round1/doc_profiles.jsonl           -- one DOC_PROFILE record per doc
+    coding/round1/definitional_instances.jsonl -- applies=true DEFINITIONAL, chronological order
+    coding/round1/run_meta.json                -- run metadata
+    coding/validation/sample_for_author.csv    -- 15-20% sample for double coding
+      (only regenerated on a full run, not with --doc)
 """
 import argparse
 import csv
@@ -61,7 +61,7 @@ def default_model():
     path = os.path.join(ROOT, "coding/model_eval/decision.md")
     if os.path.exists(path):
         text = open(path, encoding="utf-8").read()
-        m = re.search(r"Modelo ganador:\s*`([^`]+)`", text)
+        m = re.search(r"Winning model:\s*`([^`]+)`", text)
         if m:
             return m.group(1)
     return "gpt-oss:120b-cloud"
@@ -292,13 +292,13 @@ def stratified_sample(units, manifest, target_n=10, seed=42):
 
 
 def write_validation_sample(units, manifest, doc_json_cache, results_by_unit_question):
-    path = os.path.join(ROOT, "coding/validation/sample_for_frida.csv")
+    path = os.path.join(ROOT, "coding/validation/sample_for_author.csv")
     sample = stratified_sample(units, manifest, target_n=10)
     sample_ids = {u["unit_id"] for u in sample}
 
     fieldnames = ["unit_id", "doc_id", "genre", "family", "heading", "text"]
     for q in CORE_QUESTIONS:
-        fieldnames.append(f"FRIDA_{q}")
+        fieldnames.append(f"AUTHOR_{q}")
         fieldnames.append(f"LLM_{q}")
 
     with open(path, "w", newline="", encoding="utf-8") as f:
@@ -314,12 +314,12 @@ def write_validation_sample(units, manifest, doc_json_cache, results_by_unit_que
                 "text": u["text"][:1200],
             }
             for q in CORE_QUESTIONS:
-                row[f"FRIDA_{q}"] = ""
+                row[f"AUTHOR_{q}"] = ""
                 recs = results_by_unit_question.get((u["unit_id"], q), [])
                 if not recs:
                     summary = "n/a"
                 elif recs[0].get("applies") is False or recs[0].get("applies") is None:
-                    summary = "no aplica" if recs[0].get("applies") is False else f"ERROR: {recs[0].get('error')}"
+                    summary = "does not apply" if recs[0].get("applies") is False else f"ERROR: {recs[0].get('error')}"
                 else:
                     summary = " || ".join(r.get("answer_summary", "") or "" for r in recs)
                 row[f"LLM_{q}"] = summary
@@ -334,7 +334,7 @@ DOC_PROFILE_PROMPT = None  # set in main() from yaml
 def main():
     global DOC_PROFILE_PROMPT
     ap = argparse.ArgumentParser()
-    ap.add_argument("--doc", default=None, help="Solo procesar este doc_id")
+    ap.add_argument("--doc", default=None, help="Only process this doc_id")
     ap.add_argument("--questions", choices=["full", "core"], default="full")
     ap.add_argument("--model", default=None)
     ap.add_argument("--skip-validation-sample", action="store_true")

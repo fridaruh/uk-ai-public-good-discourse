@@ -1,24 +1,24 @@
-"""Fase 7: alta incremental de documentos al corpus.
+"""Phase 7: incremental document intake into the corpus.
 
     add_document.py <url> [--family Anthropic|Cohere|OpenAI|DeepMind|ElevenLabs]
                     [--genre STRAT|MOU|PRGOV|PRCO|BLOG|WMS|REG]
                     [--dry-run] [--yes]
 
-1. Checklist de admisión (reglas de la hoja `method`, aplicadas como filtro
-   explícito ANTES de escribir nada en disco): ventana ene-2024/jul-2026,
-   speaker-no-publisher, frontera funcional del centro digital, criterio de
-   blogs, producer-vs-scrutineer, written-vs-spoken. `--dry-run` imprime el
-   checklist y termina sin tocar nada.
-2. Si el checklist se aprueba (o se fuerza con `--yes`): descarga (UA
-   navegador, fallback archive.org), extrae al esquema de data/text/ (mismo
-   formato de bloques que 02a/02b: title/section_heading/body/quotation),
-   añade la fila al manifest (corpus_version = siguiente), genera sus
-   unidades de codificación en coding/units.jsonl con la misma lógica de
-   04_segment.py, y recalcula red + term_counts + el HUB (index.html).
+1. Admission checklist (rules from the `method` sheet, applied as an
+   explicit filter BEFORE writing anything to disk): Jan-2024/Jul-2026
+   window, speaker-no-publisher, functional boundary of the digital centre,
+   blog criterion, producer-vs-scrutineer, written-vs-spoken. `--dry-run`
+   prints the checklist and stops without touching anything.
+2. If the checklist passes (or is forced with `--yes`): downloads (browser
+   UA, archive.org fallback), extracts into the data/text/ schema (same
+   block format as 02a/02b: title/section_heading/body/quotation), appends
+   the row to the manifest (corpus_version = next), generates its coding
+   units in coding/units.jsonl with the same logic as 04_segment.py, and
+   recalculates the network + term_counts + the HUB (index.html).
 
-Nada entra automático: sin --yes, se pide confirmación interactiva después
-de mostrar el checklist. La codificación LLM (Fase 4) del doc nuevo NO se
-dispara aquí — queda como nota en el reporte final.
+Nothing gets in automatically: without --yes, interactive confirmation is
+requested after showing the checklist. LLM coding (Phase 4) of the new doc
+is NOT triggered here — it's left as a note in the final report.
 """
 from __future__ import annotations
 
@@ -44,7 +44,7 @@ RAW_DIR = ROOT / "data" / "raw"
 UNITS = ROOT / "coding" / "units.jsonl"
 LEXICON = ROOT / "coding" / "lexicon_v1.yaml"
 TERM_COUNTS = ROOT / "analysis" / "queries" / "term_counts.csv"
-NETWORK_HTML = ROOT / "analysis" / "networks" / "mapa_autoria_familias.html"
+NETWORK_HTML = ROOT / "analysis" / "networks" / "authorship_family_map.html"
 
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
@@ -71,7 +71,7 @@ GENRES = {"STRAT", "MOU", "PRGOV", "PRCO", "BLOG", "WMS", "REG"}
 
 
 # ---------------------------------------------------------------------------
-# Utilidades
+# Utilities
 # ---------------------------------------------------------------------------
 
 def clean_text(s: str) -> str:
@@ -80,7 +80,7 @@ def clean_text(s: str) -> str:
 
 
 def slugify(title: str) -> str:
-    """Convierte un título a Slug CamelCase corto, estilo doc_id existente."""
+    """Converts a title into a short CamelCase slug, matching the existing doc_id style."""
     t = unicodedata.normalize("NFKD", title).encode("ascii", "ignore").decode()
     words = re.findall(r"[A-Za-z0-9]+", t)
     stop = {"the", "a", "an", "of", "and", "to", "for", "in", "on", "with", "uk"}
@@ -94,7 +94,7 @@ def domain_of(url: str) -> str:
 
 
 def fetch(session, url):
-    """GET con reintentos; devuelve requests.Response o levanta la excepción."""
+    """GET with retries; returns requests.Response or raises the exception."""
     last_exc = None
     for attempt in range(3):
         try:
@@ -107,7 +107,7 @@ def fetch(session, url):
 
 
 def wayback_fallback(session, url):
-    """Consulta la Wayback availability API; devuelve snapshot url o None."""
+    """Queries the Wayback availability API; returns snapshot url or None."""
     try:
         r = session.get("https://archive.org/wayback/available", params={"url": url}, timeout=20)
         r.raise_for_status()
@@ -121,11 +121,11 @@ def wayback_fallback(session, url):
 
 
 # ---------------------------------------------------------------------------
-# Checklist de admisión
+# Admission checklist
 # ---------------------------------------------------------------------------
 
 def guess_date(soup: BeautifulSoup, resp) -> str | None:
-    """Heurística: meta tags de fecha, luego texto 'Published' de gov.uk."""
+    """Heuristic: date meta tags, then gov.uk 'Published' text."""
     for sel, attr in [
         ('meta[property="article:published_time"]', "content"),
         ('meta[name="date"]', "content"),
@@ -151,7 +151,7 @@ def guess_date(soup: BeautifulSoup, resp) -> str | None:
 
 
 def run_checklist(url: str, session) -> dict:
-    """Evalúa las reglas de admisión y devuelve {rules: [...], fetched: {...}}."""
+    """Evaluates the admission rules and returns {rules: [...], fetched: {...}}."""
     rules = []
     fetched = {"ok": False, "soup": None, "resp": None, "is_pdf": False,
                "text": "", "title": url, "used_archive": False}
@@ -159,7 +159,7 @@ def run_checklist(url: str, session) -> dict:
     def add(name, status, detail):
         rules.append({"rule": name, "status": status, "detail": detail})
 
-    # --- intento de descarga (solo lectura, no se escribe nada en disco) ---
+    # --- download attempt (read-only, nothing written to disk) ---
     try:
         resp = fetch(session, url)
         is_pdf = "pdf" in resp.headers.get("Content-Type", "").lower() or url.lower().endswith(".pdf")
@@ -173,7 +173,7 @@ def run_checklist(url: str, session) -> dict:
                 fetched["title"] = clean_text(h1.get_text())
             elif soup.title:
                 fetched["title"] = clean_text(soup.title.get_text())
-        fetch_note = f"descarga directa OK (status {resp.status_code})"
+        fetch_note = f"direct download OK (status {resp.status_code})"
     except Exception as exc:  # noqa: BLE001
         arch_url, ts = wayback_fallback(session, url)
         if arch_url:
@@ -185,101 +185,101 @@ def run_checklist(url: str, session) -> dict:
                     soup = BeautifulSoup(resp.content, "lxml")
                     fetched["soup"] = soup
                     fetched["text"] = clean_text(soup.get_text(" ", strip=True))
-                fetch_note = f"descarga directa falló ({exc}); recuperado vía archive.org snapshot {ts}"
+                fetch_note = f"direct download failed ({exc}); recovered via archive.org snapshot {ts}"
             except Exception as exc2:  # noqa: BLE001
-                fetch_note = f"descarga directa falló ({exc}); fallback archive.org también falló ({exc2})"
+                fetch_note = f"direct download failed ({exc}); archive.org fallback also failed ({exc2})"
         else:
-            fetch_note = f"descarga directa falló ({exc}); sin snapshot en archive.org"
-    add("Descarga (directa / fallback archive.org)", "pass" if fetched["ok"] else "fail", fetch_note)
+            fetch_note = f"direct download failed ({exc}); no snapshot on archive.org"
+    add("Download (direct / archive.org fallback)", "pass" if fetched["ok"] else "fail", fetch_note)
 
     dom = domain_of(url)
 
-    # Rule 1 — ventana temporal / supersession
+    # Rule 1 — time window / supersession
     doc_date = guess_date(fetched["soup"], fetched.get("resp")) if fetched["soup"] else None
     if doc_date:
         try:
             d = datetime.strptime(doc_date, "%Y-%m-%d").date()
             in_window = WINDOW_START <= d <= WINDOW_END
-            add("Rule 1 — ventana ene-2024/jul-2026", "pass" if in_window else "fail",
-                f"fecha detectada {doc_date}" + ("" if in_window else " (fuera de ventana)"))
+            add("Rule 1 — Jan-2024/Jul-2026 window", "pass" if in_window else "fail",
+                f"date detected {doc_date}" + ("" if in_window else " (outside window)"))
         except ValueError:
-            add("Rule 1 — ventana ene-2024/jul-2026", "no-determinable", f"fecha no parseable: {doc_date!r}")
+            add("Rule 1 — Jan-2024/Jul-2026 window", "no-determinable", f"date not parseable: {doc_date!r}")
     else:
-        add("Rule 1 — ventana ene-2024/jul-2026", "no-determinable",
-            "no se pudo detectar la fecha de publicación automáticamente; confirmar a mano")
+        add("Rule 1 — Jan-2024/Jul-2026 window", "no-determinable",
+            "could not automatically detect the publication date; confirm manually")
 
-    # Rule 3 — speaker, no publisher (¿de quién es la voz?)
+    # Rule 3 — speaker, not publisher (whose voice is it?)
     if dom in COMPANY_DOMAINS:
         add("Rule 3 — speaker-no-publisher", "pass",
-            f"dominio de empresa ({dom}) → voz = {COMPANY_DOMAINS[dom]}")
+            f"company domain ({dom}) → voice = {COMPANY_DOMAINS[dom]}")
     elif any(dom == g or dom.endswith("." + g) for g in GOV_DOMAINS):
         add("Rule 3 — speaker-no-publisher", "pass",
-            f"dominio gubernamental ({dom}) → voz = gobierno; confirmar actor exacto (GDS/DSIT/CDDO/PMO)")
+            f"government domain ({dom}) → voice = government; confirm exact actor (GDS/DSIT/CDDO/PMO)")
     else:
         add("Rule 3 — speaker-no-publisher", "no-determinable",
-            f"dominio {dom!r} no es ni gov.uk/parliament.uk ni dominio de empresa MoU; "
-            "verificar que la voz del texto sea la del actor y no de un tercero que lo reporta")
+            f"domain {dom!r} is neither gov.uk/parliament.uk nor an MoU company domain; "
+            "verify that the text's voice is the actor's and not a third party reporting on them")
 
-    # Rule 4 — frontera funcional del centro digital
+    # Rule 4 — functional boundary of the digital centre
     kw = r"\bgds\b|government digital service|\bi\.ai\b|incubator for (artificial intelligence|ai)|" \
          r"dsit\b|science, innovation and technology|digital government|public services?.{0,20}\bai\b|" \
          r"memorandum of understanding|ai opportunities"
     low = fetched["text"].lower()
     if low and re.search(kw, low):
-        add("Rule 4 — frontera funcional del centro digital", "pass",
-            "el texto menciona GDS/DSIT/i.AI o gobierno digital / IA en servicios públicos")
+        add("Rule 4 — functional boundary of the digital centre", "pass",
+            "the text mentions GDS/DSIT/i.AI or digital government / AI in public services")
     elif low:
-        add("Rule 4 — frontera funcional del centro digital", "no-determinable",
-            "no se detectaron palabras clave del centro digital; revisar a mano si cae dentro del alcance")
+        add("Rule 4 — functional boundary of the digital centre", "no-determinable",
+            "no digital-centre keywords detected; review manually whether it falls within scope")
     else:
-        add("Rule 4 — frontera funcional del centro digital", "no-determinable",
-            "sin texto extraído para evaluar (PDF o descarga fallida)")
+        add("Rule 4 — functional boundary of the digital centre", "no-determinable",
+            "no extracted text to evaluate (PDF or failed download)")
 
-    # Rule 5 — criterio de blogs
+    # Rule 5 — blog criterion
     if "/blog" in urlparse(url).path.lower() or "blog." in dom:
         is_recognised_blog = dom.startswith("gds.blog") or dom in COMPANY_DOMAINS or "blog." + dom.split(".", 1)[-1] == dom
         recognised = dom.startswith("gds.blog") or any(c in dom for c in COMPANY_DOMAINS)
-        add("Rule 5 — criterio de blogs", "pass" if recognised else "no-determinable",
-            f"URL de blog ({dom}); " + ("blog institucional reconocido (GDS / empresa MoU)"
-             if recognised else "blog no reconocido — confirmar que es voz institucional, no personal/terceros"))
+        add("Rule 5 — blog criterion", "pass" if recognised else "no-determinable",
+            f"blog URL ({dom}); " + ("recognized institutional blog (GDS / MoU company)"
+             if recognised else "unrecognized blog — confirm it is institutional voice, not personal/third-party"))
     else:
-        add("Rule 5 — criterio de blogs", "pass", "no es una URL de blog (no aplica)")
+        add("Rule 5 — blog criterion", "pass", "not a blog URL (not applicable)")
 
     # producer-vs-scrutineer
     if any(s in dom for s in SCRUTINY_DOMAINS):
         add("Producer vs. scrutineer", "fail",
-            f"dominio de escrutinio/auditoría ({dom}) → contexto, NO corpus")
+            f"scrutiny/audit domain ({dom}) → context, NOT corpus")
     else:
-        add("Producer vs. scrutineer", "pass", "no es un órgano de escrutinio parlamentario/auditoría")
+        add("Producer vs. scrutineer", "pass", "not a parliamentary scrutiny/audit body")
 
-    # written-vs-spoken (Hansard fuera)
+    # written-vs-spoken (Hansard excluded)
     if any(h in dom for h in HANSARD_DOMAINS) or "hansard" in url.lower():
-        add("Written vs. spoken (Hansard fuera)", "fail",
-            "Hansard / transcripción de intervención oral → fuera del corpus")
+        add("Written vs. spoken (Hansard excluded)", "fail",
+            "Hansard / transcript of spoken remarks → outside the corpus")
     else:
-        add("Written vs. spoken (Hansard fuera)", "pass", "no es una transcripción de Hansard")
+        add("Written vs. spoken (Hansard excluded)", "pass", "not a Hansard transcript")
 
     fetched["guessed_date"] = doc_date
     return {"rules": rules, "fetched": fetched}
 
 
 def print_checklist(url, result):
-    print(f"\n=== Checklist de admisión — {url} ===")
+    print(f"\n=== Admission checklist — {url} ===")
     for r in result["rules"]:
-        mark = {"pass": "PASA", "fail": "FALLA", "no-determinable": "NO-DETERMINABLE"}[r["status"]]
+        mark = {"pass": "PASS", "fail": "FAIL", "no-determinable": "NOT DETERMINABLE"}[r["status"]]
         print(f"  [{mark:16s}] {r['rule']}")
         print(f"                     {r['detail']}")
     fails = [r for r in result["rules"] if r["status"] == "fail"]
     print()
     if fails:
-        print(f"RESULTADO: {len(fails)} regla(s) en FALLA — requiere revisión explícita de Frida antes de admitir.")
+        print(f"RESULT: {len(fails)} rule(s) FAILED — requires explicit review by the author before admitting.")
     else:
         nd = [r for r in result["rules"] if r["status"] == "no-determinable"]
-        print(f"RESULTADO: sin fallas duras. {len(nd)} regla(s) no-determinable — Frida decide.")
+        print(f"RESULT: no hard failures. {len(nd)} rule(s) not determinable — the author decides.")
 
 
 # ---------------------------------------------------------------------------
-# Extracción a esquema data/text
+# Extraction to data/text schema
 # ---------------------------------------------------------------------------
 
 CAPTURE_TAGS = {"h1", "h2", "h3", "h4", "p", "li", "blockquote"}
@@ -375,7 +375,7 @@ def build_doc_json(url, blocks, fmt):
 
 
 # ---------------------------------------------------------------------------
-# Heurísticas de atributos (espejo de 01_manifest.py / 04_segment.py)
+# Attribute heuristics (mirrors 01_manifest.py / 04_segment.py)
 # ---------------------------------------------------------------------------
 
 def guess_family(url, text, family_flag):
@@ -437,7 +437,7 @@ def assign_doc_id(doc_date, genre, speaker, title, existing_ids):
 
 
 # ---------------------------------------------------------------------------
-# Lexicón / term_status / unidades (misma lógica que 04_segment.py)
+# Lexicon / term_status / units (same logic as 04_segment.py)
 # ---------------------------------------------------------------------------
 
 def load_lexicon():
@@ -454,7 +454,7 @@ def hits(rxs, text):
 
 
 def sections(blocks):
-    secs, cur, cur_head = [], [], "(inicio)"
+    secs, cur, cur_head = [], [], "(start)"
     for b in blocks:
         if b["structural_position"] in ("section_heading", "pillar_name"):
             if cur:
@@ -555,7 +555,7 @@ def append_term_counts(row, manifest_row):
 
 
 def rebuild_network_html():
-    """Corre 06_network_v0.py y re-embebe el JSON en mapa_autoria_familias.html."""
+    """Runs 06_network_v0.py and re-embeds the JSON into authorship_family_map.html."""
     subprocess.run([sys.executable, str(ROOT / "scripts" / "06_network_v0.py")],
                     check=True, cwd=str(ROOT))
     data = json.loads((ROOT / "analysis" / "networks" / "intertextual_v0.json").read_text())
@@ -563,7 +563,7 @@ def rebuild_network_html():
     new_block = "const DATA = " + json.dumps(data, indent=1, ensure_ascii=False) + ";"
     html2, count = re.subn(r"const DATA = \{.*?\n\};", new_block, html, flags=re.S)
     if count == 0:
-        raise RuntimeError("no se encontró 'const DATA = {...};' en mapa_autoria_familias.html")
+        raise RuntimeError("could not find 'const DATA = {...};' in authorship_family_map.html")
     NETWORK_HTML.write_text(html2)
 
 
@@ -577,16 +577,17 @@ def rebuild_all_recompute():
 # ---------------------------------------------------------------------------
 
 def admit_document(url: str, family: str | None, genre: str | None, result: dict, session) -> dict:
-    """Post-checklist: descarga ya resuelta en `result['fetched']` → extrae,
-    escribe en data/text/, añade fila al manifest y unidades a units.jsonl,
-    y recalcula red + term_counts + hub. Devuelve un reporte (dict).
+    """Post-checklist: the download already resolved in `result['fetched']` →
+    extracts, writes to data/text/, appends the row to the manifest and units
+    to units.jsonl, and recalculates network + term_counts + hub. Returns a
+    report (dict).
 
-    Se asume que el checklist ya se corrió (`run_checklist`); esta función no
-    vuelve a evaluar reglas de admisión, solo materializa el alta.
+    Assumes the checklist has already run (`run_checklist`); this function
+    does not re-evaluate admission rules, it only materializes the intake.
     """
     fetched = result["fetched"]
     if not fetched["ok"]:
-        return {"ok": False, "error": "No se pudo descargar el documento (ni directo ni por archive.org)."}
+        return {"ok": False, "error": "Could not download the document (neither direct nor via archive.org)."}
 
     if fetched["is_pdf"]:
         title = url.rsplit("/", 1)[-1]
@@ -657,27 +658,27 @@ def print_report(report: dict):
         print(report["error"])
         return
     r = report["manifest_row"]
-    print(f"\nDocumento admitido: {report['doc_id']}")
-    print(f"  fecha={r['date']} genre={r['genre']} speaker={r['speaker']} family={r['family']} "
+    print(f"\nDocument admitted: {report['doc_id']}")
+    print(f"  date={r['date']} genre={r['genre']} speaker={r['speaker']} family={r['family']} "
           f"gds_tier={r['gds_tier']} term_status={r['term_status']}")
-    print(f"  corpus_version={report['corpus_version']} · {report['n_blocks']} bloques · "
-          f"{report['n_units']} unidades de codificación")
+    print(f"  corpus_version={report['corpus_version']} · {report['n_blocks']} blocks · "
+          f"{report['n_units']} coding units")
     if report["recompute_ok"]:
-        print("\nRecalculado: analysis/networks/intertextual_v0.json, mapa_autoria_familias.html "
-              "(DATA re-embebido), analysis/queries/term_counts.csv, index.html.")
+        print("\nRecalculated: analysis/networks/intertextual_v0.json, authorship_family_map.html "
+              "(DATA re-embedded), analysis/queries/term_counts.csv, index.html.")
     else:
-        print(f"\nADVERTENCIA: el recálculo de red/hub falló ({report['recompute_error']}). "
-              f"El documento sí quedó admitido en el manifest y en coding/units.jsonl.")
-    print(f"\ncodificación pendiente: {report['coding_pending_cmd']}")
+        print(f"\nWARNING: the network/hub recalculation failed ({report['recompute_error']}). "
+              f"The document was still admitted in the manifest and in coding/units.jsonl.")
+    print(f"\ncoding pending: {report['coding_pending_cmd']}")
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Alta incremental de un documento al corpus (Fase 7).")
+    ap = argparse.ArgumentParser(description="Incremental intake of a document into the corpus (Phase 7).")
     ap.add_argument("url")
     ap.add_argument("--family", choices=FAMILIES, default=None)
     ap.add_argument("--genre", choices=sorted(GENRES), default=None)
-    ap.add_argument("--dry-run", action="store_true", help="solo imprime el checklist, no toca disco")
-    ap.add_argument("--yes", action="store_true", help="salta la confirmación interactiva (para uso desde serve_site.py)")
+    ap.add_argument("--dry-run", action="store_true", help="only prints the checklist, does not touch disk")
+    ap.add_argument("--yes", action="store_true", help="skips interactive confirmation (for use from serve_site.py)")
     args = ap.parse_args()
 
     session = requests.Session()
@@ -689,15 +690,15 @@ def main():
 
     fails = [r for r in result["rules"] if r["status"] == "fail"]
     if fails and not args.yes:
-        print("\nHay reglas en FALLA. Este documento normalmente NO debería admitirse.")
+        print("\nThere are FAILED rules. This document would not normally be admitted.")
 
     if not args.yes:
         try:
-            ans = input("\n¿Aprobar la admisión de este documento? [y/N]: ").strip().lower()
+            ans = input("\nApprove the admission of this document? [y/N]: ").strip().lower()
         except EOFError:
             ans = ""
         if ans != "y":
-            print("Admisión cancelada por el usuario.")
+            print("Intake cancelled by user.")
             return 1
 
     report = admit_document(args.url, args.family, args.genre, result, session)

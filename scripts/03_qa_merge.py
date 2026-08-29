@@ -1,8 +1,8 @@
-"""Cierre de Fase 1: QA global de data/text/*.json y fusión de metadatos al manifest.
+"""Phase 1 close-out: global QA of data/text/*.json and merges metadata into the manifest.
 
-Chequea por documento: JSON válido, bloques no vacíos, exactamente un bloque
-'title', posiciones estructurales dentro del vocabulario, longitud total plausible.
-Fusiona fetch_status/format/n_blocks/source desde data/raw/<doc_id>.meta.json.
+Checks per document: valid JSON, non-empty blocks, exactly one 'title' block,
+structural positions within the vocabulary, plausible total length.
+Merges fetch_status/format/n_blocks/source from data/raw/<doc_id>.meta.json.
 """
 import csv
 import json
@@ -23,7 +23,7 @@ def main():
         tpath = ROOT / "data" / "text" / f"{doc_id}.json"
         mpath = ROOT / "data" / "raw" / f"{doc_id}.meta.json"
         if not tpath.exists():
-            problems.append(f"{doc_id}: falta data/text JSON")
+            problems.append(f"{doc_id}: missing data/text JSON")
             r["fetch_status"] = "missing"
             continue
         doc = json.loads(tpath.read_text())
@@ -34,13 +34,13 @@ def main():
         quotes = sum(1 for b in blocks if b["structural_position"] == "quotation")
         pillars = sum(1 for b in blocks if b["structural_position"] == "pillar_name")
         if not blocks:
-            problems.append(f"{doc_id}: sin bloques")
+            problems.append(f"{doc_id}: no blocks")
         if len(titles) != 1:
-            problems.append(f"{doc_id}: {len(titles)} bloques title (esperado 1)")
+            problems.append(f"{doc_id}: {len(titles)} title blocks (expected 1)")
         if badpos:
-            problems.append(f"{doc_id}: posiciones fuera de vocabulario {badpos}")
+            problems.append(f"{doc_id}: positions outside vocabulary {badpos}")
         if total < MIN_CHARS.get(r["genre"], 400):
-            problems.append(f"{doc_id}: solo {total} chars (umbral {MIN_CHARS.get(r['genre'])})")
+            problems.append(f"{doc_id}: only {total} chars (threshold {MIN_CHARS.get(r['genre'])})")
         meta = json.loads(mpath.read_text()) if mpath.exists() else {}
         r["fetch_status"] = meta.get("fetch_status", "ok?")
         r["n_blocks"] = len(blocks)
@@ -56,10 +56,10 @@ def main():
         w.writerows(rows)
 
     ok = sum(1 for r in rows if r["fetch_status"] == "ok")
-    print(f"QA: {ok}/{len(rows)} ok; {len(problems)} problemas")
+    print(f"QA: {ok}/{len(rows)} ok; {len(problems)} problems")
     for p in problems:
         print(f"  ! {p}")
-    print("\nResumen por documento:")
+    print("\nSummary by document:")
     for r in rows:
         print(f"  {r['doc_id'][:55]:57s} {r['fetch_status']:7s} blocks={r['n_blocks']:>4} "
               f"quotes={r['n_quotes']:>2} pillars={r['n_pillars']:>2} chars={r['total_chars']:>6} src={r['source']}")

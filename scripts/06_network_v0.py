@@ -1,16 +1,16 @@
-"""Red intertextual preliminar (v0) — SO2, Fairclough.
+"""Preliminary intertextual network (v0) -- SO2, Fairclough.
 
-Detección de referencias explícitas entre documentos del corpus por alias de
-título (curados, en minúsculas). Los alias largos se enmascaran antes de buscar
-los cortos para no contar dos veces (p. ej. "response to the AI Opportunities
+Detection of explicit references between corpus documents via curated,
+lowercase title aliases. Long aliases are masked before searching for the
+short ones so they aren't counted twice (e.g. "response to the AI Opportunities
 Action Plan" vs "AI Opportunities Action Plan").
 
-Regla MoU: mención de "memorandum of understanding" + nombre de la empresa →
-referencia al MoU de esa familia.
+MoU rule: mention of "memorandum of understanding" + company name ->
+reference to that family's MoU.
 
-Salida: analysis/networks/intertextual_v0.json (nodos con atributos del manifest,
-aristas con tipo, conteo y evidencia). Preliminar: Frida audita las aristas con
-la evidencia incluida; Fase 6 añade ecos y códigos compartidos.
+Output: analysis/networks/intertextual_v0.json (nodes with manifest attributes,
+edges with type, count and evidence). Preliminary: the author audits the edges
+with the included evidence; Phase 6 adds echoes and shared codes.
 """
 import csv
 import json
@@ -20,7 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "analysis" / "networks" / "intertextual_v0.json"
 
-# alias (minúsculas) -> doc_id destino; orden de match: más largo primero
+# alias (lowercase) -> target doc_id; match order: longest first
 ALIASES = {
     "2024-01-18_STRAT_CDDO_GenerativeAIFramework": [
         "generative ai framework"],
@@ -63,7 +63,7 @@ COMPANY_TOKENS = {"Anthropic": ["anthropic"], "Cohere": ["cohere"],
                   "ElevenLabs": ["elevenlabs", "eleven labs"]}
 
 SUPERSESSION = [
-    # citing (nuevo) -> cited (retirado): el Playbook sustituye al GenAI Framework
+    # citing (new) -> cited (retired): the Playbook supersedes the GenAI Framework
     ("2025-02-10_STRAT_GDS_AIPlaybookUKGovernment",
      "2024-01-18_STRAT_CDDO_GenerativeAIFramework"),
 ]
@@ -84,7 +84,7 @@ def main():
     rows = list(csv.DictReader((ROOT / "data" / "manifest.csv").open()))
     texts = {r["doc_id"]: load_text(r["doc_id"]) for r in rows}
 
-    # pares (alias, target) ordenados por longitud desc para enmascarar largos primero
+    # (alias, target) pairs sorted by descending length to mask long ones first
     pairs = sorted(((a, t) for t, al in ALIASES.items() for a in al),
                    key=lambda x: -len(x[0]))
 
@@ -95,7 +95,7 @@ def main():
         masked = text
         for alias, target in pairs:
             if target == src:
-                # el propio título del doc: enmascarar para no regalarlo a alias más cortos
+                # the doc's own title: mask it so it isn't handed to shorter aliases
                 masked = masked.replace(alias, "#" * len(alias))
                 continue
             count, first_pos = 0, None
@@ -110,12 +110,12 @@ def main():
             if count:
                 edges.append({"source": src, "target": target, "type": "reference",
                               "count": count, "evidence": snippet(text, first_pos)})
-        # regla MoU
+        # MoU rule
         if "memorandum of understanding" in text or re.search(r"\bmou\b", text):
             for fam, mou_id in MOU_DOCS.items():
                 if src == mou_id or r["family"] not in (fam, "None"):
                     continue
-                # solo dentro de la familia o docs sin familia que nombren a la empresa
+                # only within the family, or docs without a family that name the company
                 if any(tok in text for tok in COMPANY_TOKENS[fam]):
                     if r["family"] == fam or src.endswith("AIAdoptionSummitPartnerships"):
                         m = re.search(r"memorandum of understanding|\bmou\b", text)
@@ -125,7 +125,7 @@ def main():
 
     for a, b in SUPERSESSION:
         edges.append({"source": a, "target": b, "type": "supersession", "count": 1,
-                      "evidence": "El AI Playbook sustituye al Generative AI Framework (gov.uk, 2025-02-10)."})
+                      "evidence": "The AI Playbook supersedes the Generative AI Framework (gov.uk, 2025-02-10)."})
 
     indeg = {}
     for e in edges:
@@ -143,12 +143,12 @@ def main():
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({"nodes": nodes, "edges": edges}, indent=1, ensure_ascii=False))
-    print(f"{len(nodes)} nodos, {len(edges)} aristas -> {OUT}")
-    print("\nTop referenciados (in-degree):")
+    print(f"{len(nodes)} nodes, {len(edges)} edges -> {OUT}")
+    print("\nTop referenced (in-degree):")
     for n in sorted(nodes, key=lambda n: -n["in_degree"])[:10]:
         print(f"  {n['in_degree']:>3}  {n['id']}")
-    print("\nAristas por tipo:", {t: sum(1 for e in edges if e['type'] == t)
-                                   for t in {e['type'] for e in edges}})
+    print("\nEdges by type:", {t: sum(1 for e in edges if e['type'] == t)
+                                for t in {e['type'] for e in edges}})
 
 
 if __name__ == "__main__":

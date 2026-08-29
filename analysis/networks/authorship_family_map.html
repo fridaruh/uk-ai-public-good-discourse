@@ -7,8 +7,8 @@
 <style>
   /* Committed to a single dark look (visual reference from the author). */
   :root{
-    --bg:#14161c; --surface:#1a1d24; --ink:#e8ecf3; --ink2:#9aa7bd; --ink3:#6b7689;
-    --grid:#232733; --hull:#2c3140;
+    --bg:#0a0b0d; --surface:#16181c; --ink:#ffffff; --ink2:#a8acb3; --ink3:#6c7178;
+    --grid:#2a2d33; --hull:#363a42; --accent:#0052ff;
     --gds:#4590dd; --dsit:#52a865; --dsitgds:#2aa8a0; --cddo:#2ba3c9; --pmo:#c2559f;
     --ext:#7c4fdd; --joint:#b8862f; --anthropic:#d96b45; --openai:#e0619b;
     --cohere:#cc4455; --deepmind:#9678e8; --elevenlabs:#b3901f;
@@ -21,15 +21,15 @@
   .controls{display:flex;flex-wrap:wrap;gap:18px;align-items:center;background:var(--surface);
     border:1px solid var(--grid);border-radius:10px;padding:10px 16px;margin-bottom:12px;font-size:13px}
   .controls label{display:flex;gap:6px;align-items:center;color:var(--ink2);cursor:pointer}
-  .controls input[type=checkbox]{accent-color:var(--gds)}
-  .controls input[type=range]{width:260px;accent-color:var(--gds)}
+  .controls input[type=checkbox]{accent-color:var(--accent)}
+  .controls input[type=range]{width:260px;accent-color:var(--accent)}
   #dateLabel{color:var(--ink);font-variant-numeric:tabular-nums;min-width:88px}
   .stage{position:relative;background:var(--surface);border:1px solid var(--grid);border-radius:12px;overflow:hidden}
   svg{display:block;width:100%;height:auto}
   .hullLabel{fill:var(--ink3);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
   .nodeLabel{fill:var(--ink2);font-size:9.5px;pointer-events:none}
   .nodeLabel.big{fill:var(--ink);font-size:10.5px;font-weight:600}
-  #tooltip{position:absolute;display:none;background:#0f1115ee;border:1px solid var(--grid);
+  #tooltip{position:absolute;display:none;background:#0a0b0dee;border:1px solid var(--grid);
     border-radius:8px;padding:9px 12px;font-size:12px;color:var(--ink);pointer-events:none;
     max-width:300px;z-index:5;box-shadow:0 6px 24px #0009}
   #tooltip .t{font-weight:600;margin-bottom:3px}

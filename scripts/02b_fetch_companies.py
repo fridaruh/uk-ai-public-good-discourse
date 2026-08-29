@@ -1,33 +1,33 @@
-"""Fase 1 (empresas): descarga y extrae texto estructurado de los anuncios de
-las empresas de IA de frontera (Anthropic, Cohere, OpenAI, Google DeepMind,
-ElevenLabs) listados en data/manifest.csv.
+"""Phase 1 (companies): downloads and extracts structured text from the
+announcements of the frontier AI companies (Anthropic, Cohere, OpenAI, Google
+DeepMind, ElevenLabs) listed in data/manifest.csv.
 
-Por documento produce:
-  - data/raw/<doc_id>.html        (HTML crudo, fuente directa o snapshot archive.org)
-  - data/raw/<doc_id>.meta.json   (metadatos de la descarga)
-  - data/text/<doc_id>.json       (bloques estructurados: title/section_heading/body/quotation)
+Per document it produces:
+  - data/raw/<doc_id>.html        (raw HTML, direct source or archive.org snapshot)
+  - data/raw/<doc_id>.meta.json   (download metadata)
+  - data/text/<doc_id>.json       (structured blocks: title/section_heading/body/quotation)
 
-Estrategia de extracción (genérica, sin dependencias por sitio):
-  1. Raíz de contenido = <main> si tiene >=3 <p>/<li>, si no <article>, si no <body>.
-  2. Título = primer <h1> dentro de la raíz.
-  3. Se procesan los elementos (h1-h4/p/li/blockquote) que siguen al <h1> en orden
-     de documento, hasta el primer heading "boilerplate" (Related/Author/Keep
-     reading/Similar articles/...) o un segundo <h1>, momento en el que se corta
-     (todo lo posterior son tarjetas de "related posts", footer, etc.).
-  4. Párrafos/citas: un <blockquote> (o un párrafo con comillas tipográficas +
-     verbo de atribución "said/commented/...") se clasifica "quotation"; si le
-     sigue una línea "— Nombre, Cargo" se fusiona como atribución.
-  5. <li> se conservan como "body" solo si tienen >=30 caracteres (filtra nav/tags).
-  6. Párrafos cortos sin puntuación terminal (bylines, "Share", "Tags", "Listen to
-     article 5 minutes"...) se descartan como boilerplate.
+Extraction strategy (generic, no per-site dependencies):
+  1. Content root = <main> if it has >=3 <p>/<li>, otherwise <article>, otherwise <body>.
+  2. Title = first <h1> inside the root.
+  3. The elements (h1-h4/p/li/blockquote) that follow the <h1> are processed in
+     document order, up to the first "boilerplate" heading (Related/Author/Keep
+     reading/Similar articles/...) or a second <h1>, at which point it stops
+     (everything after that is "related posts" cards, footer, etc.).
+  4. Paragraphs/quotes: a <blockquote> (or a paragraph with typographic quotes +
+     an attribution verb "said/commented/...") is classified as "quotation"; if a
+     "— Name, Title" line follows, it is merged as attribution.
+  5. <li> are kept as "body" only if they have >=30 characters (filters nav/tags).
+  6. Short paragraphs with no terminal punctuation (bylines, "Share", "Tags", "Listen to
+     article 5 minutes"...) are discarded as boilerplate.
 
-Uso:
+Usage:
   .venv/bin/python scripts/02b_fetch_companies.py [--only DOC_ID] [--use-existing-raw]
 
---use-existing-raw: si data/raw/<doc_id>.html ya existe, lo reusa en vez de
-  descargar (para casos donde se sustituyó manualmente el crudo, p.ej. cuando
-  hubo que renderizar el sitio con un navegador porque tanto la descarga directa
-  como archive.org fallaron).
+--use-existing-raw: if data/raw/<doc_id>.html already exists, reuse it instead of
+  downloading (for cases where the raw file was manually replaced, e.g. when
+  the site had to be rendered with a browser because both the direct download
+  and archive.org failed).
 """
 import argparse
 import csv
@@ -395,7 +395,7 @@ def process_doc(row, use_existing_raw=False):
         source = "direct"
         http_status = 200
         content_type = "text/html"
-        print(f"  [{doc_id}] usando raw existente en disco ({len(html_bytes)} bytes)")
+        print(f"  [{doc_id}] using existing raw file on disk ({len(html_bytes)} bytes)")
     else:
         try:
             r = fetch(url)
@@ -410,13 +410,13 @@ def process_doc(row, use_existing_raw=False):
                     source = "direct"
                 else:
                     error = (
-                        f"direct fetch 200 pero cuerpo insuficiente "
-                        f"(title={bool(title)}, body_chars={body_chars(blocks)}) -> intento archive.org"
+                        f"direct fetch 200 but insufficient body "
+                        f"(title={bool(title)}, body_chars={body_chars(blocks)}) -> trying archive.org"
                     )
             else:
-                error = f"direct fetch bloqueado/erróneo (status={r.status_code}) -> intento archive.org"
+                error = f"direct fetch blocked/erroneous (status={r.status_code}) -> trying archive.org"
         except requests.RequestException as e:
-            error = f"direct fetch excepción: {e} -> intento archive.org"
+            error = f"direct fetch exception: {e} -> trying archive.org"
 
         if html_bytes is None:
             archive_url = f"https://web.archive.org/web/2/{url}"
@@ -434,13 +434,13 @@ def process_doc(row, use_existing_raw=False):
                     else:
                         error = (
                             (error or "")
-                            + f" | archive.org 200 pero cuerpo insuficiente (body_chars={body_chars(blocks)})"
+                            + f" | archive.org 200 but insufficient body (body_chars={body_chars(blocks)})"
                         )
                 else:
                     error = (error or "") + f" | archive.org status={r2.status_code}"
                     http_status = r2.status_code
             except requests.RequestException as e:
-                error = (error or "") + f" | archive.org excepción: {e}"
+                error = (error or "") + f" | archive.org exception: {e}"
 
         # Tier 3: some sites (Cohere, Ghost/Next.js RSC blogs) stream the article body
         # as client-side JS with no server-rendered <p>/<li> content in the raw HTML nor
@@ -465,16 +465,16 @@ def process_doc(row, use_existing_raw=False):
                         http_status = r3.status_code
                         content_type = "text/html"
                         final_url = url
-                        error = (error or "") + " | resuelto vía renderizado JS (r.jina.ai) sobre la URL directa"
+                        error = (error or "") + " | resolved via JS rendering (r.jina.ai) on the direct URL"
                     else:
                         error = (
                             (error or "")
-                            + f" | r.jina.ai 200 pero cuerpo insuficiente (body_chars={body_chars(blocks)})"
+                            + f" | r.jina.ai 200 but insufficient body (body_chars={body_chars(blocks)})"
                         )
                 else:
                     error = (error or "") + f" | r.jina.ai status={r3.status_code}"
             except requests.RequestException as e:
-                error = (error or "") + f" | r.jina.ai excepción: {e}"
+                error = (error or "") + f" | r.jina.ai exception: {e}"
 
     if html_bytes is None:
         RAW_DIR.mkdir(parents=True, exist_ok=True)
@@ -491,7 +491,7 @@ def process_doc(row, use_existing_raw=False):
             "error": error,
         }
         meta_path.write_text(json.dumps(meta, indent=2, ensure_ascii=False))
-        print(f"  [{doc_id}] FALLIDO: {error}")
+        print(f"  [{doc_id}] FAILED: {error}")
         return meta
 
     RAW_DIR.mkdir(parents=True, exist_ok=True)
@@ -527,39 +527,39 @@ def process_doc(row, use_existing_raw=False):
     bc = body_chars(blocks)
     flags = []
     if n_titles != 1:
-        flags.append(f"n_titles={n_titles} (esperado 1)")
+        flags.append(f"n_titles={n_titles} (expected 1)")
     if bc < MIN_BODY_CHARS:
         flags.append(f"body_chars={bc} < {MIN_BODY_CHARS}")
-    flag_str = f" -- REVISAR: {'; '.join(flags)}" if flags else ""
+    flag_str = f" -- REVIEW: {'; '.join(flags)}" if flags else ""
     print(f"  [{doc_id}] ok source={source} n_blocks={len(blocks)} body_chars={bc} title={title!r}{flag_str}")
     return meta
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--only", help="procesar solo este doc_id")
+    ap.add_argument("--only", help="process only this doc_id")
     ap.add_argument("--use-existing-raw", action="store_true",
-                     help="si data/raw/<doc_id>.html ya existe, reusarlo en vez de descargar")
+                     help="if data/raw/<doc_id>.html already exists, reuse it instead of downloading")
     args = ap.parse_args()
 
     rows = load_company_rows()
     if args.only:
         rows = [r for r in rows if r["doc_id"] == args.only]
         if not rows:
-            print(f"doc_id no encontrado entre las filas de empresa: {args.only}")
+            print(f"doc_id not found among company rows: {args.only}")
             return 1
 
-    print(f"Documentos de empresa a procesar: {len(rows)}")
+    print(f"Company documents to process: {len(rows)}")
     results = []
     for row in rows:
         meta = process_doc(row, use_existing_raw=args.use_existing_raw)
         results.append(meta)
 
-    print("\nResumen:")
+    print("\nSummary:")
     for m in results:
         print(f"  {m['doc_id']}: fetch_status={m['fetch_status']} source={m['source']} n_blocks={m['n_blocks']}")
     n_ok = sum(1 for m in results if m["fetch_status"] == "ok")
-    print(f"\n{n_ok}/{len(results)} documentos OK")
+    print(f"\n{n_ok}/{len(results)} documents OK")
     return 0
 
 

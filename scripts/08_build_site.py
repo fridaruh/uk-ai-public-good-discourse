@@ -1,11 +1,11 @@
-"""Fase 7 (HUB): genera index.html — site local consolidado del proyecto.
+"""Phase 7 (HUB): generates index.html — the project's consolidated local site.
 
-Re-ejecutable e idempotente: lee data/manifest.csv y data/raw/archive_urls.json,
-comprueba en disco qué entregables y qué fases existen, y escribe index.html en
-la raíz. No modifica ningún otro archivo. Pensado para correr después de cada
-fase del pipeline (incluida Fase 7 / add_document.py) para refrescar el hub.
+Re-runnable and idempotent: reads data/manifest.csv and data/raw/archive_urls.json,
+checks on disk which deliverables and which phases exist, and writes index.html
+at the root. Does not modify any other file. Meant to run after each pipeline
+phase (including Phase 7 / add_document.py) to refresh the hub.
 
-Uso: .venv/bin/python scripts/08_build_site.py
+Usage: .venv/bin/python scripts/08_build_site.py
 """
 import csv
 import json
@@ -58,7 +58,7 @@ def text_relpath(doc_id):
 
 
 # ---------------------------------------------------------------------------
-# Estado de fases (0-7)
+# Phase status (0-7)
 # ---------------------------------------------------------------------------
 
 def phase_status(rows):
@@ -67,103 +67,103 @@ def phase_status(rows):
     def add(n, name, status, detail):
         phases.append({"n": n, "name": name, "status": status, "detail": detail})
 
-    # Fase 0 — manifest
+    # Phase 0 — manifest
     if rows:
-        add(0, "Congelar el corpus (manifest)", "hecho", f"{len(rows)} documentos en data/manifest.csv")
+        add(0, "Freeze the corpus (manifest)", "hecho", f"{len(rows)} documents in data/manifest.csv")
     else:
-        add(0, "Congelar el corpus (manifest)", "pendiente", "data/manifest.csv no existe o está vacío")
+        add(0, "Freeze the corpus (manifest)", "pendiente", "data/manifest.csv does not exist or is empty")
 
-    # Fase 1 — descarga y texto estructurado
+    # Phase 1 — download and structured text
     n_text = sum(1 for r in rows if (ROOT / "data" / "text" / f"{r['doc_id']}.json").exists())
     if rows and n_text == len(rows):
-        add(1, "Descarga y archivado", "hecho", f"{n_text}/{len(rows)} documentos con texto extraído")
+        add(1, "Download and archiving", "hecho", f"{n_text}/{len(rows)} documents with extracted text")
     elif n_text > 0:
-        add(1, "Descarga y archivado", "en curso", f"{n_text}/{len(rows)} documentos con texto extraído")
+        add(1, "Download and archiving", "en curso", f"{n_text}/{len(rows)} documents with extracted text")
     else:
-        add(1, "Descarga y archivado", "pendiente", "sin textos extraídos en data/text/")
+        add(1, "Download and archiving", "pendiente", "no extracted texts in data/text/")
 
-    # Fase 2 — segmentación + término
+    # Phase 2 — segmentation + term
     lexicon_ok = (ROOT / "coding" / "lexicon_v1.yaml").exists()
     units_ok = (ROOT / "coding" / "units.jsonl").exists() and (ROOT / "coding" / "units.jsonl").stat().st_size > 0
     if lexicon_ok and units_ok:
         n_units = sum(1 for _ in (ROOT / "coding" / "units.jsonl").open())
-        add(2, "Segmentación y detección del término", "hecho", f"{n_units} unidades en coding/units.jsonl")
+        add(2, "Segmentation and term detection", "hecho", f"{n_units} units in coding/units.jsonl")
     elif lexicon_ok:
-        add(2, "Segmentación y detección del término", "en curso", "lexicón aprobado; faltan unidades")
+        add(2, "Segmentation and term detection", "en curso", "lexicon approved; units missing")
     else:
-        add(2, "Segmentación y detección del término", "pendiente", "sin lexicón de variantes")
+        add(2, "Segmentation and term detection", "pendiente", "no variant lexicon")
 
-    # Fase 3 — evaluación de modelos
+    # Phase 3 — model evaluation
     decision_md = ROOT / "coding" / "model_eval" / "decision.md"
     model_eval_dir = ROOT / "coding" / "model_eval"
     if decision_md.exists():
-        add(3, "Evaluación de modelos (Ollama Cloud)", "hecho", "coding/model_eval/decision.md")
+        add(3, "Model evaluation (Ollama Cloud)", "hecho", "coding/model_eval/decision.md")
     elif model_eval_dir.exists() and any(model_eval_dir.iterdir()):
-        add(3, "Evaluación de modelos (Ollama Cloud)", "en curso", "coding/model_eval/ tiene archivos, falta decision.md")
+        add(3, "Model evaluation (Ollama Cloud)", "en curso", "coding/model_eval/ has files, decision.md missing")
     else:
-        add(3, "Evaluación de modelos (Ollama Cloud)", "pendiente", "coding/model_eval/ vacío")
+        add(3, "Model evaluation (Ollama Cloud)", "pendiente", "coding/model_eval/ empty")
 
-    # Fase 4 — codificación ronda 1
+    # Phase 4 — round 1 coding
     run_meta = ROOT / "coding" / "round1" / "run_meta.json"
     round1_dir = ROOT / "coding" / "round1"
     if run_meta.exists():
-        add(4, "Codificación Ronda 1 (LLM)", "hecho", "coding/round1/run_meta.json")
+        add(4, "Round 1 Coding (LLM)", "hecho", "coding/round1/run_meta.json")
     elif round1_dir.exists() and any(round1_dir.iterdir()):
-        add(4, "Codificación Ronda 1 (LLM)", "en curso", "coding/round1/ tiene archivos, falta run_meta.json")
+        add(4, "Round 1 Coding (LLM)", "en curso", "coding/round1/ has files, run_meta.json missing")
     else:
-        add(4, "Codificación Ronda 1 (LLM)", "pendiente", "coding/round1/ vacío")
+        add(4, "Round 1 Coding (LLM)", "pendiente", "coding/round1/ empty")
 
-    # Fase 5 — consolidación ronda 2 (guidebook)
+    # Phase 5 — round 2 consolidation (guidebook)
     guidebook = ROOT / "coding" / "guidebook.yaml"
     guidebook_draft = ROOT / "coding" / "guidebook_draft.yaml"
     if guidebook.exists():
-        add(5, "Consolidación Ronda 2 (guidebook)", "hecho", "coding/guidebook.yaml")
+        add(5, "Round 2 Consolidation (guidebook)", "hecho", "coding/guidebook.yaml")
     elif guidebook_draft.exists():
-        add(5, "Consolidación Ronda 2 (guidebook)", "en curso", "borrador: coding/guidebook_draft.yaml")
+        add(5, "Round 2 Consolidation (guidebook)", "en curso", "draft: coding/guidebook_draft.yaml")
     else:
-        add(5, "Consolidación Ronda 2 (guidebook)", "pendiente", "sin guidebook")
+        add(5, "Round 2 Consolidation (guidebook)", "pendiente", "no guidebook")
 
-    # Fase 6 — análisis
+    # Phase 6 — analysis
     outs_6 = [
-        ROOT / "analysis" / "networks" / "mapa_autoria_familias.html",
+        ROOT / "analysis" / "networks" / "authorship_family_map.html",
         ROOT / "analysis" / "queries" / "queries.html",
         ROOT / "analysis" / "queries" / "echo_summary.md",
         ROOT / "analysis" / "metaphors_report.md",
     ]
     n6 = sum(1 for p in outs_6 if p.exists())
     if n6 == len(outs_6):
-        add(6, "Análisis (redes, queries, ecos, metáforas)", "hecho", "todos los outputs de Fase 6 presentes")
+        add(6, "Analysis (networks, queries, echoes, metaphors)", "hecho", "all Phase 6 outputs present")
     elif n6 > 0:
-        add(6, "Análisis (redes, queries, ecos, metáforas)", "en curso", f"{n6}/{len(outs_6)} outputs presentes")
+        add(6, "Analysis (networks, queries, echoes, metaphors)", "en curso", f"{n6}/{len(outs_6)} outputs present")
     else:
-        add(6, "Análisis (redes, queries, ecos, metáforas)", "pendiente", "sin outputs de Fase 6")
+        add(6, "Analysis (networks, queries, echoes, metaphors)", "pendiente", "no Phase 6 outputs")
 
-    # Fase 7 — alta incremental
+    # Phase 7 — incremental document intake
     incrementales = [r for r in rows if str(r.get("corpus_version", "1")).strip() not in ("", "1")]
     if incrementales:
-        add(7, "Alta incremental de documentos", "en curso", f"{len(incrementales)} documento(s) con corpus_version > 1")
+        add(7, "Incremental document intake", "en curso", f"{len(incrementales)} document(s) with corpus_version > 1")
     else:
-        add(7, "Alta incremental de documentos", "pendiente", "herramienta lista (add_document.py); sin altas todavía")
+        add(7, "Incremental document intake", "pendiente", "tool ready (add_document.py); no intakes yet")
 
     return phases
 
 
 # ---------------------------------------------------------------------------
-# Entregables
+# Deliverables
 # ---------------------------------------------------------------------------
 
 DELIVERABLES = [
-    ("PLAN.md", "Plan de tesis / operacionalización"),
-    ("README.md", "Guía del repositorio"),
-    ("interpretacion.html", "Interpretación consolidada"),
-    ("analysis/networks/mapa_autoria_familias.html", "Mapa de autoría y familias (red intertextual)"),
-    ("analysis/queries/queries.html", "Las tres queries del plan NVivo"),
-    ("analysis/queries/echo_summary.md", "Resumen de echo-phrases (SO3)"),
-    ("analysis/metaphors_report.md", "Reporte de metáforas (SO1)"),
-    ("coding/model_eval/decision.md", "Decisión de evaluación de modelos"),
-    ("coding/guidebook_draft.yaml", "Guidebook — borrador de sub-códigos"),
-    ("coding/validation/sample_for_frida.csv", "Muestra de validación doble-codificada"),
-    ("data/manifest.csv", "Manifest del corpus"),
+    ("PLAN.md", "Thesis plan / operationalization"),
+    ("README.md", "Repository guide"),
+    ("interpretation.html", "Consolidated interpretation"),
+    ("analysis/networks/authorship_family_map.html", "Authorship and family map (intertextual network)"),
+    ("analysis/queries/queries.html", "The three queries from the NVivo plan"),
+    ("analysis/queries/echo_summary.md", "Echo-phrases summary (SO3)"),
+    ("analysis/metaphors_report.md", "Metaphors report (SO1)"),
+    ("coding/model_eval/decision.md", "Model evaluation decision"),
+    ("coding/guidebook_draft.yaml", "Guidebook — sub-codes draft"),
+    ("coding/validation/sample_for_frida.csv", "Double-coded validation sample"),
+    ("data/manifest.csv", "Corpus manifest"),
 ]
 
 
@@ -174,7 +174,7 @@ def render_deliverables():
         if exists:
             items.append(f'<li class="ok"><a href="{relpath}">{label}</a> <span class="path">{relpath}</span></li>')
         else:
-            items.append(f'<li class="pending">{label} <span class="path">{relpath}</span> <em>(pendiente)</em></li>')
+            items.append(f'<li class="pending">{label} <span class="path">{relpath}</span> <em>(pending)</em></li>')
     return "\n".join(items)
 
 
@@ -182,7 +182,7 @@ def render_deliverables():
 # HTML
 # ---------------------------------------------------------------------------
 
-STATUS_LABEL = {"hecho": "hecho", "en curso": "en curso", "pendiente": "pendiente"}
+STATUS_LABEL = {"hecho": "✓ done", "en curso": "in progress", "pendiente": "pending"}
 
 
 def render_phases(phases):
@@ -190,7 +190,7 @@ def render_phases(phases):
     for p in phases:
         rows.append(
             f'<div class="phase phase-{p["status"].replace(" ", "-")}">'
-            f'<div class="phase-n">Fase {p["n"]}</div>'
+            f'<div class="phase-n">Phase {p["n"]}</div>'
             f'<div class="phase-body"><div class="phase-name">{p["name"]}</div>'
             f'<div class="phase-detail">{p["detail"]}</div></div>'
             f'<div class="phase-badge">{STATUS_LABEL[p["status"]]}</div>'
@@ -227,117 +227,122 @@ def main():
     corpus_json = json.dumps(corpus, ensure_ascii=False)
 
     html = f"""<!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI for the public good — HUB del proyecto</title>
+<title>AI for the public good — Project hub</title>
 <style>
   :root{{
-    --bg:#14161c; --surface:#1a1d24; --ink:#e8ecf3; --ink2:#9aa7bd; --ink3:#6b7689;
-    --grid:#232733; --accent:#4590dd;
+    --bg:#ffffff; --surface:#ffffff; --surface-soft:#f7f7f7; --surface-strong:#eef0f3;
+    --ink:#0a0b0d; --body:#5b616e; --muted:#7c828a;
+    --hairline:#dee1e6; --accent:#0052ff; --accent-active:#003ecc;
     --anthropic:#d96b45; --openai:#e0619b; --cohere:#cc4455; --deepmind:#9678e8; --elevenlabs:#b3901f;
-    --ok:#52a865; --warn:#c2a33f; --bad:#c25a5a;
+    --ok:#05b169; --warn:#a87700; --bad:#cf202f;
   }}
   *{{box-sizing:border-box}}
-  html,body{{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  html,body{{margin:0;padding:0;background:var(--bg);color:var(--body);
     font:14px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}}
   .wrap{{max-width:1200px;margin:0 auto;padding:28px 24px 60px}}
-  header h1{{font-size:20px;letter-spacing:.03em;margin:0 0 4px;text-transform:uppercase}}
-  header .sub{{color:var(--ink2);font-size:13px;margin-bottom:22px}}
+  header h1{{font-size:20px;font-weight:600;letter-spacing:.03em;margin:0 0 4px;
+    text-transform:uppercase;color:var(--ink)}}
+  header .sub{{color:var(--muted);font-size:13px;margin-bottom:22px}}
   section{{margin-bottom:34px}}
-  h2{{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);
-    margin:0 0 12px;border-bottom:1px solid var(--grid);padding-bottom:8px}}
-  a{{color:var(--accent);text-decoration:none}}
-  a:hover{{text-decoration:underline}}
+  section:nth-of-type(even){{background:var(--surface-soft);margin-left:-24px;margin-right:-24px;
+    padding:20px 24px;border-radius:16px}}
+  h2{{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+    margin:0 0 12px;border-bottom:1px solid var(--hairline);padding-bottom:8px}}
+  a, a:visited{{color:var(--accent);text-decoration:none}}
+  a:hover{{color:var(--accent-active);text-decoration:underline}}
 
   .phases{{display:flex;flex-direction:column;gap:6px}}
   .phase{{display:flex;align-items:center;gap:14px;background:var(--surface);
-    border:1px solid var(--grid);border-radius:8px;padding:9px 14px}}
-  .phase-n{{font-size:11px;color:var(--ink3);min-width:52px;letter-spacing:.06em;text-transform:uppercase}}
+    border:1px solid var(--hairline);border-radius:8px;padding:9px 14px}}
+  .phase-n{{font-size:11px;color:var(--muted);min-width:52px;letter-spacing:.06em;text-transform:uppercase}}
   .phase-body{{flex:1;min-width:0}}
-  .phase-name{{font-size:13.5px}}
-  .phase-detail{{font-size:12px;color:var(--ink3)}}
-  .phase-badge{{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
-    padding:3px 9px;border-radius:20px;white-space:nowrap}}
-  .phase-hecho .phase-badge{{background:#1c3324;color:var(--ok)}}
-  .phase-en-curso .phase-badge{{background:#332f1c;color:var(--warn)}}
-  .phase-pendiente .phase-badge{{background:#2a2530;color:var(--ink3)}}
+  .phase-name{{font-size:13.5px;color:var(--ink)}}
+  .phase-detail{{font-size:12px;color:var(--muted)}}
+  .phase-badge{{font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    padding:3px 9px;border-radius:20px;white-space:nowrap;background:var(--surface-strong)}}
+  .phase-hecho .phase-badge{{color:var(--ok)}}
+  .phase-en-curso .phase-badge{{color:var(--warn)}}
+  .phase-pendiente .phase-badge{{color:var(--muted)}}
 
   ul.deliverables{{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 24px}}
-  ul.deliverables li{{background:var(--surface);border:1px solid var(--grid);border-radius:8px;
-    padding:9px 12px;font-size:13px}}
-  ul.deliverables li.pending{{color:var(--ink3)}}
-  ul.deliverables li .path{{display:block;font-size:11px;color:var(--ink3);margin-top:2px}}
-  ul.deliverables li.pending em{{color:var(--ink3);font-style:normal;font-size:11px}}
+  ul.deliverables li{{background:var(--surface);border:1px solid var(--hairline);border-radius:8px;
+    padding:9px 12px;font-size:13px;color:var(--ink)}}
+  ul.deliverables li.pending{{color:var(--muted)}}
+  ul.deliverables li .path{{display:block;font-size:11px;color:var(--muted);margin-top:2px}}
+  ul.deliverables li.pending em{{color:var(--muted);font-style:normal;font-size:11px}}
 
   .toolbar{{display:flex;gap:10px;align-items:center;margin-bottom:10px}}
-  #filterInput{{flex:1;background:var(--surface);border:1px solid var(--grid);color:var(--ink);
+  #filterInput{{flex:1;background:var(--surface);border:1px solid var(--hairline);color:var(--ink);
     border-radius:8px;padding:8px 12px;font-size:13px}}
-  #filterInput:focus{{outline:1px solid var(--accent)}}
-  #corpusCount{{color:var(--ink3);font-size:12px;white-space:nowrap}}
+  #filterInput:focus{{outline:2px solid var(--accent);border-color:var(--accent)}}
+  #corpusCount{{color:var(--muted);font-size:12px;white-space:nowrap}}
 
   table{{border-collapse:collapse;width:100%;font-size:12.5px;background:var(--surface);
-    border:1px solid var(--grid);border-radius:10px;overflow:hidden}}
-  thead th{{cursor:pointer;user-select:none;text-align:left;color:var(--ink3);
-    text-transform:uppercase;font-size:10.5px;letter-spacing:.07em;
-    padding:9px 10px;border-bottom:1px solid var(--grid);white-space:nowrap}}
+    border:1px solid var(--hairline);border-radius:10px;overflow:hidden}}
+  thead th{{cursor:pointer;user-select:none;text-align:left;color:var(--muted);
+    background:var(--surface-strong);text-transform:uppercase;font-size:10.5px;letter-spacing:.07em;
+    padding:9px 10px;border-bottom:1px solid var(--hairline);white-space:nowrap}}
   thead th:hover{{color:var(--ink)}}
   thead th.sorted::after{{content:" " attr(data-arrow)}}
-  tbody td{{padding:7px 10px;border-bottom:1px solid var(--grid);color:var(--ink2);vertical-align:top}}
+  tbody td{{padding:7px 10px;border-bottom:1px solid var(--hairline);color:var(--body);vertical-align:top}}
   tbody tr:last-child td{{border-bottom:none}}
-  tbody tr:hover{{background:#1f232c}}
+  tbody tr:hover{{background:var(--surface-soft)}}
   .fam-dot{{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}}
   .links a{{margin-right:10px;font-size:11.5px}}
-  .links .none{{color:var(--ink3);font-size:11.5px;margin-right:10px}}
+  .links .none{{color:var(--muted);font-size:11.5px;margin-right:10px}}
   .term-present{{color:var(--ok)}}
   .term-variant{{color:var(--warn)}}
-  .term-absent, .term-check{{color:var(--ink3)}}
+  .term-absent, .term-check{{color:var(--muted)}}
 
-  form#addForm{{background:var(--surface);border:1px solid var(--grid);border-radius:10px;
+  form#addForm{{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;
     padding:18px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}}
   form#addForm .field{{display:flex;flex-direction:column;gap:5px;min-width:180px}}
   form#addForm .field.grow{{flex:1;min-width:260px}}
-  form#addForm label{{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em}}
-  form#addForm input, form#addForm select{{background:var(--bg);border:1px solid var(--grid);
+  form#addForm label{{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}}
+  form#addForm input, form#addForm select{{background:var(--surface);border:1px solid var(--hairline);
     color:var(--ink);border-radius:6px;padding:8px 10px;font-size:13px}}
-  form#addForm button{{background:var(--accent);color:#fff;border:none;border-radius:6px;
-    padding:9px 18px;font-size:13px;cursor:pointer;font-weight:600}}
-  form#addForm button:hover{{opacity:.9}}
-  #staticNote{{display:none;background:var(--surface);border:1px solid var(--grid);border-radius:10px;
-    padding:16px 20px;color:var(--ink2);font-size:13px}}
-  #staticNote code{{background:#0f1115;padding:2px 7px;border-radius:5px;color:var(--ink)}}
-  #addResult{{margin-top:14px;font-size:13px;white-space:pre-wrap;background:#0f1115;
-    border-radius:8px;padding:12px 14px;display:none}}
+  form#addForm input:focus, form#addForm select:focus{{outline:none;border-color:var(--accent)}}
+  form#addForm button{{background:var(--accent);color:#fff;border:none;border-radius:100px;
+    padding:10px 22px;font-size:13px;cursor:pointer;font-weight:600}}
+  form#addForm button:hover{{background:var(--accent-active)}}
+  #staticNote{{display:none;background:var(--surface);border:1px solid var(--hairline);border-radius:10px;
+    padding:16px 20px;color:var(--body);font-size:13px}}
+  #staticNote code{{background:var(--surface-strong);padding:2px 7px;border-radius:5px;color:var(--ink)}}
+  #addResult{{margin-top:14px;font-size:13px;white-space:pre-wrap;background:var(--surface-strong);
+    color:var(--ink);border-radius:8px;padding:12px 14px;display:none}}
 
-  footer{{color:var(--ink3);font-size:11.5px;margin-top:40px}}
+  footer{{color:var(--muted);font-size:11.5px;margin-top:40px}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>AI for the public good — corpus y análisis</h1>
-    <div class="sub">GDS/DSIT 2024-2026 · discurso de "AI for the public good" en el Government Digital Service · HUB local del proyecto</div>
+    <h1>AI for the public good — corpus and analysis</h1>
+    <div class="sub">GDS/DSIT 2024-2026 · "AI for the public good" discourse at the Government Digital Service · local project hub</div>
   </header>
 
   <section id="phases">
-    <h2>Estado de fases</h2>
+    <h2>Phase status</h2>
     <div class="phases">
 {render_phases(phases)}
     </div>
   </section>
 
   <section id="deliverables">
-    <h2>Entregables</h2>
+    <h2>Deliverables</h2>
     <ul class="deliverables">
 {render_deliverables()}
     </ul>
   </section>
 
   <section id="corpus">
-    <h2>Corpus (<span id="corpusTotal">{len(corpus)}</span> documentos)</h2>
+    <h2>Corpus (<span id="corpusTotal">{len(corpus)}</span> documents)</h2>
     <div class="toolbar">
-      <input id="filterInput" type="text" placeholder="Filtrar por doc_id, fecha, actor, género, familia o estado del término…">
+      <input id="filterInput" type="text" placeholder="Filter by doc_id, date, speaker, genre, family, or term status…">
       <span id="corpusCount"></span>
     </div>
     <div style="overflow-x:auto">
@@ -345,12 +350,12 @@ def main():
       <thead>
         <tr>
           <th data-key="doc_id">doc_id</th>
-          <th data-key="date">fecha</th>
-          <th data-key="speaker">actor</th>
-          <th data-key="genre">género</th>
-          <th data-key="family">familia</th>
-          <th data-key="term_status">término</th>
-          <th data-key="_links">enlaces</th>
+          <th data-key="date">date</th>
+          <th data-key="speaker">speaker</th>
+          <th data-key="genre">genre</th>
+          <th data-key="family">family</th>
+          <th data-key="term_status">term</th>
+          <th data-key="_links">links</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -359,14 +364,14 @@ def main():
   </section>
 
   <section id="add-document">
-    <h2>Agregar documento</h2>
+    <h2>Add document</h2>
     <form id="addForm" method="post" action="/add">
       <div class="field grow">
         <label for="url">URL</label>
         <input type="url" id="url" name="url" placeholder="https://www.gov.uk/government/…" required>
       </div>
       <div class="field">
-        <label for="family">Familia (opcional)</label>
+        <label for="family">Family (optional)</label>
         <select id="family" name="family">
           <option value="">—</option>
           <option>Anthropic</option>
@@ -377,7 +382,7 @@ def main():
         </select>
       </div>
       <div class="field">
-        <label for="genre">Género (opcional)</label>
+        <label for="genre">Genre (optional)</label>
         <select id="genre" name="genre">
           <option value="">—</option>
           <option>STRAT</option>
@@ -389,18 +394,18 @@ def main():
           <option>REG</option>
         </select>
       </div>
-      <button type="submit">Ejecutar checklist de admisión</button>
+      <button type="submit">Run admission checklist</button>
     </form>
     <div id="addResult"></div>
     <div id="staticNote">
-      Esta página se abrió como archivo (<code>file://</code>), así que el formulario no puede hacer POST.
-      Para agregar documentos desde el hub, levanta el servidor local:
+      This page was opened as a file (<code>file://</code>), so the form cannot POST.
+      To add documents from the hub, start the local server:
       <p><code>.venv/bin/python scripts/serve_site.py</code></p>
-      y abre <code>http://localhost:8765</code>.
+      and open <code>http://localhost:8765</code>.
     </div>
   </section>
 
-  <footer>Generado por scripts/08_build_site.py · re-ejecutable e idempotente.</footer>
+  <footer>Generated by scripts/08_build_site.py · re-runnable and idempotent.</footer>
 </div>
 
 <script>
@@ -412,8 +417,8 @@ let sortKey = "date", sortDir = 1;
 function fmtLinks(row) {{
   const parts = [];
   parts.push(row.url ? `<a href="${{row.url}}" target="_blank" rel="noopener">original</a>` : '<span class="none">original —</span>');
-  parts.push(row.archive ? `<a href="${{row.archive}}" target="_blank" rel="noopener">archivo</a>` : '<span class="none">archivo —</span>');
-  parts.push(row.text ? `<a href="${{row.text}}" target="_blank" rel="noopener">texto</a>` : '<span class="none">texto —</span>');
+  parts.push(row.archive ? `<a href="${{row.archive}}" target="_blank" rel="noopener">archive</a>` : '<span class="none">archive —</span>');
+  parts.push(row.text ? `<a href="${{row.text}}" target="_blank" rel="noopener">text</a>` : '<span class="none">text —</span>');
   return `<span class="links">${{parts.join('')}}</span>`;
 }}
 
@@ -461,7 +466,7 @@ document.querySelectorAll('#corpusTable thead th[data-key]').forEach(th => {{
 document.getElementById('filterInput').addEventListener('input', applyFilterAndSort);
 applyFilterAndSort();
 
-// --- Agregar documento ---
+// --- Add document ---
 if (location.protocol === 'file:') {{
   document.getElementById('addForm').style.display = 'none';
   document.getElementById('staticNote').style.display = 'block';
@@ -473,7 +478,7 @@ if (location.protocol === 'file:') {{
     for (const [k, v] of fd.entries()) params.set(k, v);
     const resultBox = document.getElementById('addResult');
     resultBox.style.display = 'block';
-    resultBox.textContent = 'Ejecutando checklist de admisión…';
+    resultBox.textContent = 'Running admission checklist…';
     try {{
       const resp = await fetch('/add', {{
         method: 'POST',
@@ -483,7 +488,7 @@ if (location.protocol === 'file:') {{
       const html = await resp.text();
       document.open(); document.write(html); document.close();
     }} catch (e) {{
-      resultBox.textContent = 'Error contactando al servidor local: ' + e;
+      resultBox.textContent = 'Error contacting local server: ' + e;
     }}
   }});
 }}
@@ -492,7 +497,7 @@ if (location.protocol === 'file:') {{
 </html>
 """
     OUT.write_text(html)
-    print(f"index.html generado ({len(corpus)} documentos, {sum(1 for p in phases if p['status']=='hecho')}/{len(phases)} fases hechas) -> {OUT}")
+    print(f"index.html generated ({len(corpus)} documents, {sum(1 for p in phases if p['status']=='hecho')}/{len(phases)} phases done) -> {OUT}")
 
 
 if __name__ == "__main__":

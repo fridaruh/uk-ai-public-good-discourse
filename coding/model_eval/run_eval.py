@@ -1,13 +1,13 @@
 #!/usr/bin/env python
-"""Fase 3 - Evaluacion de modelos (Ollama Cloud).
+"""Phase 3 - Model evaluation (Ollama Cloud).
 
-Corre las 11 preguntas de coding/prompts/prompts_v1.yaml sobre una muestra
-estratificada de 6 unidades, para cada modelo candidato, y calcula metricas
-de fidelidad verbatim / validez JSON / applies=false razonable para decidir
-el modelo ganador de la Fase 4.
+Runs the 11 questions from coding/prompts/prompts_v1.yaml over a stratified
+sample of 6 units, for each candidate model, and computes metrics (verbatim
+fidelity / JSON validity / reasonable applies=false rate) to decide the
+winning model for Phase 4.
 
-Salidas: coding/model_eval/results.csv (registro por unidad x pregunta x modelo)
-         coding/model_eval/decision.md (resumen y decision)
+Outputs: coding/model_eval/results.csv (one row per unit x question x model)
+         coding/model_eval/decision.md (summary and decision)
 """
 import csv
 import json
@@ -32,9 +32,9 @@ MODELS = [
     "deepseek-v4-flash:cloud",
 ]
 
-# Muestra estratificada (ver justificacion en decision.md)
+# Stratified sample (see rationale in decision.md)
 SAMPLE_UNIT_IDS = [
-    "2025-02-10_STRAT_GDS_AIPlaybookUKGovernment::s130",   # STRAT larga
+    "2025-02-10_STRAT_GDS_AIPlaybookUKGovernment::s130",   # long STRAT
     "2025-07-21_MOU_OpenAI_AIOpportunities::s02",           # MOU
     "2026-01-27_PRCO_Anthropic_GOVUKPartnership::s01",      # PRCO
     "2026-01-20_BLOG_GDS_OurRoadmapLaunch::s03",            # BLOG
@@ -235,30 +235,30 @@ def main():
 
     metrics_path = os.path.join(ROOT, "coding/model_eval/decision.md")
     lines = []
-    lines.append("# Fase 3 -- Evaluacion de modelos (Ollama Cloud)\n")
-    lines.append(f"Fecha de corrida: {time.strftime('%Y-%m-%d')}\n")
-    lines.append("\n## Candidatos probados\n")
+    lines.append("# Phase 3 -- Model evaluation (Ollama Cloud)\n")
+    lines.append(f"Run date: {time.strftime('%Y-%m-%d')}\n")
+    lines.append("\n## Candidates tested\n")
     lines.append(
-        "Los 4 nombres sugeridos en el plan original "
+        "The 4 model names suggested in the original plan "
         "(`deepseek-v3.1:671b-cloud`, `kimi-k2:1t-cloud`, `qwen3-coder:480b-cloud`, "
-        "`glm-4.6:cloud`) ya no existen en el catalogo de Ollama Cloud vigente al "
-        f"correr ({time.strftime('%Y-%m-%d')}) -- `ollama pull` devolvio "
-        "`pull model manifest: file does not exist` para los 4. Se resolvio el "
-        "catalogo vigente contra `ollama.com/search?c=cloud` y se sustituyeron por "
-        "la generacion vigente de los mismos proveedores/familias:\n\n"
-        "| Placeholder original | Sustituto vigente que se probo |\n"
+        "`glm-4.6:cloud`) no longer exist in the Ollama Cloud catalogue current as "
+        f"of the run date ({time.strftime('%Y-%m-%d')}) -- `ollama pull` returned "
+        "`pull model manifest: file does not exist` for all 4. The current catalogue "
+        "was resolved against `ollama.com/search?c=cloud` and each placeholder was "
+        "substituted with the current generation of the same provider/family:\n\n"
+        "| Original placeholder | Current substitute tested |\n"
         "|---|---|\n"
         "| `glm-4.6:cloud` | `glm-5.3:cloud` |\n"
         "| `kimi-k2:1t-cloud` | `kimi-k3:cloud` |\n"
         "| `deepseek-v3.1:671b-cloud` | `deepseek-v4-flash:cloud` |\n"
-        "| `qwen3-coder:480b-cloud` | no disponible (`qwen3.5:*-cloud` fallo pull; se omite) |\n\n"
-        "`gpt-oss:120b-cloud` (linea base ya probada) se mantiene como candidato.\n"
-        "Los 4 candidatos evaluados se verificaron con una llamada corta a "
-        "`/api/generate` antes de la corrida completa.\n"
+        "| `qwen3-coder:480b-cloud` | not available (`qwen3.5:*-cloud` pull failed; omitted) |\n\n"
+        "`gpt-oss:120b-cloud` (already-tested baseline) is retained as a candidate.\n"
+        "All 4 evaluated candidates were verified with a short `/api/generate` call "
+        "before the full run.\n"
     )
 
-    lines.append("\n## Metricas por modelo (6 unidades x 11 preguntas = 66 llamadas/modelo)\n")
-    lines.append("| Modelo | % JSON valido | % fidelidad verbatim (citas OK / citas totales) | applies=true | applies=false | errores | tiempo medio (s) |\n")
+    lines.append("\n## Metrics per model (6 units x 11 questions = 66 calls/model)\n")
+    lines.append("| Model | % valid JSON | % verbatim fidelity (quotes OK / total quotes) | applies=true | applies=false | errors | mean time (s) |\n")
     lines.append("|---|---|---|---|---|---|---|\n")
 
     summary_rows = []
@@ -273,12 +273,12 @@ def main():
             f"{a['applies_true']} | {a['applies_false']} | {a['errors']} | {avg_time:.1f} |\n"
         )
 
-    lines.append("\n## Applies=false razonables en pasajes cortos (<700 caracteres)\n")
-    lines.append("| Modelo | applies=false / llamadas en pasajes cortos |\n|---|---|\n")
+    lines.append("\n## Reasonable applies=false on short passages (<700 characters)\n")
+    lines.append("| Model | applies=false / calls on short passages |\n|---|---|\n")
     for m in MODELS:
         lines.append(f"| {m} | {short_applies_false[m]}/{short_total[m]} |\n")
 
-    # Decision: gana fidelidad verbatim; empates los decide validez JSON
+    # Decision rule: verbatim fidelity wins; ties broken by JSON validity
     ranked = sorted(
         summary_rows,
         key=lambda row: (
@@ -289,18 +289,17 @@ def main():
     winner = ranked[0]
     lines.append("\n## Decision\n")
     lines.append(
-        f"**Modelo ganador: `{winner[0]}`** (fidelidad verbatim {winner[2]:.1f}%, "
-        f"JSON valido {winner[1]:.1f}%). Regla aplicada: gana fidelidad verbatim "
-        "(criterio de decision predefinido); los empates se rompen por % de JSON "
-        "valido. Proveedor: Ollama Cloud. Fecha de decision: "
-        f"{time.strftime('%Y-%m-%d')}. Este texto puede citarse casi directo en el "
-        "capitulo de metodos.\n"
+        f"**Winning model: `{winner[0]}`** (verbatim fidelity {winner[2]:.1f}%, "
+        f"valid JSON {winner[1]:.1f}%). Rule applied: verbatim fidelity wins "
+        "(predefined decision criterion); ties are broken by % of valid JSON. "
+        f"Provider: Ollama Cloud. Decision date: {time.strftime('%Y-%m-%d')}. "
+        "This text can be cited almost verbatim in the methods chapter.\n"
     )
     lines.append(
-        "\nNota de alcance: el acuerdo con Frida sobre la muestra (Fase 3, punto 4 "
-        "del PLAN) queda pendiente -- este reporte solo cubre las metricas "
-        "automaticas (JSON valido, fidelidad verbatim, applies=false razonable). "
-        "La adjudicacion humana se hace en la validacion 15-20% de la Fase 4.\n"
+        "\nScope note: agreement with the author on the sample (Phase 3, item 4 "
+        "of the PLAN) is still pending -- this report only covers the automatic "
+        "metrics (valid JSON, verbatim fidelity, reasonable applies=false). Human "
+        "adjudication happens in the 15-20% validation of Phase 4.\n"
     )
 
     with open(metrics_path, "w", encoding="utf-8") as f:

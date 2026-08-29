@@ -187,14 +187,17 @@ def generate_html(genre_data, tier_data):
     <title>Query Analysis</title>
     <style>
         :root {{
-            --bg-primary: #14161c;
-            --bg-secondary: #1a1d24;
-            --text-primary: #e8ecf3;
-            --text-secondary: #9aa7bd;
-            --border-color: #232733;
-            --color-present: #4590dd;
-            --color-variant: #b8862f;
-            --color-absent: #6b7689;
+            --bg-primary: #ffffff;
+            --bg-secondary: #ffffff;
+            --surface-soft: #f7f7f7;
+            --surface-strong: #eef0f3;
+            --text-primary: #0a0b0d;
+            --text-secondary: #5b616e;
+            --text-muted: #7c828a;
+            --border-color: #dee1e6;
+            --color-present: #0052ff;
+            --color-variant: #a87700;
+            --color-absent: #048f56;
         }}
 
         * {{
@@ -218,21 +221,24 @@ def generate_html(genre_data, tier_data):
         h1 {{
             margin-bottom: 1rem;
             font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
         }}
 
         .note {{
-            background-color: var(--bg-secondary);
-            border-left: 4px solid var(--border-color);
+            background-color: var(--surface-soft);
+            border-left: 4px solid var(--color-present);
             padding: 1rem;
             margin-bottom: 2rem;
             color: var(--text-secondary);
             font-size: 0.875rem;
+            border-radius: 0 8px 8px 0;
         }}
 
         .chart-section {{
             background-color: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 4px;
+            border-radius: 16px;
             padding: 2rem;
             margin-bottom: 3rem;
         }}
@@ -265,7 +271,7 @@ def generate_html(genre_data, tier_data):
         .table-section {{
             background-color: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 4px;
+            border-radius: 16px;
             padding: 2rem;
             margin-bottom: 3rem;
             overflow-x: auto;
@@ -274,6 +280,7 @@ def generate_html(genre_data, tier_data):
         .table-section h2 {{
             margin-bottom: 1rem;
             font-size: 1.125rem;
+            font-weight: 600;
             color: var(--text-primary);
         }}
 
@@ -284,8 +291,8 @@ def generate_html(genre_data, tier_data):
         }}
 
         th {{
-            background-color: var(--bg-primary);
-            color: var(--text-secondary);
+            background-color: var(--surface-strong);
+            color: var(--text-muted);
             padding: 0.75rem;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
@@ -295,10 +302,11 @@ def generate_html(genre_data, tier_data):
         td {{
             padding: 0.75rem;
             border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
         }}
 
         tr:hover {{
-            background-color: var(--bg-primary);
+            background-color: var(--surface-soft);
         }}
     </style>
 </head>

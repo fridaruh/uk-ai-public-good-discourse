@@ -1,17 +1,18 @@
 #!/usr/bin/env python
-"""Fase 5 (preparacion) -- Consolidacion Ronda 2, DRAFT para revision de Frida.
+"""Phase 5 (preparation) -- Round 2 consolidation, DRAFT for the author's review.
 
-Por cada pregunta nucleo, embebe los answer_summary de coding/round1/*.jsonl con
-embeddinggemma, agrupa por similitud coseno (umbral ~0.75, union-find) y escribe
-coding/guidebook_draft.yaml con clusters candidatos. La decision final (nombre,
-definicion, regla de inclusion) es de Frida -- este script solo propone.
+For each core question, embeds the answer_summary values from
+coding/round1/*.jsonl with embeddinggemma, groups them by cosine similarity
+(threshold ~0.75, simple union-find), and writes coding/guidebook_draft.yaml
+with candidate clusters. The final decision (name, definition, inclusion
+rule) belongs to the author -- this script only proposes.
 
-Los 8 nodos de beneficiario del plan NVivo (Beneficiary_PublicGood,
+The 8 beneficiary nodes from the NVivo plan (Beneficiary_PublicGood,
 _PublicBenefit, _Taxpayer, _Distributive, _Sovereignty, _PublicInterest,
-_WorkingPeople, _Economy) se usan como semillas para nombrar clusters de
-BENEFICIARY cuando el contenido del cluster calza con ellas.
+_WorkingPeople, _Economy) are used as seeds to name BENEFICIARY clusters
+when a cluster's content matches them.
 
-Uso:
+Usage:
     .venv/bin/python scripts/06_consolidate.py
 """
 import glob
@@ -149,7 +150,7 @@ def name_candidate(qname, members):
 def main():
     records = load_records()
     if not records:
-        print("No hay registros en coding/round1/*.jsonl todavia -- corre scripts/05_code.py primero.")
+        print("No records in coding/round1/*.jsonl yet -- run scripts/05_code.py first.")
         return
 
     by_q = {}
@@ -157,15 +158,15 @@ def main():
         by_q.setdefault(r.get("question"), []).append(r)
 
     guidebook = {
-        "status": "DRAFT_pendiente_Frida",
+        "status": "DRAFT_pending_author",
         "generated_from": "coding/round1/*.jsonl",
         "similarity_threshold": SIM_THRESHOLD,
         "embedding_model": EMBED_MODEL,
         "note": (
-            "Clusters propuestos automaticamente por similitud coseno de "
-            "answer_summary. candidate_name es una etiqueta heuristica -- "
-            "Frida decide el nombre final, la definicion y la regla de "
-            "inclusion/exclusion en guidebook.yaml."
+            "Clusters proposed automatically by cosine similarity of "
+            "answer_summary. candidate_name is a heuristic label -- "
+            "the author decides the final name, definition and "
+            "inclusion/exclusion rule in guidebook.yaml."
         ),
         "questions": {},
     }
@@ -187,7 +188,7 @@ def main():
                 "n_instances": len(cl),
                 "example_quotes": examples,
                 "member_unit_ids": sorted(set(m["unit_id"] for m in cl)),
-                "status": "DRAFT_pendiente_Frida",
+                "status": "DRAFT_pending_author",
             })
         guidebook["questions"][qname] = {
             "n_applies_true": len(recs),

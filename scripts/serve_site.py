@@ -1,19 +1,19 @@
-"""Fase 7: servidor local del HUB — sirve la raíz del proyecto y maneja el
-alta incremental de documentos vía POST /add + POST /add_confirm.
+"""Phase 7: local HUB server — serves the project root and handles
+incremental document intake via POST /add + POST /add_confirm.
 
-Solo librería estándar (http.server). Uso:
+Standard library only (http.server). Usage:
 
     .venv/bin/python scripts/serve_site.py
 
-→ http://localhost:8765  (index.html, y cualquier archivo del proyecto)
+→ http://localhost:8765  (index.html, and any file in the project)
 
-Flujo de alta:
-  POST /add          (url, family, genre) → corre el checklist de admisión
-                      (equivalente a add_document.py --dry-run) y devuelve una
-                      página con el resultado + botón "Confirmar alta".
-  POST /add_confirm   (url, family, genre) → corre el alta completa
-                      (equivalente a add_document.py --yes) y devuelve el
-                      reporte con enlace de vuelta al hub.
+Intake flow:
+  POST /add          (url, family, genre) → runs the admission checklist
+                      (equivalent to add_document.py --dry-run) and returns a
+                      page with the result + a "Confirm intake" button.
+  POST /add_confirm   (url, family, genre) → runs the full intake
+                      (equivalent to add_document.py --yes) and returns the
+                      report with a link back to the hub.
 """
 from __future__ import annotations
 
@@ -27,49 +27,52 @@ from urllib.parse import parse_qs
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPTS_DIR))
-import add_document  # noqa: E402  (importado tras ajustar sys.path)
+import add_document  # noqa: E402  (imported after adjusting sys.path)
 
 HOST, PORT = "localhost", 8765
 
 PAGE_CSS = """
 <style>
-  :root{--bg:#14161c;--surface:#1a1d24;--ink:#e8ecf3;--ink2:#9aa7bd;--ink3:#6b7689;
-    --grid:#232733;--accent:#4590dd;--ok:#52a865;--warn:#c2a33f;--bad:#c25a5a}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  :root{--bg:#ffffff;--surface:#ffffff;--surface-soft:#f7f7f7;--surface-strong:#eef0f3;
+    --ink:#0a0b0d;--body:#5b616e;--muted:#7c828a;
+    --hairline:#dee1e6;--accent:#0052ff;--accent-active:#003ecc;
+    --ok:#05b169;--warn:#a87700;--bad:#cf202f}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--body);
     font:14px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
   .wrap{max-width:820px;margin:0 auto;padding:28px 24px 60px}
-  h1{font-size:18px;letter-spacing:.03em;text-transform:uppercase;margin:0 0 6px}
-  .sub{color:var(--ink2);font-size:13px;margin-bottom:20px;word-break:break-all}
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
+  h1{font-size:18px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;margin:0 0 6px;color:var(--ink)}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:20px;word-break:break-all}
+  a, a:visited{color:var(--accent);text-decoration:none}
+  a:hover{color:var(--accent-active);text-decoration:underline}
   .back{display:inline-block;margin-top:20px;font-size:13px}
-  table{border-collapse:collapse;width:100%;background:var(--surface);border:1px solid var(--grid);
+  table{border-collapse:collapse;width:100%;background:var(--surface);border:1px solid var(--hairline);
     border-radius:10px;overflow:hidden;font-size:13px}
-  td,th{padding:9px 12px;border-bottom:1px solid var(--grid);text-align:left;vertical-align:top}
+  td,th{padding:9px 12px;border-bottom:1px solid var(--hairline);text-align:left;vertical-align:top;color:var(--body)}
   tr:last-child td{border-bottom:none}
-  .status{font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 9px;
+  .status{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 9px;
     border-radius:12px;white-space:nowrap}
-  .status-pass{background:#1c3324;color:var(--ok)}
-  .status-fail{background:#3a2020;color:var(--bad)}
-  .status-no-determinable{background:#332f1c;color:var(--warn)}
-  .detail{color:var(--ink3);font-size:12px}
-  .banner{border-radius:10px;padding:12px 16px;margin:14px 0;font-size:13px}
-  .banner-ok{background:#1c3324;color:var(--ok);border:1px solid #2b4a34}
-  .banner-warn{background:#332f1c;color:var(--warn);border:1px solid #4a4326}
-  .banner-bad{background:#3a2020;color:var(--bad);border:1px solid #4d2b2b}
+  .status-pass{background:var(--surface-strong);color:var(--ok)}
+  .status-fail{background:transparent;color:var(--bad);padding-left:0}
+  .status-no-determinable{background:var(--surface-strong);color:var(--warn)}
+  .detail{color:var(--muted);font-size:12px}
+  .banner{border-radius:8px;padding:12px 16px;margin:14px 0;font-size:13px;
+    background:var(--surface-soft);border-left:4px solid transparent}
+  .banner-ok{border-left-color:var(--ok);color:var(--ink)}
+  .banner-warn{border-left-color:var(--warn);color:var(--ink)}
+  .banner-bad{border-left-color:var(--bad);color:var(--bad)}
   form{margin-top:18px}
-  button{background:var(--accent);color:#fff;border:none;border-radius:6px;
-    padding:10px 20px;font-size:13px;cursor:pointer;font-weight:600}
-  button:hover{opacity:.9}
-  pre{background:#0f1115;border-radius:8px;padding:14px;overflow-x:auto;font-size:12.5px;color:var(--ink2)}
-  code{background:#0f1115;padding:2px 7px;border-radius:5px;color:var(--ink)}
+  button{background:var(--accent);color:#fff;border:none;border-radius:100px;
+    padding:10px 22px;font-size:13px;cursor:pointer;font-weight:600}
+  button:hover{background:var(--accent-active)}
+  pre{background:var(--surface-strong);border-radius:8px;padding:14px;overflow-x:auto;font-size:12.5px;color:var(--body)}
+  code{background:var(--surface-strong);padding:2px 7px;border-radius:5px;color:var(--ink)}
 </style>
 """
 
 
 def page(title: str, body: str) -> bytes:
     return f"""<!doctype html>
-<html lang="es"><head><meta charset="utf-8">
+<html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)}</title>{PAGE_CSS}</head>
 <body><div class="wrap">{body}</div></body></html>""".encode("utf-8")
@@ -84,20 +87,20 @@ def render_checklist_page(url, family, genre, result) -> bytes:
         for r in result["rules"]
     )
     if fails:
-        banner = (f'<div class="banner banner-bad">{len(fails)} regla(s) en FALLA. '
-                   f'Este documento normalmente NO debería admitirse — revisa el checklist '
-                   f'antes de confirmar.</div>')
+        banner = (f'<div class="banner banner-bad">{len(fails)} rule(s) FAILED. '
+                   f'This document would not normally be admitted — review the checklist '
+                   f'before confirming.</div>')
     elif nd:
-        banner = (f'<div class="banner banner-warn">Sin fallas duras. {len(nd)} regla(s) '
-                   f'no-determinable — revísalas antes de confirmar.</div>')
+        banner = (f'<div class="banner banner-warn">No hard failures. {len(nd)} rule(s) '
+                   f'not determinable — review them before confirming.</div>')
     else:
-        banner = '<div class="banner banner-ok">Sin fallas ni reglas no-determinables.</div>'
+        banner = '<div class="banner banner-ok">No failures and no undetermined rules.</div>'
 
     def esc(v):
         return html.escape(v or "")
 
     body = f"""
-    <h1>Checklist de admisión</h1>
+    <h1>Admission checklist</h1>
     <div class="sub">{esc(url)}</div>
     {banner}
     <table><tbody>{rows}</tbody></table>
@@ -105,50 +108,50 @@ def render_checklist_page(url, family, genre, result) -> bytes:
       <input type="hidden" name="url" value="{esc(url)}">
       <input type="hidden" name="family" value="{esc(family)}">
       <input type="hidden" name="genre" value="{esc(genre)}">
-      <button type="submit">Confirmar alta</button>
+      <button type="submit">Confirm intake</button>
     </form>
-    <a class="back" href="/index.html">&larr; Volver al hub sin confirmar</a>
+    <a class="back" href="/index.html">&larr; Back to hub without confirming</a>
     """
-    return page("Checklist de admisión", body)
+    return page("Admission checklist", body)
 
 
 def render_report_page(report: dict) -> bytes:
     if not report["ok"]:
         body = f"""
-        <h1>Alta fallida</h1>
+        <h1>Intake failed</h1>
         <div class="banner banner-bad">{html.escape(report["error"])}</div>
-        <a class="back" href="/index.html">&larr; Volver al hub</a>
+        <a class="back" href="/index.html">&larr; Back to hub</a>
         """
-        return page("Alta fallida", body)
+        return page("Intake failed", body)
 
     r = report["manifest_row"]
     if report["recompute_ok"]:
-        recompute_banner = ('<div class="banner banner-ok">Red, term_counts.csv e index.html '
-                             'recalculados correctamente.</div>')
+        recompute_banner = ('<div class="banner banner-ok">Network, term_counts.csv, and index.html '
+                             'recalculated successfully.</div>')
     else:
-        recompute_banner = (f'<div class="banner banner-warn">El documento quedó admitido, pero el '
-                             f'recálculo de red/hub falló: {html.escape(report.get("recompute_error",""))}. '
-                             f'Corre <code>.venv/bin/python scripts/08_build_site.py</code> a mano.</div>')
+        recompute_banner = (f'<div class="banner banner-warn">The document was admitted, but the '
+                             f'network/hub recalculation failed: {html.escape(report.get("recompute_error",""))}. '
+                             f'Run <code>.venv/bin/python scripts/08_build_site.py</code> manually.</div>')
 
     body = f"""
-    <h1>Documento admitido</h1>
+    <h1>Document admitted</h1>
     <div class="sub">{html.escape(report["doc_id"])}</div>
     <table><tbody>
-      <tr><td>fecha</td><td>{html.escape(r["date"])}</td></tr>
+      <tr><td>date</td><td>{html.escape(r["date"])}</td></tr>
       <tr><td>genre</td><td>{html.escape(r["genre"])}</td></tr>
       <tr><td>speaker</td><td>{html.escape(r["speaker"])}</td></tr>
       <tr><td>family</td><td>{html.escape(r["family"])}</td></tr>
       <tr><td>gds_tier</td><td>{html.escape(r["gds_tier"])} (provisional)</td></tr>
       <tr><td>term_status</td><td>{html.escape(r["term_status"])}</td></tr>
       <tr><td>corpus_version</td><td>{report["corpus_version"]}</td></tr>
-      <tr><td>bloques / unidades</td><td>{report["n_blocks"]} / {report["n_units"]}</td></tr>
+      <tr><td>blocks / units</td><td>{report["n_blocks"]} / {report["n_units"]}</td></tr>
     </tbody></table>
     {recompute_banner}
-    <div class="banner banner-warn">Codificación LLM pendiente:
+    <div class="banner banner-warn">LLM coding pending:
       <code>{html.escape(report["coding_pending_cmd"])}</code></div>
-    <a class="back" href="/index.html">&larr; Volver al hub</a>
+    <a class="back" href="/index.html">&larr; Back to hub</a>
     """
-    return page("Documento admitido", body)
+    return page("Document admitted", body)
 
 
 def render_error_page(title: str, exc: Exception) -> bytes:
@@ -156,7 +159,7 @@ def render_error_page(title: str, exc: Exception) -> bytes:
     <h1>{html.escape(title)}</h1>
     <div class="banner banner-bad">{html.escape(str(exc))}</div>
     <pre>{html.escape(traceback.format_exc())}</pre>
-    <a class="back" href="/index.html">&larr; Volver al hub</a>
+    <a class="back" href="/index.html">&larr; Back to hub</a>
     """
     return page(title, body)
 
@@ -184,13 +187,13 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         if self.path not in ("/add", "/add_confirm"):
-            self._send_html(page("No encontrado", "<h1>404</h1><p>Ruta no reconocida.</p>"), 404)
+            self._send_html(page("Not found", "<h1>404</h1><p>Unrecognized route.</p>"), 404)
             return
         try:
             url, family, genre = self._read_form()
             if not url:
-                self._send_html(page("Falta URL", "<h1>Falta la URL</h1>"
-                                      "<a class='back' href='/index.html'>&larr; Volver</a>"), 400)
+                self._send_html(page("Missing URL", "<h1>Missing URL</h1>"
+                                      "<a class='back' href='/index.html'>&larr; Back</a>"), 400)
                 return
             import requests
             session = requests.Session()
@@ -202,12 +205,12 @@ class Handler(SimpleHTTPRequestHandler):
                 report = add_document.admit_document(url, family, genre, result, session)
                 self._send_html(render_report_page(report))
         except Exception as exc:  # noqa: BLE001
-            self._send_html(render_error_page("Error procesando la solicitud", exc), 500)
+            self._send_html(render_error_page("Error processing the request", exc), 500)
 
 
 def main():
     server = ThreadingHTTPServer((HOST, PORT), Handler)
-    print(f"Sirviendo {ROOT} en http://{HOST}:{PORT}  (Ctrl+C para detener)")
+    print(f"Serving {ROOT} at http://{HOST}:{PORT}  (Ctrl+C to stop)")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
