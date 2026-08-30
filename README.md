@@ -20,9 +20,29 @@ consolidates.** No interpretive result is final until validated (see checkpoints
 # → http://localhost:8765
 ```
 
-Requirements: Python 3.14 (venv in `.venv/`, already provisioned), [Ollama](https://ollama.com)
-running on `localhost:11434` with an active Ollama Cloud session (LLM model) and
-`embeddinggemma` local (embeddings).
+## Reproducing on another machine
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+ollama pull embeddinggemma        # local embeddings (768-dim)
+ollama pull kimi-k3:cloud         # Round 1 coding model (needs an Ollama Cloud session)
+```
+
+Requirements: Python 3.13+, [Ollama](https://ollama.com) on `localhost:11434`.
+What travels with the repo so the analysis is fully reproducible without re-fetching
+or re-embedding anything:
+
+- `data/text/` — the full structured transcription of the 35 corpus documents
+  (the raw PDFs/HTML stay out of git; `data/raw/*.meta.json` records each fetch —
+  URL, hash, source — and `data/raw/archive_urls.json` the archive.org snapshots).
+- `data/embeddings/` — the persisted embeddinggemma vectors: one L2-normalised
+  vector per document section (`sections_embeddinggemma.npz` + row index) and the
+  beneficiary-probe vectors, with model/dim metadata in `meta.json`. Scripts that
+  embed at runtime produce these same vectors; the export exists so results can be
+  verified without Ollama.
+- `coding/round1/` — every raw Round 1 record with model, prompt version and run id.
+- `coding/model_eval/` — the model comparison behind the kimi-k3 decision.
 
 ## Structure
 
