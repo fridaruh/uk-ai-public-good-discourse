@@ -6,11 +6,11 @@ note: Clusters proposed automatically by cosine similarity of answer_summary. ca
   label -- the author decides the final name, definition and inclusion/exclusion rule in guidebook.yaml.
 questions:
   BENEFICIARY:
-    n_applies_true: 12
-    n_clusters: 8
+    n_applies_true: 108
+    n_clusters: 16
     clusters:
     - candidate_name: the_public
-      n_instances: 5
+      n_instances: 87
       example_quotes:
       - Maintaining meaningful human involvement in generative AI ensures that future innovation aligns
         with human values and supports the public good.
@@ -19,43 +19,48 @@ questions:
       member_unit_ids:
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s17
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
       status: DRAFT_pending_author
     - candidate_name: Beneficiary_Taxpayer
-      n_instances: 1
+      n_instances: 4
       example_quotes:
       - If possible collect metrics to help to estimate any efficiency savings, value to your business
         and to taxpayers and the return on investment.
+      - deliver more to taxpayers through technology
+      - HMRC missed 100,000 phone calls from taxpayers during IT outage
       member_unit_ids:
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s17
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
       status: DRAFT_pending_author
-    - candidate_name: the_british_people
-      n_instances: 1
+    - candidate_name: teachers
+      n_instances: 3
       example_quotes:
-      - I am personally driven by a mission to improve the lives of the British people through technology
-        and innovation
+      - help drive down admin for teachers so they can get on with teaching our children
+      - From teachers personalising lessons, to supporting small businesses with their record-keeping
+      - It allows teachers to personalise their lessons to their children’s needs.
       member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
       status: DRAFT_pending_author
-    - candidate_name: Beneficiary_PublicGood
-      n_instances: 1
+    - candidate_name: children
+      n_instances: 2
       example_quotes:
-      - The protection, wellbeing, and autonomy of civil society and the population
+      - help drive down admin for teachers so they can get on with teaching our children
+      - It allows teachers to personalise their lessons to their children’s needs.
       member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
-      status: DRAFT_pending_author
-    - candidate_name: Beneficiary_PublicGood
-      n_instances: 1
-      example_quotes:
-      - leveraging AI to improve critical aspects of our society such as democratic deliberation and consensus
-      member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
-      status: DRAFT_pending_author
-    - candidate_name: Beneficiary_WorkingPeople
-      n_instances: 1
-      example_quotes:
-      - AI is helping to make our jobs safer and more satisfying
-      member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
       status: DRAFT_pending_author
     - candidate_name: innovators
       n_instances: 1
@@ -72,10 +77,169 @@ questions:
       member_unit_ids:
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
       status: DRAFT_pending_author
+    - candidate_name: an_international_community_global_scale
+      n_instances: 1
+      example_quotes:
+      - Our goal remains to work with others to build an international community that is able to realise
+        the opportunities of AI on a global scale.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: the_next_generation
+      n_instances: 1
+      example_quotes:
+      - help grow the economy and foster the next generation of talent
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: communities
+      n_instances: 1
+      example_quotes:
+      - That means local jobs, improved communities, and a growing economy – all of which puts more money
+        in people’s pockets.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: people
+      n_instances: 1
+      example_quotes:
+      - That means local jobs, improved communities, and a growing economy – all of which puts more money
+        in people’s pockets.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: the_country
+      n_instances: 1
+      example_quotes:
+      - The UK has an enormous national resource in the talent of its people, institutions and businesses
+        which together, can leverage AI to advance the country’s national interest.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: customers_and_the_nation
+      n_instances: 1
+      example_quotes:
+      - At Oracle we are providing a full set of solutions to help organisations use AI securely and efficiently,
+        which we expect will accelerate economic prosperity and growth for our customers and the nation.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: doctors
+      n_instances: 1
+      example_quotes:
+      - AI -powered scans can help doctors detect disease earlier.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: universities
+      n_instances: 1
+      example_quotes:
+      - pushing the boundaries of scientific discovery in our universities
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: the_state
+      n_instances: 1
+      example_quotes:
+      - We have announced AI-powered tools that will make the state more productive, too.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: Beneficiary_Economy
+      n_instances: 1
+      example_quotes:
+      - We have already shown how technologies like AI can drive economic growth, create new jobs and
+        improve living standards.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
   MECHANISM:
-    n_applies_true: 14
-    n_clusters: 14
+    n_applies_true: 66
+    n_clusters: 50
     clusters:
+    - candidate_name: efficiency
+      n_instances: 6
+      example_quotes:
+      - AI is helping to make our jobs safer and more satisfying, conserve our wildlife and fight climate
+        change, and make our public services more efficient.
+      - AI is a powerful tool that will help grow our economy, make our public services more efficient
+        and open up new opportunities to help improve living standards.
+      - It will scan for new ideas, pilot them in public sector settings, then scale them as far as they
+        can go.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: economic_growth
+      n_instances: 5
+      example_quotes:
+      - The IMF estimates that – if AI is fully embraced – it can boost productivity by as much as 1.5
+        percentage points a year.
+      - That means more jobs and investment in the UK, more money in people’s pockets, and transformed
+        public services.
+      - boost growth, raise living standards, transform public services, create the companies of the future
+        in Britain
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: efficiency_reduced_administrative_burden
+      n_instances: 4
+      example_quotes:
+      - public sector to spend less time doing admin and more time delivering the services working people
+        rely on
+      - help drive down admin for teachers so they can get on with teaching our children
+      - AI can help take care of drudgery in the public sector, freeing people up to focus on high-value
+        tasks that require the human touch.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: faster_innovation_speed_to_market
+      n_instances: 2
+      example_quotes:
+      - we are ensuring that innovators can bring new products to market safely and quickly
+      - How do we provide regulatory certainty to drive responsible AI innovation while retaining an adaptable
+        regime that can accommodate fast technical developments? How do we avoid creating barriers to
+        market entry and scale-up?
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: innovation_via_openness
+      n_instances: 2
+      example_quotes:
+      - The open release of AI has, overall, been beneficial for innovation, transparency, and accountability.
+      - A degree of openness in AI is, and will continue to be, critical to scientific progress
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: personalisation
+      n_instances: 2
+      example_quotes:
+      - From teachers personalising lessons, to supporting small businesses with their record-keeping,
+        to speeding up planning applications, it has the potential to transform the lives of working people.
+      - It allows teachers to personalise their lessons to their children’s needs.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: faster_infrastructure_decisions_and_main
+      n_instances: 2
+      example_quotes:
+      - feed AI through cameras to spot potholes and help improve roads
+      - spot potholes more quickly, and help speed up planning applications
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
     - candidate_name: efficiency_savings_value_for_money
       n_instances: 1
       example_quotes:
@@ -141,26 +305,11 @@ questions:
       member_unit_ids:
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
       status: DRAFT_pending_author
-    - candidate_name: efficiency
-      n_instances: 1
-      example_quotes:
-      - AI is helping to make our jobs safer and more satisfying, conserve our wildlife and fight climate
-        change, and make our public services more efficient.
-      member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
-      status: DRAFT_pending_author
     - candidate_name: economic_growth_and_jobs
       n_instances: 1
       example_quotes:
       - we will attract even more of the new jobs and investment that will come from this new wave of
         technology
-      member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
-      status: DRAFT_pending_author
-    - candidate_name: faster_innovation_speed_to_market
-      n_instances: 1
-      example_quotes:
-      - we are ensuring that innovators can bring new products to market safely and quickly
       member_unit_ids:
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
       status: DRAFT_pending_author
@@ -186,12 +335,244 @@ questions:
       member_unit_ids:
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
       status: DRAFT_pending_author
+    - candidate_name: better_decisions
+      n_instances: 1
+      example_quotes:
+      - we expect progress in system evaluations to enable better informed decision making by governments
+        and companies and act as an early warning system for some of the most concerning risks.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: innovation_not_stifled_by_premature_regu
+      n_instances: 1
+      example_quotes:
+      - could fail to effectively address risks, quickly become out of date, or stifle innovation and
+        prevent people from across the UK from benefiting from AI
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: trade_and_market_access
+      n_instances: 1
+      example_quotes:
+      - We will achieve appropriate levels of coherence with other regulatory regimes, promote safety,
+        and minimise potential barriers to trade – maximising opportunities for individuals and businesses
+        across the UK and beyond.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: coherent_governance_enabling_business_op
+      n_instances: 1
+      example_quotes:
+      - We will also work together to promote coherence between our AI governance frameworks to ensure
+        that businesses can operate effectively in both the UK and wider global markets and to ensure
+        that AI developments benefit people around the world.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: better_and_faster_decisions_in_healthcar
+      n_instances: 1
+      example_quotes:
+      - spotting pain levels for people who can’t speak, diagnosing breast cancer quicker, and getting
+        people discharged quicker
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: public_sector_efficiency
+      n_instances: 1
+      example_quotes:
+      - This will revolutionise how AI is used in the public sector to improve citizens lives and make
+        government more efficient.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: productivity_gains
+      n_instances: 1
+      example_quotes:
+      - the UK could ultimately see productivity gains of up to 1.5% annually
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: public_sector_savings_and_faster_deliver
+      n_instances: 1
+      example_quotes:
+      - TBI research shows that we can generate up to £40 billion a year in productivity gains and savings,
+        all while delivering better, faster and further.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: economic_growth_via_investment_stability
+      n_instances: 1
+      example_quotes:
+      - That gives the industry the long-term stability it needs to choose the UK as the place to invest
+        – helping drive up growth and deliver our plan for change.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: local_jobs_and_community_benefit
+      n_instances: 1
+      example_quotes:
+      - That means local jobs, improved communities, and a growing economy – all of which puts more money
+        in people’s pockets.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: innovation_and_compute_capacity
+      n_instances: 1
+      example_quotes:
+      - This is part of the plan to increase compute capacity by twenty-fold by 2030 – supercharging our
+        capacity to power AI products.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: faster_transformed_service_delivery
+      n_instances: 1
+      example_quotes:
+      - the UK could be among the first and fastest governments in the world to transform how services
+        are delivered to its citizens
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: efficiency
+      n_instances: 1
+      example_quotes:
+      - AI can cut NHS waiting lists by scheduling better appointments.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: earlier_detection_better_decisions
+      n_instances: 1
+      example_quotes:
+      - AI -powered scans can help doctors detect disease earlier.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: prevention
+      n_instances: 1
+      example_quotes:
+      - preventing illness in our NHS
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: scientific_discovery_innovation
+      n_instances: 1
+      example_quotes:
+      - pushing the boundaries of scientific discovery in our universities
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: growth
+      n_instances: 1
+      example_quotes:
+      - encourage the private sector to stimulate growth through AI adoption
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      status: DRAFT_pending_author
+    - candidate_name: scaling_successful_pilots
+      n_instances: 1
+      example_quotes:
+      - prioritising the scaling up of successful pilots that adopt AI in the public interest
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      status: DRAFT_pending_author
+    - candidate_name: service_improvement
+      n_instances: 1
+      example_quotes:
+      - improve services
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: efficiency_cost_savings
+      n_instances: 1
+      example_quotes:
+      - save money
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: productivity
+      n_instances: 1
+      example_quotes:
+      - make public sector roles more productive
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: innovation_ai
+      n_instances: 1
+      example_quotes:
+      - unlock the power of innovations such as AI
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: taxpayer_value
+      n_instances: 1
+      example_quotes:
+      - deliver more to taxpayers through technology
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: productivity
+      n_instances: 1
+      example_quotes:
+      - We have announced AI-powered tools that will make the state more productive, too.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: efficiency_cost_savings
+      n_instances: 1
+      example_quotes:
+      - Failure to adopt new technology costs the taxpayer £45 billion a year.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: personalisation_citizen_convenience
+      n_instances: 1
+      example_quotes:
+      - It sets out our vision for putting the state at citizens’ fingertips, with public services that
+        fit around the lives of the people who use them.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: personalisation_citizen_empowerment
+      n_instances: 1
+      example_quotes:
+      - The Blueprint will transform how citizens’ experience the state, empowering them to engage with
+        digital public services when, how, and where they choose.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: personalisation_education
+      n_instances: 1
+      example_quotes:
+      - launching a world-leading pilot of AI tutoring tools in schools to narrow the attainment gap
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: better_diagnostics_health
+      n_instances: 1
+      example_quotes:
+      - hitting our target to scale AI diagnostic tools nationally
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: accelerated_scientific_discovery
+      n_instances: 1
+      example_quotes:
+      - OpenBind consortium’s structural dataset to unlock AI -driven drug discovery
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: upskilling_productivity
+      n_instances: 1
+      example_quotes:
+      - delivered 1 million free AI upskilling courses through industry partners
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
   SAFEGUARD:
-    n_applies_true: 28
-    n_clusters: 3
+    n_applies_true: 85
+    n_clusters: 11
     clusters:
     - candidate_name: documentation_and_record_keeping_for_aud
-      n_instances: 26
+      n_instances: 73
       example_quotes:
       - it is important to maintain documentation, including methodology, description of the design choices
         and assumptions. Keep records from any architecture design reviews. This can help to support the
@@ -203,6 +584,34 @@ questions:
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s17
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: human_involvement_in_public_sector_tasks
+      n_instances: 2
+      example_quotes:
+      - AI can help take care of drudgery in the public sector, freeing people up to focus on high-value
+        tasks that require the human touch.
+      - A chance to reconnect with the human, face-to-face aspects of their job, which I know is something
+        that attracts so many people to public service in the first place.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: risk_based_laws
+      n_instances: 2
+      example_quotes:
+      - Businesses in the UK are in a prime position to fully unlock the opportunities of AI , thanks
+        to a strong innovation culture and risk-based laws.
+      - Yet many organisations fall short of effectively ensuring adequate business continuity.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s17
       status: DRAFT_pending_author
     - candidate_name: cost_monitoring_finops_oversight
       n_instances: 1
@@ -220,10 +629,69 @@ questions:
       member_unit_ids:
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
       status: DRAFT_pending_author
+    - candidate_name: dynamic_thresholds_compute_and_capabilit
+      n_instances: 1
+      example_quotes:
+      - We propose to do this by establishing dynamic thresholds that can quickly respond to advances
+        in AI development.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: mandatory_algorithmic_transparency_recor
+      n_instances: 1
+      example_quotes:
+      - Phasing in the mandatory requirement for central government departments to use the Algorithmic
+        Transparency Recording Standard (ATRS) over the course of the year.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: 10_million_regulator_capability_programm
+      n_instances: 1
+      example_quotes:
+      - Launching a new £10 million programme to support regulators to identify and understand risks in
+        their domain and to develop their skills and approaches to AI.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: possible_pause_of_model_development_unde
+      n_instances: 1
+      example_quotes:
+      - At what stage could it be necessary to pause model development?
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: secure_handling_of_public_data_national_
+      n_instances: 1
+      example_quotes:
+      - creating a new National Data Library to safely and securely unlock the value of public data and
+        support AI development
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: responsible_technology_adoption_unit_int
+      n_instances: 1
+      example_quotes:
+      - part of the Responsible Technology Adoption Unit from other parts of my department
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
   RESPONSIBILITY:
-    n_applies_true: 10
-    n_clusters: 8
+    n_applies_true: 42
+    n_clusters: 31
     clusters:
+    - candidate_name: the_ai_safety_institute
+      n_instances: 6
+      example_quotes:
+      - Our initial technical contribution to this international effort is through the creation of an
+        AI Safety Institute to lead evaluations and safety research in the UK government
+      - This will be the task of the new AI Safety Institute. It will advance the world’s knowledge of
+        AI safety by carefully examining, evaluating, and testing new frontier AI systems.
+      - 'It will initially perform three core functions:'
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
     - candidate_name: you_unnamed
       n_instances: 3
       example_quotes:
@@ -235,6 +703,48 @@ questions:
         situations.
       member_unit_ids:
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      status: DRAFT_pending_author
+    - candidate_name: regulators
+      n_instances: 2
+      example_quotes:
+      - We are asking a number of regulators to publish an update outlining their strategic approach to
+        AI by 30 April 2024.
+      - Asking key regulators to publish updates on their strategic approach to AI by 30 April.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: a_new_steering_committee_with_government
+      n_instances: 2
+      example_quotes:
+      - including a new steering committee with government and regulator representatives to support coordination
+        across the AI governance landscape
+      - Establishing a steering committee to support and guide the activities of a formal regulator coordination
+        structure within government in the spring.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: a_new_digital_centre_of_government_withi
+      n_instances: 2
+      example_quotes:
+      - A new digital centre of government is being set up within DSIT. This will revolutionise how AI
+        is used in the public sector to improve citizens lives and make government more efficient. It
+        will scan for new ideas, pilot them in public sector settings, then scale them as far as they
+        can go.
+      - Delivery of the blueprint will be led by the new digital centre of government within my department.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: the_government_uk_government_dsit_referr
+      n_instances: 2
+      example_quotes:
+      - Throughout 2025, the government moved decisively from ambition to delivery.
+      - We will continue to deliver at pace, to ensure Britain will continue not just to adapt to technological
+        change, but to shape it in the public interest.
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
       status: DRAFT_pending_author
     - candidate_name: existing_uk_regulators
       n_instances: 1
@@ -250,30 +760,6 @@ questions:
       - we have set up a central function to drive coherence in our regulatory approach across government,
         including by recruiting a new multidisciplinary team to conduct cross-sector risk assessment and
         monitoring to guard against existing and emerging risks in AI.
-      member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
-      status: DRAFT_pending_author
-    - candidate_name: ai_safety_institute
-      n_instances: 1
-      example_quotes:
-      - Our initial technical contribution to this international effort is through the creation of an
-        AI Safety Institute to lead evaluations and safety research in the UK government
-      member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
-      status: DRAFT_pending_author
-    - candidate_name: regulators
-      n_instances: 1
-      example_quotes:
-      - We are asking a number of regulators to publish an update outlining their strategic approach to
-        AI by 30 April 2024.
-      member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
-      status: DRAFT_pending_author
-    - candidate_name: a_new_steering_committee_with_government
-      n_instances: 1
-      example_quotes:
-      - including a new steering committee with government and regulator representatives to support coordination
-        across the AI governance landscape
       member_unit_ids:
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
       status: DRAFT_pending_author
@@ -295,12 +781,175 @@ questions:
       member_unit_ids:
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
       status: DRAFT_pending_author
+    - candidate_name: the_government_office_for_science
+      n_instances: 1
+      example_quotes:
+      - the Government Office for Science has prepared a foresight report outlining possible scenarios
+        that may arise in the context of AI development, proliferation and impact in 2030.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: central_government_departments
+      n_instances: 1
+      example_quotes:
+      - Phasing in the mandatory requirement for central government departments to use the Algorithmic
+        Transparency Recording Standard (ATRS) over the course of the year.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: republic_of_korea_co_host_with_uk_and_fr
+      n_instances: 1
+      example_quotes:
+      - the Republic of Korea has agreed to co-host the next AI Safety Summit with the UK. France has
+        agreed to host the following summit.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: government_dsit_we
+      n_instances: 1
+      example_quotes:
+      - We will publish findings from this engagement in a series of expert discussion papers.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: matt_clifford_as_advisor_to_the_pm_on_ai
+      n_instances: 1
+      example_quotes:
+      - Matt Clifford has been appointed as advisor to the PM on AI opportunities, bringing together a
+        team across No10 and DSIT to seize the opportunities of AI and build the UK’s sovereign capabilities.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: sir_demis_hassabis
+      n_instances: 1
+      example_quotes:
+      - Nobel Prize-winner, Sir Demis Hassabis will also provide expertise to the government to help the
+        UK seize the opportunities of AI .
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: a_dedicated_ai_energy_council_chaired_by
+      n_instances: 1
+      example_quotes:
+      - a dedicated AI Energy Council chaired by the Science and Energy Secretaries will also be established,
+        working with energy companies to understand the energy demands and challenges which will fuel
+        the technology’s development
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: the_prime_minister_whitehall
+      n_instances: 1
+      example_quotes:
+      - the Prime Minister is throwing the full weight of Whitehall behind this industry by agreeing to
+        take forward all 50 recommendations set out by Matt Clifford in his game-changing AI Opportunities
+        Action Plan .
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: the_cabinet_their_departments_tasked_per
+      n_instances: 1
+      example_quotes:
+      - The Prime Minister has personally written to his entire Cabinet, tasking them with driving AI
+        adoption and growth in their sectors, and making that a top priority for their Departments.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: a_new_team
+      n_instances: 1
+      example_quotes:
+      - A new team will be set up to keep us at the forefront of emerging technology. This team will use
+        the heft of the state to make the UK the best place for business.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: the_government_our_we
+      n_instances: 1
+      example_quotes:
+      - It is our responsibility to harness it and make it work for working people.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: the_government_our
+      n_instances: 1
+      example_quotes:
+      - And it is our responsibility to make sure that Britain maintains its position as a world leader
+        in AI , even as the competition increases.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: matt_clifford_cbe
+      n_instances: 1
+      example_quotes:
+      - Within days of our election, we commissioned Matt Clifford CBE to develop this plan.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: the_prime_minister_i
+      n_instances: 1
+      example_quotes:
+      - Today, I am happy to endorse it and take the recommendations forward.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: government
+      n_instances: 1
+      example_quotes:
+      - Government will appoint AI Champions in particular sectors highlighted in the Industrial Strategy.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      status: DRAFT_pending_author
+    - candidate_name: dsit
+      n_instances: 1
+      example_quotes:
+      - DSIT will also work with devolved and local government to identify AI adoption opportunities to
+        drive growth.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      status: DRAFT_pending_author
+    - candidate_name: government_we
+      n_instances: 1
+      example_quotes:
+      - we will take forward Matt Clifford’s recommendations on adoption, including to employ a flexible
+        ‘Scan, Pilot, Scale’ approach to adoption of AI across our public services
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      status: DRAFT_pending_author
+    - candidate_name: incubator_for_ai
+      n_instances: 1
+      example_quotes:
+      - such as Caddy, led by the Incubator for AI .
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      status: DRAFT_pending_author
+    - candidate_name: the_uk
+      n_instances: 1
+      example_quotes:
+      - The UK has the scale, commercial power and political mandate to deliver more to taxpayers through
+        technology.
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: the_sovereign_ai_unit
+      n_instances: 1
+      example_quotes:
+      - the Sovereign AI Unit – which has already started investing in creating data assets to support
+        UK companies
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: industry_partners
+      n_instances: 1
+      example_quotes:
+      - delivered 1 million free AI upskilling courses through industry partners
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
   PROJECTED_FUTURE:
-    n_applies_true: 13
-    n_clusters: 10
+    n_applies_true: 68
+    n_clusters: 48
     clusters:
     - candidate_name: britain_becomes_the_safest_and_most_inno
-      n_instances: 3
+      n_instances: 10
       example_quotes:
       - make Britain the safest and most innovative place to develop and deploy AI in the world
       - the UK’s ambitions to lead in safe AI and to be a Science and Technology Superpower by the end
@@ -309,6 +958,40 @@ questions:
         even more of the new jobs and investment that will come from this new wave of technology
       member_unit_ids:
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: ai_remains_a_force_for_the_public_good_g
+      n_instances: 7
+      example_quotes:
+      - AI can and must remain a force for the public good, and we will ensure that is the case as we
+        develop our policy approach in this area.
+      - AI is a powerful tool that will help grow our economy, make our public services more efficient
+        and open up new opportunities to help improve living standards.
+      - The scale of this government’s ambition for AI development and adoption in the UK is exactly what’s
+        needed to drive economic growth, transform public services and create new opportunities for all.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: fully_embraced_ai_could_boost_productivi
+      n_instances: 3
+      example_quotes:
+      - If fully realised, these gains could be worth up to an average £47 billion to the UK each year
+        over a decade.
+      - TBI research shows that we can generate up to £40 billion a year in productivity gains and savings,
+        all while delivering better, faster and further.
+      - if fully realised, these gains could be worth up to an average £47 billion to the UK each year
+        over a decade
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
       status: DRAFT_pending_author
     - candidate_name: generative_ai_systems_whose_performance_
       n_instances: 2
@@ -318,6 +1001,26 @@ questions:
       - When collected during use, it will be used to monitor and maintain performance.
       member_unit_ids:
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      status: DRAFT_pending_author
+    - candidate_name: the_lives_of_the_british_people_are_impr
+      n_instances: 2
+      example_quotes:
+      - a mission to improve the lives of the British people through technology and innovation
+      - We will continue to deliver at pace, to ensure Britain will continue not just to adapt to technological
+        change, but to shape it in the public interest.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: safe_secure_and_trustworthy_ai_underpinn
+      n_instances: 2
+      example_quotes:
+      - We will continue to act through bilateral partnerships and multilateral initiatives – including
+        future AI Safety Summits – to promote safe, secure, and trustworthy AI, underpinned by effective
+        international AI governance.
+      - vision, and our ultimate goal, should be to work towards a more international approach to safety
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
       status: DRAFT_pending_author
     - candidate_name: ai_systems_that_are_progressively_contro
       n_instances: 1
@@ -352,14 +1055,6 @@ questions:
       member_unit_ids:
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
       status: DRAFT_pending_author
-    - candidate_name: ai_remains_a_force_for_the_public_good_g
-      n_instances: 1
-      example_quotes:
-      - AI can and must remain a force for the public good, and we will ensure that is the case as we
-        develop our policy approach in this area.
-      member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
-      status: DRAFT_pending_author
     - candidate_name: a_more_resilient_society_is_built_ready_
       n_instances: 1
       example_quotes:
@@ -374,43 +1069,381 @@ questions:
       member_unit_ids:
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
       status: DRAFT_pending_author
-    - candidate_name: the_lives_of_the_british_people_are_impr
+    - candidate_name: the_ai_safety_institute_will_advance_the
       n_instances: 1
       example_quotes:
-      - a mission to improve the lives of the British people through technology and innovation
+      - It will advance the world’s knowledge of AI safety by carefully examining, evaluating, and testing
+        new frontier AI systems.
       member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: the_institute_will_underpin_an_evidence_
+      n_instances: 1
+      example_quotes:
+      - It will provide foundational insights to our governance regime and help ensure that the UK takes
+        an evidence-based, proportionate approach to regulating the risks of AI.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: progress_in_system_evaluations_will_enab
+      n_instances: 1
+      example_quotes:
+      - we expect progress in system evaluations to enable better informed decision making by governments
+        and companies and act as an early warning system for some of the most concerning risks.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: all_jurisdictions_will_in_time_place_tar
+      n_instances: 1
+      example_quotes:
+      - we anticipate that all jurisdictions will, in time, want to place targeted mandatory interventions
+        on the design, development, and deployment of such systems to ensure risks are adequately addressed.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: legislative_action_in_every_country_will
+      n_instances: 1
+      example_quotes:
+      - The challenges posed by AI will ultimately require legislative action in every country once understanding
+        of risk has matured.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: a_future_in_which_people_across_the_uk_b
+      n_instances: 1
+      example_quotes:
+      - Introducing binding measures too soon, even if highly targeted, could fail to effectively address
+        risks, quickly become out of date, or stifle innovation and prevent people from across the UK
+        from benefiting from AI.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: future_regulation_will_be_targeted_at_th
+      n_instances: 1
+      example_quotes:
+      - any future regulation would be targeted at the small number of developers of the most powerful
+        general-purpose systems
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: policy_will_be_developed_through_ongoing
+      n_instances: 1
+      example_quotes:
+      - We look forward to developing our proposals by working closely with industry, academia, civil
+        society, and the wider public.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: an_international_community_able_to_reali
+      n_instances: 1
+      example_quotes:
+      - Our goal remains to work with others to build an international community that is able to realise
+        the opportunities of AI on a global scale.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: coherent_ai_governance_frameworks_that_l
+      n_instances: 1
+      example_quotes:
+      - We will also work together to promote coherence between our AI governance frameworks to ensure
+        that businesses can operate effectively in both the UK and wider global markets and to ensure
+        that AI developments benefit people around the world.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: businesses_and_citizens_across_the_whole
+      n_instances: 1
+      example_quotes:
+      - We are committed to engaging the territorial offices and devolved administrations on both the
+        design and delivery of the regulatory framework, so that businesses and citizens across the UK
+        benefit from our regulatory approach.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: ai_will_transform_the_lives_of_working_p
+      n_instances: 1
+      example_quotes:
+      - the Prime Minister will say AI can transform the lives of working people
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: the_plan_will_make_britain_the_world_lea
+      n_instances: 1
+      example_quotes:
+      - Our plan will make Britain the world leader.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: the_plan_will_bring_more_jobs_and_invest
+      n_instances: 1
+      example_quotes:
+      - That means more jobs and investment in the UK, more money in people's pockets, and transformed
+        public services.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: the_public_sector_will_spend_less_time_o
+      n_instances: 1
+      example_quotes:
+      - public sector to spend less time doing admin and more time delivering the services working people
+        rely on
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: ai_will_help_build_an_nhs_fit_for_the_fu
+      n_instances: 1
+      example_quotes:
+      - This is already helping deliver the government's mission to build an NHS fit for the future.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: compute_capacity_will_grow_twenty_fold_b
+      n_instances: 1
+      example_quotes:
+      - This is part of the plan to increase compute capacity by twenty-fold by 2030 – supercharging our
+        capacity to power AI products.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: a_new_digital_centre_of_government_will_
+      n_instances: 1
+      example_quotes:
+      - This will revolutionise how AI is used in the public sector to improve citizens lives and make
+        government more efficient.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: the_plan_will_unlock_opportunities_for_t
+      n_instances: 1
+      example_quotes:
+      - Following it will unlock huge opportunities not just for British tech startups to succeed, but
+        for the British public to benefit from better public services and tech-enabled economic growth.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: ai_will_turbocharge_every_mission_in_the
+      n_instances: 1
+      example_quotes:
+      - It will turbocharge every mission in this government’s Plan for Change .
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: in_the_coming_years_barely_any_aspect_of
+      n_instances: 1
+      example_quotes:
+      - in the coming years, there is barely an aspect of our society that will remain untouched by this
+        force of change.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: ai_offers_a_unique_chance_to_boost_growt
+      n_instances: 1
+      example_quotes:
+      - This is a unique chance to boost growth, raise living standards, transform public services, create
+        the companies of the future in Britain and deliver our Plan for Change.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: across_public_services_ai_will_free_fron
+      n_instances: 1
+      example_quotes:
+      - right across our public services, it offers frontline staff the precious gift of time.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: britain_maintains_its_position_as_a_worl
+      n_instances: 1
+      example_quotes:
+      - make sure that Britain maintains its position as a world leader in AI , even as the competition
+        increases.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: ai_champions_are_appointed_in_key_sector
+      n_instances: 1
+      example_quotes:
+      - Government will appoint AI Champions in particular sectors highlighted in the Industrial Strategy.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      status: DRAFT_pending_author
+    - candidate_name: digital_transformation_as_a_central_leve
+      n_instances: 1
+      example_quotes:
+      - Digital transformation as a central lever for public service reform has the potential to improve
+        services, save money, make public sector roles more productive and unlock the power of innovations
+        such as AI .
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: with_strategic_focus_the_uk_will_reaffir
+      n_instances: 1
+      example_quotes:
+      - With strategic focus, the UK can reaffirm its leadership in digital government and set a new standard
+        for service delivery in the digital age.
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: the_uk_will_deliver_more_to_taxpayers_th
+      n_instances: 1
+      example_quotes:
+      - The UK has the scale, commercial power and political mandate to deliver more to taxpayers through
+        technology.
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: a_public_sector_with_bolstered_reliabili
+      n_instances: 1
+      example_quotes:
+      - underline the urgency to bolster reliability and incident management capabilities
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s17
+      status: DRAFT_pending_author
+    - candidate_name: public_sector_organisations_effectively_
+      n_instances: 1
+      example_quotes:
+      - Without robust and regularly tested management response plans, systems that serve individuals
+        and businesses are at risk. Yet many organisations fall short of effectively ensuring adequate
+        business continuity.
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s17
+      status: DRAFT_pending_author
+    - candidate_name: technology_will_be_used_to_empower_citiz
+      n_instances: 1
+      example_quotes:
+      - Now, we are setting out how we will use technology to empower citizens and transform their experience
+        of the state and the services it provides.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: a_future_in_which_the_state_is_at_citize
+      n_instances: 1
+      example_quotes:
+      - It sets out our vision for putting the state at citizens’ fingertips, with public services that
+        fit around the lives of the people who use them.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: joined_up_government_acting_as_one_publi
+      n_instances: 1
+      example_quotes:
+      - 'We will join up public sector digital services: acting as one public sector to enable next-generation
+        public services, better supporting businesses, and ensuring services are consistently high standard.'
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: the_blueprint_will_transform_citizens_ex
+      n_instances: 1
+      example_quotes:
+      - The Blueprint will transform how citizens’ experience the state, empowering them to engage with
+        digital public services when, how, and where they choose.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: technology_will_drive_radical_far_reachi
+      n_instances: 1
+      example_quotes:
+      - It also sets out how we will use technology to drive radical, far-reaching reform across the public
+        sector.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: public_service_ai_tools_will_be_taken_to
+      n_instances: 1
+      example_quotes:
+      - But there is much more to do, such as bringing AI Growth Zones from designation to delivery, operationalising
+        the new UK Sovereign AI Unit – backed by up to £500 million, and taking public service AI tools
+        to a truly national scale.
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
       status: DRAFT_pending_author
   ACTANTS:
-    n_applies_true: 24
-    n_clusters: 14
+    n_applies_true: 111
+    n_clusters: 28
     clusters:
-    - candidate_name: data_leakage_leaking_sensitive_informati
-      n_instances: 9
+    - candidate_name: hallucinations_and_potential_biases
+      n_instances: 34
       example_quotes:
+      - occurrences of problematic behaviour (including hallucinations and potential biases etc) helps
+        to control and improve the AI system
       - Consider using PET to prevent data leakage, and if you process personal identifiable information
         take action to protect peoples’ data e.g. pseudonymising data to reduce the risk of leaking sensitive
         information.
       - Data management needs to also address data loss prevention.
-      - relying on AI to make decisions and generate content without meaningful human oversight can have
-        negative consequences
       member_unit_ids:
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s17
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
       status: DRAFT_pending_author
-    - candidate_name: ai_as_a_force_for_the_public_good
-      n_instances: 3
+    - candidate_name: the_ai_safety_institute
+      n_instances: 32
       example_quotes:
+      - To improve their performance and make them more reliable, relevant information can be used to
+        ‘ground’ the responses, for example by employing retrieval augmented generation.
       - AI can and must remain a force for the public good, and we will ensure that is the case as we
         develop our policy approach in this area.
       - AI is helping to make our jobs safer and more satisfying, conserve our wildlife and fight climate
         change, and make our public services more efficient
-      - We brought together a powerful consortium of experts in our AI Safety Institute, the first government-backed
-        organisation of its kind anywhere in the world, committed to advancing AI safety in the public
-        interest.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: the_context_based_approach
+      n_instances: 17
+      example_quotes:
+      - The section above highlights how the context-based approach may miss significant risks posed by
+        highly capable general-purpose systems and leave the developers of those systems unaccountable.
+      - barriers to market entry and scale-up
+      - potential barriers to trade
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s17
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: the_knowledge_gap
+      n_instances: 3
+      example_quotes:
+      - we do not fully understand what the most powerful systems are capable of and we urgently need
+        to plug that gap.
+      - the insight gaps between industry, governments, academia, and the public
+      - AI tutoring tools in schools to narrow the attainment gap
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: premature_legislation_before_risks_are_u
+      n_instances: 2
+      example_quotes:
+      - acting before we properly understand the risks and appropriate mitigations would harm our ability
+        to benefit from technological progress while leaving us unable to adapt quickly to emerging risks
+      - Introducing binding measures too soon, even if highly targeted, could fail to effectively address
+        risks, quickly become out of date, or stifle innovation and prevent people from across the UK
+        from benefiting from AI.
       member_unit_ids:
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
       status: DRAFT_pending_author
     - candidate_name: good_data_management
       n_instances: 1
@@ -419,27 +1452,11 @@ questions:
       member_unit_ids:
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
       status: DRAFT_pending_author
-    - candidate_name: grounding_data_retrieval_augmented_gener
-      n_instances: 1
-      example_quotes:
-      - To improve their performance and make them more reliable, relevant information can be used to
-        ‘ground’ the responses, for example by employing retrieval augmented generation.
-      member_unit_ids:
-      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
-      status: DRAFT_pending_author
     - candidate_name: llms_outdated_and_non_knowledge_base_nat
       n_instances: 1
       example_quotes:
       - LLMs are not databases of knowledge, but advanced text engines. Their contents may also be out
         of date.
-      member_unit_ids:
-      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
-      status: DRAFT_pending_author
-    - candidate_name: hallucinations_and_potential_biases
-      n_instances: 1
-      example_quotes:
-      - occurrences of problematic behaviour (including hallucinations and potential biases etc) helps
-        to control and improve the AI system
       member_unit_ids:
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
       status: DRAFT_pending_author
@@ -474,13 +1491,6 @@ questions:
       member_unit_ids:
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
       status: DRAFT_pending_author
-    - candidate_name: the_uk_and_its_pro_innovation_regulatory
-      n_instances: 1
-      example_quotes:
-      - The UK is leading the world in how to respond to this challenge.
-      member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
-      status: DRAFT_pending_author
     - candidate_name: expert_regulators_empowered_by_the_agile
       n_instances: 1
       example_quotes:
@@ -489,25 +1499,144 @@ questions:
       member_unit_ids:
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
       status: DRAFT_pending_author
-    - candidate_name: premature_legislation_before_risks_are_u
+    - candidate_name: commercial_incentives
       n_instances: 1
       example_quotes:
-      - acting before we properly understand the risks and appropriate mitigations would harm our ability
-        to benefit from technological progress while leaving us unable to adapt quickly to emerging risks
+      - It may be the case that commercial incentives are not always aligned with the public good.
       member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
       status: DRAFT_pending_author
-    - candidate_name: potential_public_distrust_in_ai
+    - candidate_name: effective_global_collaboration_internati
       n_instances: 1
       example_quotes:
-      - we must ensure AI’s trustworthiness and public adoption through a strong pro-safety approach
+      - Only through effective global collaboration will the UK and our partners worldwide unlock the
+        opportunities and mitigate the associated risks of AI.
       member_unit_ids:
-      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: electoral_interference
+      n_instances: 1
+      example_quotes:
+      - shared risks related to electoral interference
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: matt_clifford
+      n_instances: 1
+      example_quotes:
+      - Matt Clifford has been appointed as advisor to the PM on AI opportunities, bringing together a
+        team across No10 and DSIT to seize the opportunities of AI and build the UK’s sovereign capabilities.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: sir_demis_hassabis
+      n_instances: 1
+      example_quotes:
+      - Nobel Prize-winner, Sir Demis Hassabis will also provide expertise to the government
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: tech_companies_vantage_data_centres_nsca
+      n_instances: 1
+      example_quotes:
+      - three major tech companies – Vantage Data Centres, Nscale and Kyndryl – have committed to £14
+        billion investment in the UK
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: the_risk_of_the_uk_being_left_behind
+      n_instances: 1
+      example_quotes:
+      - This government is determined that the UK is not left behind in the global race for AI
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: slow_planning_permission_processes_impli
+      n_instances: 1
+      example_quotes:
+      - new measures that will create dedicated AI Growth Zones that speed up planning permission and
+        give them the energy connections they need to power up AI
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: passive_inaction_waiting_for_change
+      n_instances: 1
+      example_quotes:
+      - But this government will not sit back passively and wait for change to come.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: caddy_led_by_the_incubator_for_ai
+      n_instances: 1
+      example_quotes:
+      - successful pilots that adopt AI in the public interest, such as Caddy, led by the Incubator for
+        AI .
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      status: DRAFT_pending_author
+    - candidate_name: the_private_sector
+      n_instances: 1
+      example_quotes:
+      - encourage the private sector to stimulate growth through AI adoption
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      status: DRAFT_pending_author
+    - candidate_name: digital_transformation_as_central_lever_
+      n_instances: 1
+      example_quotes:
+      - Digital transformation as a central lever for public service reform has the potential to improve
+        services, save money, make public sector roles more productive and unlock the power of innovations
+        such as AI .
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: robust_and_regularly_tested_management_r
+      n_instances: 1
+      example_quotes:
+      - Without robust and regularly tested management response plans, systems that serve individuals
+        and businesses are at risk
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s17
+      status: DRAFT_pending_author
+    - candidate_name: dedicated_experts
+      n_instances: 1
+      example_quotes:
+      - they rely on the dedication of experts doing their best with limited resources
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: ageing_legacy_systems_and_fragmented_tec
+      n_instances: 1
+      example_quotes:
+      - it reveals a fragmented technology landscape which is dependent on ageing legacy systems, which
+        is exposed to cyber attacks and technology failure, where data is siloed, and which does not have
+        enough skilled people to sustain and transform it
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: the_state_falling_behind_the_private_sec
+      n_instances: 1
+      example_quotes:
+      - The State of Digital Government Review shows just how wide the gap between the state and the private
+        sector has become.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
       status: DRAFT_pending_author
   NATURALISED_ORDER:
-    n_applies_true: 16
-    n_clusters: 16
+    n_applies_true: 71
+    n_clusters: 70
     clusters:
+    - candidate_name: a_fixed_hierarchy_in_which_humans_design
+      n_instances: 2
+      example_quotes:
+      - humans should be involved with setting up the systems, tuning and testing the model so the decision-making
+        improves, and then actioning the decisions it suggests.
+      - AI can help take care of drudgery in the public sector, freeing people up to focus on high-value
+        tasks that require the human touch.
+      member_unit_ids:
+      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
     - candidate_name: the_deployment_of_generative_ai_in_gover
       n_instances: 1
       example_quotes:
@@ -538,14 +1667,6 @@ questions:
         to explain the model results.
       member_unit_ids:
       - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s47
-      status: DRAFT_pending_author
-    - candidate_name: a_fixed_hierarchy_in_which_humans_design
-      n_instances: 1
-      example_quotes:
-      - humans should be involved with setting up the systems, tuning and testing the model so the decision-making
-        improves, and then actioning the decisions it suggests.
-      member_unit_ids:
-      - 2024-01-18_STRAT_CDDO_GenerativeAIFramework::s61
       status: DRAFT_pending_author
     - candidate_name: an_essential_human_machine_binary_is_nat
       n_instances: 1
@@ -637,7 +1758,432 @@ questions:
       member_unit_ids:
       - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s00
       status: DRAFT_pending_author
-coverage_warning: 'COVERAGE WARNING: the latest Round 1 run only succeeded on 26.4% of calls (2/35 documents
+    - candidate_name: private_frontier_ai_developers_are_taken
+      n_instances: 1
+      example_quotes:
+      - At present, frontier AI developers are building powerful systems that outpace the ability of government
+        and regulators to make them safe.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: intense_market_competition_between_compa
+      n_instances: 1
+      example_quotes:
+      - the intense competition between companies to release ever-more-capable systems means we will need
+        to remain highly vigilant to meaningful compliance, accountability, and effective risk mitigation.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: commercial_incentives_are_assumed_to_be_
+      n_instances: 1
+      example_quotes:
+      - It may be the case that commercial incentives are not always aligned with the public good.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: binding_legislative_action_by_every_coun
+      n_instances: 1
+      example_quotes:
+      - The challenges posed by AI will ultimately require legislative action in every country once understanding
+        of risk has matured.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: the_concentration_of_the_most_powerful_a
+      n_instances: 1
+      example_quotes:
+      - In line with our proportionate approach, any future regulation would be targeted at the small
+        number of developers of the most powerful general-purpose systems.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: openness_in_ai_is_naturalised_as_inheren
+      n_instances: 1
+      example_quotes:
+      - A degree of openness in AI is, and will continue to be, critical to scientific progress, and we
+        recognise that openness is core to our society and culture.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s07
+      status: DRAFT_pending_author
+    - candidate_name: continued_accelerating_ai_development_is
+      n_instances: 1
+      example_quotes:
+      - The pace of AI development shows no sign of slowing down, so the UK is committed to establishing
+        enduring international collaboration on AI safety, building on the foundations of the AI Safety
+        Summit agreements.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: a_market_led_innovation_economy_is_assum
+      n_instances: 1
+      example_quotes:
+      - How do we provide regulatory certainty to drive responsible AI innovation while retaining an adaptable
+        regime that can accommodate fast technical developments? How do we avoid creating barriers to
+        market entry and scale-up?
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: the_uk_s_status_as_a_global_leader_entit
+      n_instances: 1
+      example_quotes:
+      - The UK is an established global leader in AI with a history of driving forward the international
+        conversation and taking clear, decisive action to build bilateral and multilateral agreement.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: defence_and_national_security_uses_of_ai
+      n_instances: 1
+      example_quotes:
+      - our intention is for our regulatory framework to apply to the whole of the UK subject to existing
+        exemptions and derogations for unique operating requirements, such as defence and national security.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: legitimate_governance_is_naturally_perfo
+      n_instances: 1
+      example_quotes:
+      - We will collaborate with our international partners by working with representatives from industry,
+        academia, civil society, and government to ensure we can reap the extraordinary benefits afforded
+        by these technologies.
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: ai_s_borderless_transformation_of_all_so
+      n_instances: 1
+      example_quotes:
+      - 'AI knows no borders and its impact will shape societies and economies in all corners of the world:
+        AI developed in one nation will increasingly affect the lives of citizens living in others.'
+      member_unit_ids:
+      - 2024-02-06_REG_DSIT_ProInnovationAIRegulation::s08
+      status: DRAFT_pending_author
+    - candidate_name: the_state_s_proper_role_is_to_serve_and_
+      n_instances: 1
+      example_quotes:
+      - But the AI industry needs a government that is on their side, one that won’t sit back and let
+        opportunities slip through its fingers.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: international_economic_competition_is_a_
+      n_instances: 1
+      example_quotes:
+      - And in a world of fierce competition, we cannot stand by. We must move fast and take action to
+        win the global race.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: ai_driven_change_is_an_inevitable_autono
+      n_instances: 1
+      example_quotes:
+      - Artificial Intelligence will drive incredible change in our country.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: growth_is_the_overriding_priority_and_th
+      n_instances: 1
+      example_quotes:
+      - Because for too long we have allowed blockers to control the public discourse and get in the way
+        of growth in this sector.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: private_technology_firms_are_the_natural
+      n_instances: 1
+      example_quotes:
+      - It comes as three major tech companies – Vantage Data Centres, Nscale and Kyndryl – have committed
+        to £14 billion investment in the UK to build the AI infrastructure the UK needs to harness the
+        potential of this technology and deliver 13,250 jobs across the UK.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: public_sector_administrative_work_is_was
+      n_instances: 1
+      example_quotes:
+      - public sector to spend less time doing admin and more time delivering the services working people
+        rely on
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: the_gains_of_ai_investment_will_automati
+      n_instances: 1
+      example_quotes:
+      - that’s why the actions we commit to will ensure that the benefits are spread throughout the UK
+        so all citizens will reap the rewards of the bet we make today.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s00
+      status: DRAFT_pending_author
+    - candidate_name: the_state_s_power_is_naturally_at_the_se
+      n_instances: 1
+      example_quotes:
+      - This team will use the heft of the state to make the UK the best place for business. This could
+        include guaranteeing firms access to data and energy.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: ai_s_arrival_and_adoption_are_presented_
+      n_instances: 1
+      example_quotes:
+      - AI is no longer an if, or even a when; it is here, and it is urgent.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: close_public_private_partnership_is_natu
+      n_instances: 1
+      example_quotes:
+      - By putting close industry collaboration and public-private partnership at the heart of the government’s
+        agenda, every citizen, community and business in every region of the UK will have the opportunity
+        to realise the benefits of AI , and thrive and grow.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: government_s_role_is_to_accelerate_and_k
+      n_instances: 1
+      example_quotes:
+      - Governments can and should move at a faster pace to help realise the benefits of rapid technological
+        change
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: economic_growth_is_equated_without_argum
+      n_instances: 1
+      example_quotes:
+      - That means local jobs, improved communities, and a growing economy – all of which puts more money
+        in people’s pockets.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: centralised_executive_direction_with_the
+      n_instances: 1
+      example_quotes:
+      - The Prime Minister has personally written to his entire Cabinet, tasking them with driving AI
+        adoption and growth in their sectors, and making that a top priority for their Departments.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: public_sector_settings_are_treated_as_a_
+      n_instances: 1
+      example_quotes:
+      - It will scan for new ideas, pilot them in public sector settings, then scale them as far as they
+        can go.
+      member_unit_ids:
+      - 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI::s01
+      status: DRAFT_pending_author
+    - candidate_name: a_binary_global_hierarchy_in_which_natio
+      n_instances: 1
+      example_quotes:
+      - Some countries are going to make AI breakthroughs and export them to the world. Other countries
+        will be left to buy those breakthroughs by importing them.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: britain_s_leadership_in_ai_is_naturalise
+      n_instances: 1
+      example_quotes:
+      - This is the nation of Babbage, Turing and Lovelace – driving change is in our DNA .
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: ai_s_total_permeation_of_society_is_trea
+      n_instances: 1
+      example_quotes:
+      - there is barely an aspect of our society that will remain untouched by this force of change
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: the_government_s_role_as_the_rightful_ac
+      n_instances: 1
+      example_quotes:
+      - It is our responsibility to harness it and make it work for working people.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: ai_is_naturalised_as_a_benevolent_benefa
+      n_instances: 1
+      example_quotes:
+      - right across our public services, it offers frontline staff the precious gift of time
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s01
+      status: DRAFT_pending_author
+    - candidate_name: central_government_dsit_is_the_natural_a
+      n_instances: 1
+      example_quotes:
+      - Government will appoint AI Champions in particular sectors highlighted in the Industrial Strategy.
+        DSIT will also work with devolved and local government to identify AI adoption opportunities to
+        drive growth.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      status: DRAFT_pending_author
+    - candidate_name: ai_adoption_is_an_unquestioned_good_and_
+      n_instances: 1
+      example_quotes:
+      - AI presents exciting opportunities to improve people’s lives, including by making our public services
+        better.
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      status: DRAFT_pending_author
+    - candidate_name: the_economic_order_is_taken_for_granted_
+      n_instances: 1
+      example_quotes:
+      - To transform our public services with AI and encourage the private sector to stimulate growth
+        through AI adoption, we will take forward Matt Clifford’s recommendations on adoption
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      status: DRAFT_pending_author
+    - candidate_name: government_is_the_natural_arbiter_of_wha
+      n_instances: 1
+      example_quotes:
+      - prioritising the scaling up of successful pilots that adopt AI in the public interest
+      member_unit_ids:
+      - 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse::s10
+      status: DRAFT_pending_author
+    - candidate_name: the_private_sector_and_competitor_nation
+      n_instances: 1
+      example_quotes:
+      - services have not kept pace with other countries or the private sector.
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: the_state_s_relation_to_the_public_is_fr
+      n_instances: 1
+      example_quotes:
+      - The UK has the scale, commercial power and political mandate to deliver more to taxpayers through
+        technology.
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: digital_transformation_including_ai_is_t
+      n_instances: 1
+      example_quotes:
+      - Digital transformation as a central lever for public service reform has the potential to improve
+        services, save money, make public sector roles more productive and unlock the power of innovations
+        such as AI .
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: nations_exist_in_a_competitive_ranked_hi
+      n_instances: 1
+      example_quotes:
+      - Historically, the UK has been a leader in digital government, ranking third in the Organisation
+        for Economic Co-operation and Development ( OECD ) Digital Government Index (2023) and first in
+        the UN E-Government Development Index (2016).
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s03
+      status: DRAFT_pending_author
+    - candidate_name: central_government_is_the_natural_locus_
+      n_instances: 1
+      example_quotes:
+      - The magnitude and impact of incidents across the public sector are not centrally captured.
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s17
+      status: DRAFT_pending_author
+    - candidate_name: digital_systems_are_the_default_normal_m
+      n_instances: 1
+      example_quotes:
+      - often forcing staff to fall back onto manual, paper-based processes
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s17
+      status: DRAFT_pending_author
+    - candidate_name: citizens_are_passive_dependents_on_state
+      n_instances: 1
+      example_quotes:
+      - Service failures are disrupting people’s lives, and the public sector is not sufficiently prepared
+        to manage disruptions
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s17
+      status: DRAFT_pending_author
+    - candidate_name: the_problem_and_its_remedy_are_framed_as
+      n_instances: 1
+      example_quotes:
+      - Without robust and regularly tested management response plans, systems that serve individuals
+        and businesses are at risk.
+      member_unit_ids:
+      - 2025-01-21_STRAT_GDS_StateOfDigitalGovReview::s17
+      status: DRAFT_pending_author
+    - candidate_name: the_private_sector_is_the_natural_benchm
+      n_instances: 1
+      example_quotes:
+      - However, state has been allowed to fall behind.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: ai_is_taken_as_an_already_proven_engine_
+      n_instances: 1
+      example_quotes:
+      - We have already shown how technologies like AI can drive economic growth, create new jobs and
+        improve living standards.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: the_citizen_state_relationship_is_framed
+      n_instances: 1
+      example_quotes:
+      - It sets out our vision for putting the state at citizens’ fingertips, with public services that
+        fit around the lives of the people who use them.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: adopting_new_technology_is_presented_as_
+      n_instances: 1
+      example_quotes:
+      - Failure to adopt new technology costs the taxpayer £45 billion a year.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: centralised_executive_led_control_of_dig
+      n_instances: 1
+      example_quotes:
+      - Delivery of the blueprint will be led by the new digital centre of government within my department.
+      member_unit_ids:
+      - 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement::s02
+      status: DRAFT_pending_author
+    - candidate_name: ai_s_arrival_is_an_inevitable_revolution
+      n_instances: 1
+      example_quotes:
+      - Taken together, these measures show how the UK is not just keeping pace with the AI revolution
+        – but actively shaping it – turning ambition into impact for citizens, business and the economy.
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: the_state_is_the_natural_central_agent_t
+      n_instances: 1
+      example_quotes:
+      - 'This is delivery with purpose: putting people first, rewiring the state to improve public services,
+        and supercharging the sectors that will drive long-term growth.'
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: government_alone_determines_the_public_i
+      n_instances: 1
+      example_quotes:
+      - We will continue to deliver at pace, to ensure Britain will continue not just to adapt to technological
+        change, but to shape it in the public interest.
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: a_public_private_arrangement_in_which_in
+      n_instances: 1
+      example_quotes:
+      - delivered 1 million free AI upskilling courses through industry partners
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: state_investment_in_data_assets_to_suppo
+      n_instances: 1
+      example_quotes:
+      - the Sovereign AI Unit – which has already started investing in creating data assets to support
+        UK companies
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+    - candidate_name: scaling_ai_tools_in_schools_and_healthca
+      n_instances: 1
+      example_quotes:
+      - from launching a world-leading pilot of AI tutoring tools in schools to narrow the attainment
+        gap, to hitting our target to scale AI diagnostic tools nationally
+      member_unit_ids:
+      - 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn::s03
+      status: DRAFT_pending_author
+coverage_warning: 'COVERAGE WARNING: the latest Round 1 run only succeeded on 67.3% of calls (7/35 documents
   with at least one successful record) -- see coding/round1/run_meta.json ''status'' for why. Clusters
   and counts below are computed ONLY from the records that did succeed and are NOT corpus-wide. Re-run
   scripts/06_consolidate.py after completing Round 1.'

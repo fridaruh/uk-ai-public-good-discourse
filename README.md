@@ -54,7 +54,13 @@ analysis/metaphors_report.md  most frequent metaphors with suggested source/targ
 | `05_code.py` | 4 | Round 1 with Ollama (11 questions × unit; `--doc` for a single one) |
 | `06_consolidate.py` | 5 | Response grouping → guidebook draft |
 | `06_network_v0.py` | 6 | Explicit-reference network (title alias + MoU rule) |
-| `07_echo.py` / `07b_queries.py` | 6 | Echo-phrases by MoU family + queries |
+| `07_echo.py` / `07b_queries.py` | 6 | Echo-phrases by MoU family + queries (3 charts) |
+| `09_round1_watchdog.py` | 4 | Resumes Round 1 in bursts until the Ollama Cloud quota allows completion |
+| `10_thematic_network.py` | 6 | Bipartite document↔sub-code network (from the guidebook draft) |
+| `11_agency_query.py` | 6 | Agency × genre query (NVivo plan query 2) from Round 1 AGENCY records |
+| `12_nvivo_export.py` | 6 | NVivo classification sheet + coded passages CSVs |
+| `13_qa_communities.py` | QA | Leiden communities vs families/speakers (ARI) — internal, not results |
+| `10_finalize.py` | — | Re-runs the whole analysis chain in order (use after Round 1 completes) |
 | `08_build_site.py` | — | Regenerates `index.html` from the data |
 | `add_document.py` | 7 | Incremental intake: admission checklist → fetch → recompute |
 | `serve_site.py` | — | Hub on localhost:8765 with the intake form |

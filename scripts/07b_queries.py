@@ -14,11 +14,13 @@ TERM_COUNTS_FILE = Path(__file__).parent.parent / "analysis" / "queries" / "term
 ANALYSIS_DIR = Path(__file__).parent.parent / "analysis" / "queries"
 OUTPUT_CSV_GENRE = ANALYSIS_DIR / "zero_count_by_genre.csv"
 OUTPUT_CSV_TIER = ANALYSIS_DIR / "nominal_by_gdstier.csv"
+AGENCY_CSV_FILE = ANALYSIS_DIR / "agency_by_genre.csv"
 OUTPUT_HTML = ANALYSIS_DIR / "queries.html"
 
 # Valid genres and tiers
 GENRES = ['STRAT', 'MOU', 'PRGOV', 'PRCO', 'BLOG', 'WMS', 'REG']
 TIERS = ['T1', 'T2', 'T3']
+AGENCY_FORMS = ['explicit_agent', 'agentless_passive', 'nominalisation']
 
 def load_manifest():
     """Load manifest as {doc_id: {columns}}."""
@@ -41,6 +43,30 @@ def load_term_counts():
                 'n_distributive': int(row['n_distributive']) if row['n_distributive'] else 0,
             }
     return counts
+
+def load_agency_data():
+    """Load analysis/queries/agency_by_genre.csv, produced by
+    scripts/11_agency_query.py. Returns (agency_data, partial_note) where
+    agency_data is {genre: {form: count}} or None if the query hasn't been
+    run yet, and partial_note is the text of a leading '# STATUS: PARTIAL...'
+    comment line in that CSV, or None when the query is corpus-complete."""
+    if not AGENCY_CSV_FILE.exists():
+        return None, None
+    with open(AGENCY_CSV_FILE, encoding='utf-8') as f:
+        lines = f.readlines()
+    partial_note = None
+    data_lines = lines
+    if lines and lines[0].lstrip().startswith('#'):
+        partial_note = lines[0].lstrip('#').strip()
+        data_lines = lines[1:]
+    reader = csv.DictReader(data_lines)
+    agency_data = defaultdict(lambda: {f: 0 for f in AGENCY_FORMS})
+    for row in reader:
+        genre = row.get('genre', '')
+        for form in AGENCY_FORMS:
+            agency_data[genre][form] = int(row.get(form) or 0)
+    return dict(agency_data), partial_note
+
 
 def process_by_genre(manifest, term_counts):
     """Process counts by genre."""
@@ -160,8 +186,8 @@ def write_tier_csv(tier_data):
         # Footnote
         f.write("# gds_tier auto-assigned, provisional\n")
 
-def generate_html(genre_data, tier_data):
-    """Generate HTML with two SVG charts."""
+def generate_html(genre_data, tier_data, agency_data=None, agency_note=None):
+    """Generate HTML with the three NVivo-plan-query SVG charts."""
 
     # Prepare data for charts
     genre_labels = GENRES
@@ -177,6 +203,14 @@ def generate_html(genre_data, tier_data):
     # Generate SVG charts
     genre_svg = generate_bar_chart("Zero count x genre (term status per document)", genre_labels, genre_present, genre_variant, genre_absent)
     tier_svg = generate_bar_chart("Nominal term x GDS tier (provisional)", tier_labels, tier_present, tier_variant, tier_absent)
+
+    agency_svg = None
+    if agency_data is not None:
+        agency_explicit = [agency_data.get(g, {}).get('explicit_agent', 0) for g in genre_labels]
+        agency_passive = [agency_data.get(g, {}).get('agentless_passive', 0) for g in genre_labels]
+        agency_nominal = [agency_data.get(g, {}).get('nominalisation', 0) for g in genre_labels]
+        agency_svg = generate_bar_chart("Agency x genre (instance counts)", genre_labels,
+                                         agency_explicit, agency_passive, agency_nominal)
 
     # HTML
     html = f"""<!DOCTYPE html>
@@ -315,7 +349,14 @@ def generate_html(genre_data, tier_data):
         <h1>Term queries — &ldquo;public good&rdquo; across the corpus</h1>
 
         <div class="note">
-            <strong>Note:</strong> Agency x genre query: pending Round 1 coding
+            <strong>Note:</strong> {(
+                "Agency x genre query: pending Round 1 coding (run scripts/11_agency_query.py once "
+                "coding/round1/*.jsonl has AGENCY records)."
+            ) if agency_data is None else (
+                f"Agency x genre query: <strong>{agency_note}</strong> See the third chart below."
+            ) if agency_note else (
+                "Agency x genre query: complete for the full corpus. See the third chart below."
+            )}
         </div>
 
         <div class="chart-section">
@@ -433,7 +474,62 @@ def generate_html(genre_data, tier_data):
     html += """                </tbody>
             </table>
         </div>
-    </div>
+"""
+
+    if agency_svg is not None:
+        partial_html = (
+            f'<div class="note"><strong>Note:</strong> {agency_note}</div>'
+            if agency_note else ""
+        )
+        html += f"""
+        <div class="chart-section">
+            <h2>Agency &times; genre</h2>
+            {partial_html}
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--color-present);"></div>
+                    <span>Explicit agent</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--color-variant);"></div>
+                    <span>Agentless passive</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--color-absent);"></div>
+                    <span>Nominalisation</span>
+                </div>
+            </div>
+            {agency_svg}
+        </div>
+
+        <div class="table-section">
+            <h2>Agency Breakdown</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Genre</th>
+                        <th>Explicit Agent</th>
+                        <th>Agentless Passive</th>
+                        <th>Nominalisation</th>
+                    </tr>
+                </thead>
+                <tbody>
+"""
+        for genre in GENRES:
+            data = agency_data.get(genre, {f: 0 for f in AGENCY_FORMS})
+            html += f"""                    <tr>
+                        <td><strong>{genre}</strong></td>
+                        <td>{data.get('explicit_agent', 0)}</td>
+                        <td>{data.get('agentless_passive', 0)}</td>
+                        <td>{data.get('nominalisation', 0)}</td>
+                    </tr>
+"""
+        html += """                </tbody>
+            </table>
+        </div>
+"""
+
+    html += """    </div>
 </body>
 </html>
 """
@@ -513,14 +609,20 @@ def generate_bar_chart(title, categories, present, variant, absent):
 if __name__ == '__main__':
     manifest = load_manifest()
     term_counts = load_term_counts()
+    agency_data, agency_note = load_agency_data()
 
     genre_data = process_by_genre(manifest, term_counts)
     tier_data = process_by_tier(manifest, term_counts)
 
     write_genre_csv(genre_data)
     write_tier_csv(tier_data)
-    generate_html(genre_data, tier_data)
+    generate_html(genre_data, tier_data, agency_data, agency_note)
 
     print(f"Genre CSV: {OUTPUT_CSV_GENRE}")
     print(f"Tier CSV: {OUTPUT_CSV_TIER}")
+    if agency_data is not None:
+        status = agency_note if agency_note else "complete"
+        print(f"Agency CSV: {AGENCY_CSV_FILE} ({status})")
+    else:
+        print("Agency CSV: not found -- run scripts/11_agency_query.py first")
     print(f"HTML: {OUTPUT_HTML}")

@@ -1,0 +1,505 @@
+{
+ "nodes": [
+  {
+   "id": "2024-01-18_STRAT_CDDO_GenerativeAIFramework",
+   "family": "None",
+   "speaker": "CDDO",
+   "n_codes": 35
+  },
+  {
+   "id": "2024-02-06_REG_DSIT_ProInnovationAIRegulation",
+   "family": "None",
+   "speaker": "DSIT",
+   "n_codes": 77
+  },
+  {
+   "id": "2025-01-13_STRAT_DSIT_AIActionPlanGovResponse",
+   "family": "None",
+   "speaker": "DSIT",
+   "n_codes": 47
+  },
+  {
+   "id": "2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn",
+   "family": "None",
+   "speaker": "DSIT",
+   "n_codes": 22
+  },
+  {
+   "id": "2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI",
+   "family": "None",
+   "speaker": "PMO",
+   "n_codes": 66
+  },
+  {
+   "id": "2025-01-21_WMS_DSIT_BlueprintMinisterialStatement",
+   "family": "None",
+   "speaker": "DSIT",
+   "n_codes": 30
+  },
+  {
+   "id": "2025-01-21_STRAT_GDS_StateOfDigitalGovReview",
+   "family": "None",
+   "speaker": "DSIT_and_GDS",
+   "n_codes": 28
+  },
+  {
+   "id": "2025-01-27_BLOG_GDS_SameNameNewAmbitions",
+   "family": "None",
+   "speaker": "GDS",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-02-10_STRAT_GDS_AIPlaybookUKGovernment",
+   "family": "None",
+   "speaker": "GDS",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-02-10_BLOG_GDS_LaunchingAIPlaybook",
+   "family": "None",
+   "speaker": "GDS",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-01-21_STRAT_GDS_BlueprintModernDigitalGov",
+   "family": "None",
+   "speaker": "DSIT_and_GDS",
+   "n_codes": 0
+  },
+  {
+   "id": "2026-01-20_BLOG_GDS_OurRoadmapLaunch",
+   "family": "None",
+   "speaker": "GDS",
+   "n_codes": 0
+  },
+  {
+   "id": "2026-01-20_STRAT_GDS_RoadmapModernDigitalGov",
+   "family": "None",
+   "speaker": "DSIT_and_GDS",
+   "n_codes": 0
+  },
+  {
+   "id": "2026-01-19_WMS_DSIT_RoadmapMinisterialStatement",
+   "family": "None",
+   "speaker": "DSIT_and_GDS",
+   "n_codes": 0
+  },
+  {
+   "id": "2026-01-27_PRGOV_DSIT_TopBritishAIExpertise",
+   "family": "None",
+   "speaker": "DSIT",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-08-18_BLOG_GDS_AIExemplarsProgramme",
+   "family": "None",
+   "speaker": "GDS",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-02-14_MOU_Anthropic_AIOpportunities",
+   "family": "Anthropic",
+   "speaker": "DSIT_and_Anthropic",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-02-14_PRCO_Anthropic_SignsMOUUKGov",
+   "family": "Anthropic",
+   "speaker": "Anthropic",
+   "n_codes": 0
+  },
+  {
+   "id": "2026-01-27_PRCO_Anthropic_GOVUKPartnership",
+   "family": "Anthropic",
+   "speaker": "Anthropic",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-06-16_MOU_Cohere_AIOpportunities",
+   "family": "Cohere",
+   "speaker": "DSIT_and_Cohere",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-06-15_PRCO_Cohere_CanadaUKPartnerships",
+   "family": "Cohere",
+   "speaker": "Cohere",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-07-21_MOU_OpenAI_AIOpportunities",
+   "family": "OpenAI",
+   "speaker": "DSIT_and_OpenAI",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-07-21_PRGOV_DSIT_OpenAIExpandUKOffice",
+   "family": "OpenAI",
+   "speaker": "DSIT",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-07-21_PRCO_OpenAI_StrategicPartnership",
+   "family": "OpenAI",
+   "speaker": "OpenAI",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-10-22_PRCO_OpenAI_NextChapterSovereignAI",
+   "family": "OpenAI",
+   "speaker": "OpenAI",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-09-16_PRCO_OpenAI_StargateUK",
+   "family": "OpenAI",
+   "speaker": "OpenAI",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-12-11_MOU_DeepMind_AIOpportunitiesSecurity",
+   "family": "DeepMind",
+   "speaker": "DSIT_and_DeepMind",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-12-11_PRGOV_DSIT_NationalRenewalDeepMind",
+   "family": "DeepMind",
+   "speaker": "DSIT",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-12-11_PRCO_DeepMind_DeepeningAISIPartnership",
+   "family": "DeepMind",
+   "speaker": "DeepMind",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-12-10_PRCO_DeepMind_StrengtheningPartnership",
+   "family": "DeepMind",
+   "speaker": "DeepMind",
+   "n_codes": 0
+  },
+  {
+   "id": "2026-06-08_MOU_ElevenLabs_AIOpportunities",
+   "family": "ElevenLabs",
+   "speaker": "DSIT_and_ElevenLabs",
+   "n_codes": 0
+  },
+  {
+   "id": "2026-02-18_PRCO_ElevenLabs_UKAISIPartnership",
+   "family": "ElevenLabs",
+   "speaker": "ElevenLabs",
+   "n_codes": 0
+  },
+  {
+   "id": "2026-06-08_PRCO_ElevenLabs_UKMOUExpansion",
+   "family": "ElevenLabs",
+   "speaker": "ElevenLabs",
+   "n_codes": 0
+  },
+  {
+   "id": "2025-02-14_PRGOV_DSIT_TacklingAISecurityRisks",
+   "family": "None",
+   "speaker": "DSIT",
+   "n_codes": 0
+  }
+ ],
+ "edges": [
+  {
+   "source": "2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI",
+   "target": "2025-01-13_STRAT_DSIT_AIActionPlanGovResponse",
+   "weight": 14,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:children",
+    "BENEFICIARY:teachers",
+    "BENEFICIARY:the_public",
+    "MECHANISM:economic_growth",
+    "MECHANISM:efficiency",
+    "MECHANISM:efficiency_reduced_administrative_burden",
+    "MECHANISM:faster_infrastructure_decisions_and_main",
+    "MECHANISM:personalisation",
+    "PROJECTED_FUTURE:ai_remains_a_force_for_the_public_good_g",
+    "PROJECTED_FUTURE:britain_becomes_the_safest_and_most_inno",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud",
+    "SAFEGUARD:human_involvement_in_public_sector_tasks"
+   ]
+  },
+  {
+   "source": "2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI",
+   "target": "2025-01-21_WMS_DSIT_BlueprintMinisterialStatement",
+   "weight": 9,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "ACTANTS:the_context_based_approach",
+    "BENEFICIARY:the_public",
+    "MECHANISM:economic_growth",
+    "MECHANISM:efficiency",
+    "PROJECTED_FUTURE:ai_remains_a_force_for_the_public_good_g",
+    "RESPONSIBILITY:a_new_digital_centre_of_government_withi",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud"
+   ]
+  },
+  {
+   "source": "2024-02-06_REG_DSIT_ProInnovationAIRegulation",
+   "target": "2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI",
+   "weight": 8,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "ACTANTS:the_context_based_approach",
+    "BENEFICIARY:the_public",
+    "MECHANISM:efficiency",
+    "PROJECTED_FUTURE:ai_remains_a_force_for_the_public_good_g",
+    "PROJECTED_FUTURE:britain_becomes_the_safest_and_most_inno",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud"
+   ]
+  },
+  {
+   "source": "2025-01-21_STRAT_GDS_StateOfDigitalGovReview",
+   "target": "2025-01-21_WMS_DSIT_BlueprintMinisterialStatement",
+   "weight": 8,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "ACTANTS:the_context_based_approach",
+    "BENEFICIARY:Beneficiary_Taxpayer",
+    "BENEFICIARY:the_public",
+    "MECHANISM:efficiency_cost_savings",
+    "MECHANISM:productivity",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud"
+   ]
+  },
+  {
+   "source": "2024-02-06_REG_DSIT_ProInnovationAIRegulation",
+   "target": "2025-01-13_STRAT_DSIT_AIActionPlanGovResponse",
+   "weight": 7,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:the_public",
+    "MECHANISM:efficiency",
+    "PROJECTED_FUTURE:ai_remains_a_force_for_the_public_good_g",
+    "PROJECTED_FUTURE:britain_becomes_the_safest_and_most_inno",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud"
+   ]
+  },
+  {
+   "source": "2024-02-06_REG_DSIT_ProInnovationAIRegulation",
+   "target": "2025-01-21_WMS_DSIT_BlueprintMinisterialStatement",
+   "weight": 7,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "ACTANTS:the_context_based_approach",
+    "BENEFICIARY:the_public",
+    "MECHANISM:efficiency",
+    "PROJECTED_FUTURE:ai_remains_a_force_for_the_public_good_g",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud"
+   ]
+  },
+  {
+   "source": "2024-02-06_REG_DSIT_ProInnovationAIRegulation",
+   "target": "2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn",
+   "weight": 7,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "ACTANTS:the_knowledge_gap",
+    "BENEFICIARY:the_public",
+    "MECHANISM:efficiency",
+    "PROJECTED_FUTURE:britain_becomes_the_safest_and_most_inno",
+    "PROJECTED_FUTURE:the_lives_of_the_british_people_are_impr"
+   ]
+  },
+  {
+   "source": "2025-01-13_STRAT_DSIT_AIActionPlanGovResponse",
+   "target": "2025-01-21_WMS_DSIT_BlueprintMinisterialStatement",
+   "weight": 7,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:the_public",
+    "MECHANISM:economic_growth",
+    "MECHANISM:efficiency",
+    "PROJECTED_FUTURE:ai_remains_a_force_for_the_public_good_g",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud"
+   ]
+  },
+  {
+   "source": "2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI",
+   "target": "2025-01-21_STRAT_GDS_StateOfDigitalGovReview",
+   "weight": 6,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "ACTANTS:the_context_based_approach",
+    "BENEFICIARY:the_public",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud",
+    "SAFEGUARD:risk_based_laws"
+   ]
+  },
+  {
+   "source": "2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI",
+   "target": "2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn",
+   "weight": 6,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:the_public",
+    "MECHANISM:economic_growth",
+    "MECHANISM:efficiency",
+    "PROJECTED_FUTURE:britain_becomes_the_safest_and_most_inno"
+   ]
+  },
+  {
+   "source": "2025-01-13_STRAT_DSIT_AIActionPlanGovResponse",
+   "target": "2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn",
+   "weight": 6,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:the_public",
+    "MECHANISM:economic_growth",
+    "MECHANISM:efficiency",
+    "PROJECTED_FUTURE:britain_becomes_the_safest_and_most_inno"
+   ]
+  },
+  {
+   "source": "2024-01-18_STRAT_CDDO_GenerativeAIFramework",
+   "target": "2024-02-06_REG_DSIT_ProInnovationAIRegulation",
+   "weight": 5,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:the_public",
+    "MECHANISM:better_decisions",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud"
+   ]
+  },
+  {
+   "source": "2024-01-18_STRAT_CDDO_GenerativeAIFramework",
+   "target": "2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI",
+   "weight": 5,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:the_public",
+    "NATURALISED_ORDER:a_fixed_hierarchy_in_which_humans_design",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud"
+   ]
+  },
+  {
+   "source": "2024-01-18_STRAT_CDDO_GenerativeAIFramework",
+   "target": "2025-01-21_STRAT_GDS_StateOfDigitalGovReview",
+   "weight": 5,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:Beneficiary_Taxpayer",
+    "BENEFICIARY:the_public",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud"
+   ]
+  },
+  {
+   "source": "2024-01-18_STRAT_CDDO_GenerativeAIFramework",
+   "target": "2025-01-21_WMS_DSIT_BlueprintMinisterialStatement",
+   "weight": 5,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:Beneficiary_Taxpayer",
+    "BENEFICIARY:the_public",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud"
+   ]
+  },
+  {
+   "source": "2024-02-06_REG_DSIT_ProInnovationAIRegulation",
+   "target": "2025-01-21_STRAT_GDS_StateOfDigitalGovReview",
+   "weight": 5,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "ACTANTS:the_context_based_approach",
+    "BENEFICIARY:the_public",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud"
+   ]
+  },
+  {
+   "source": "2025-01-21_WMS_DSIT_BlueprintMinisterialStatement",
+   "target": "2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn",
+   "weight": 5,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:the_public",
+    "MECHANISM:economic_growth",
+    "MECHANISM:efficiency"
+   ]
+  },
+  {
+   "source": "2024-01-18_STRAT_CDDO_GenerativeAIFramework",
+   "target": "2025-01-13_STRAT_DSIT_AIActionPlanGovResponse",
+   "weight": 4,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:the_public",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud"
+   ]
+  },
+  {
+   "source": "2025-01-13_STRAT_DSIT_AIActionPlanGovResponse",
+   "target": "2025-01-21_STRAT_GDS_StateOfDigitalGovReview",
+   "weight": 4,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:the_public",
+    "SAFEGUARD:documentation_and_record_keeping_for_aud"
+   ]
+  },
+  {
+   "source": "2024-01-18_STRAT_CDDO_GenerativeAIFramework",
+   "target": "2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn",
+   "weight": 3,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:the_public"
+   ]
+  },
+  {
+   "source": "2025-01-21_STRAT_GDS_StateOfDigitalGovReview",
+   "target": "2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn",
+   "weight": 3,
+   "shared_codes": [
+    "ACTANTS:hallucinations_and_potential_biases",
+    "ACTANTS:the_ai_safety_institute",
+    "BENEFICIARY:the_public"
+   ]
+  }
+ ],
+ "meta": {
+  "status": "PARTIAL",
+  "docs_covered": 7,
+  "docs_total": 34,
+  "n_subcodes": 250,
+  "n_core_questions": 7,
+  "core_questions": [
+   "BENEFICIARY",
+   "MECHANISM",
+   "SAFEGUARD",
+   "RESPONSIBILITY",
+   "PROJECTED_FUTURE",
+   "ACTANTS",
+   "NATURALISED_ORDER"
+  ],
+  "pct_calls_succeeded_latest_run": 67.27806309611152,
+  "n_edges": 21,
+  "banner": "STATUS: PARTIAL -- regenerate after Round 1 completes. Coverage: 7/34 documents contributed at least one sub-code (250 sub-codes total, from the 7 core questions with guidebook clusters). Latest Round 1 run at 67.3% of unit-question calls -- see coding/round1/run_meta.json. This graph is NOT corpus-wide; re-run scripts/06_consolidate.py then scripts/10_thematic_network.py once Round 1 completes."
+ }
+}
