@@ -38,3 +38,19 @@ All 4 evaluated candidates were verified with a short `/api/generate` call befor
 **Speed caveat (operational, not part of the decision rule).** `kimi-k3:cloud` is markedly slower than the alternatives (mean 35.8s/call vs. 8.5-8.6s/call for `gpt-oss:120b-cloud` and `deepseek-v4-flash:cloud`), consistent with it being a reasoning/thinking model. This does not affect the model choice (the decision rule is fidelity-first) but materially affects Round 1 runtime and is noted here for planning purposes.
 
 Scope note: agreement with the author on the sample (Phase 3, item 4 of the PLAN) is still pending -- this report only covers the automatic metrics (valid JSON, verbatim fidelity, reasonable applies=false). Human adjudication happens in the 15-20% validation of Phase 4.
+
+## Operational addendum (2026-08-30)
+
+Round 1 execution was completed with **two models for cost reasons, with full
+per-record traceability**: `kimi-k3:cloud` (the Phase 3 winner) coded the first
+182 unit x question pairs (99.8% verbatim fidelity on its records) until the
+free-tier session quota and a USD 5 extra-usage credit were exhausted — its
+reasoning ("thinking") output made per-call cost several times the original
+estimate. The remaining pairs were coded with `deepseek-v4-flash:cloud`
+(runner-up on JSON validity at 100%, verbatim fidelity 87.2% in Phase 3;
+~4x cheaper and faster), chosen to stay within the account's weekly usage cap.
+Every Round 1 record carries its `model` field, failed verbatim quotes are
+flagged (`quote_verified=false`) rather than silently kept, and the author's
+15-20% validation sample stratifies across both models. The winning-model
+decision above stands as the fidelity-first result; this addendum records the
+operational deviation and its safeguards.
