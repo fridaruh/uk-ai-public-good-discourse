@@ -25,6 +25,50 @@ in order:
 The `AGENT — ` prefix marks the parts of this file addressed directly to you
 (a Claude Code agent picking this up), as opposed to background for a human.
 
+## AGENT — Step 0: check prerequisites, install whatever's missing
+
+Don't assume `git` or Python are already installed — check first, and install
+silently if they're missing rather than asking the user to do it manually.
+
+```bash
+git --version && python3 --version
+```
+
+If either command is missing, install based on the OS:
+
+**macOS** — prefer Homebrew if it's already there (`brew --version`); if not,
+installing Homebrew itself is a bigger, more invasive step, so check for
+Xcode Command Line Tools first, since that alone provides `git`:
+```bash
+xcode-select --install        # provides git; user may need to click through a GUI prompt
+# if python3 is still missing after that:
+brew install python3          # only if brew is available; otherwise point the user to python.org
+```
+
+**Debian/Ubuntu Linux**:
+```bash
+sudo apt-get update && sudo apt-get install -y git python3 python3-venv python3-pip
+```
+
+**Fedora/RHEL**:
+```bash
+sudo dnf install -y git python3 python3-pip
+```
+
+**Windows** (if you're running in WSL, use the Linux instructions above for
+the WSL environment; if running natively):
+```powershell
+winget install --id Git.Git -e
+winget install --id Python.Python.3.13 -e
+```
+
+No GitHub account and no `gh` CLI are needed — the repository is public, so a
+plain `git clone` over HTTPS works with no authentication. Don't install or
+configure `gh` unless the user separately asks for something that needs it
+(e.g. opening issues); it's not required for anything in this handoff.
+
+After confirming `git` and `python3` both work, continue to Step 1.
+
 ## AGENT — Step 1: clone and set up
 
 ```bash
