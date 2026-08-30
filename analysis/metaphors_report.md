@@ -1,29 +1,108 @@
-> **STATUS: INCOMPLETE -- NOT corpus-wide.** COVERAGE WARNING: the latest Round 1 run only succeeded on 67.3% of calls (7/35 documents with at least one successful record) -- see coding/round1/run_meta.json 'status' for why. Clusters and counts below are computed ONLY from the records that did succeed and are NOT corpus-wide. Re-run scripts/06_consolidate.py after completing Round 1. The frequencies and domain suggestions below reflect ONLY: 2024-01-18_STRAT_CDDO_GenerativeAIFramework, 2024-02-06_REG_DSIT_ProInnovationAIRegulation, 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse, 2025-01-21_STRAT_GDS_StateOfDigitalGovReview, 2026-01-29_STRAT_DSIT_AIActionPlanOneYearOn. Re-run `scripts/05_code.py` to completion, then `scripts/06_consolidate.py` again, before treating this as a corpus-wide finding.
-
 # Metaphor report — corpus-wide source/target domain suggestions
 
 **SUGGESTIONS for the author's validation — the final domain assignment is interpretive.** This report aggregates the metaphorical expressions identified by the LLM (question METAPHOR, MIP-based identification; Pragglejaz Group 2007) across the corpus. For each expression it lists a suggested source domain, target domain, the `TARGET IS SOURCE` formula, a tentative Lakoff & Johnson (1980) type, and what the mapping foregrounds/backgrounds (the latter feeds the NATURALISED_ORDER question and Lears 1985 on naturalisation). Domain names, the L&J type, and the highlights/hides gloss are the model's *suggestion* per instance; where instances of the same expression disagreed, the majority value is shown and disagreement is noted. The author decides the final domain assignment, groups related expressions into domains, and corrects mislabelled instances before this feeds any thesis chapter.
 
-Generated from 113 METAPHOR instances (applies=true) across 5 document(s).
+Generated from 528 METAPHOR instances (applies=true) across 35 document(s).
 
 ## Top expressions by frequency
 
-### 1. "transparency" (n=2)
+### 1. "harness" (n=13)
 
-- **Suggested formula:** ACCOUNTABILITY IS VISIBILITY
-- **Suggested source domain:** VISION / LIGHT (PHYSICAL TRANSPARENCY)
-- **Suggested target domain:** GOVERNANCE / AI USE
+- **Suggested formula:** AI IS A HORSE
+- **Suggested source domain:** ANIMAL CONTROL
+- **Suggested target domain:** AI
 - **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
-- **What it highlights:** Openness, visibility, auditability of government AI use
-- **What it hides:** That documentation can be technically 'transparent' yet remain incomprehensible; the interpretive work needed to turn records into understanding
-- **Count:** 2 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
+- **What it highlights:** Human control of a powerful force for useful work
+- **What it hides:** Unpredictability of the force, possible failure of control
+- **Count:** 13 instance(s) in 11 document(s)
+- **Speakers:** DSIT, DSIT_and_Cohere, DSIT_and_DeepMind, DSIT_and_GDS, ElevenLabs, GDS, PMO  |  **Company families:** Cohere, DeepMind, ElevenLabs
+- **Documents:** 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI, 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse, 2025-01-21_STRAT_GDS_BlueprintModernDigitalGov, 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement, 2025-06-16_MOU_Cohere_AIOpportunities, 2025-08-18_BLOG_GDS_AIExemplarsProgramme ...
 - **Evidence quotes:**
-  - "This can help to support the ability to audit the project and support the transparency of your use of AI." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
-  - "This supports the principle of transparency and building public trust." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
+  - "It comes as three major tech companies – Vantage Data Centres, Nscale and Kyndryl – have committed to £14 billion investment in the UK to build the AI infrastructure the UK needs to harness the potential of this technology and deliver 13,250 jobs across the UK." (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "There’s now a clear roadmap for the government to harness the UK’s AI potential." (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "It is our responsibility to harness it and make it work for working people." (2025-01-13_STRAT_DSIT_AIActionPlanGovResponse)
 
-### 2. "frontier" (n=2)
+### 2. "drive" (n=8)
+
+- **Suggested formula:** INNOVATION IS A VEHICLE
+- **Suggested source domain:** VEHICLE
+- **Suggested target domain:** AI
+- **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** Control, direction, agency, forward momentum
+- **What it hides:** Who steers, who is carried along, obstacles, unintended destinations
+- **Count:** 8 instance(s) in 8 document(s)
+- **Speakers:** DSIT, DSIT_and_Anthropic, DSIT_and_Cohere, DSIT_and_DeepMind, DSIT_and_OpenAI, OpenAI, PMO  |  **Company families:** Anthropic, Cohere, DeepMind, OpenAI
+- **Documents:** 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI, 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse, 2025-02-14_MOU_Anthropic_AIOpportunities, 2025-06-16_MOU_Cohere_AIOpportunities, 2025-07-21_MOU_OpenAI_AIOpportunities, 2025-09-16_PRCO_OpenAI_StargateUK ...
+- **Evidence quotes:**
+  - "Artificial Intelligence will drive incredible change in our country." (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "DSIT will also work with devolved and local government to identify AI adoption opportunities to drive growth." (2025-01-13_STRAT_DSIT_AIActionPlanGovResponse)
+  - "Artificial intelligence (“ AI ”) has the potential to revolutionize how governments operate, drive widespread economic transformation, and touch almost all aspects of society." (2025-02-14_MOU_Anthropic_AIOpportunities)
+
+### 3. "boost" (n=8)
+
+- **Suggested formula:** ADOPTION IS AN OBJECT
+- **Suggested source domain:** FORCE
+- **Suggested target domain:** PRODUCTIVITY
+- **Tentative L&J type:** orientational *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** increase
+- **What it hides:** complexity
+- **Count:** 8 instance(s) in 8 document(s)
+- **Speakers:** Anthropic, Cohere, DSIT, DSIT_and_Cohere, DSIT_and_GDS, GDS, OpenAI, PMO  |  **Company families:** Anthropic, Cohere, OpenAI
+- **Documents:** 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI, 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse, 2025-01-21_STRAT_GDS_BlueprintModernDigitalGov, 2025-02-10_BLOG_GDS_LaunchingAIPlaybook, 2025-02-14_PRCO_Anthropic_SignsMOUUKGov, 2025-06-15_PRCO_Cohere_CanadaUKPartnerships ...
+- **Evidence quotes:**
+  - "The plan has 3 main pillars that will lay the foundations for AI to grow, boost adoption in existing private and public sectors, and keep the UK ahead of the pack internationally." (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "This is a unique chance to boost growth, raise living standards, transform public services, create the companies of the future in Britain and deliver our Plan for Change." (2025-01-13_STRAT_DSIT_AIActionPlanGovResponse)
+  - "The work of the AI Incubator (i.AI) will focus on building and testing AI tools to boost public sector productivity" (2025-01-21_STRAT_GDS_BlueprintModernDigitalGov)
+
+### 4. "deliver" (n=7)
+
+- **Suggested formula:** PROVIDING SERVICES IS DELIVERING GOODS
+- **Suggested source domain:** PHYSICAL DELIVERY
+- **Suggested target domain:** POLICY IMPLEMENTATION
+- **Tentative L&J type:** ontological *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** Tangible results, reliability, contractual promise to the public
+- **What it hides:** Process complexity, partial outcomes, what happens after 'delivery'
+- **Count:** 7 instance(s) in 7 document(s)
+- **Speakers:** DSIT, DSIT_and_GDS, ElevenLabs, GDS, OpenAI  |  **Company families:** ElevenLabs, OpenAI
+- **Documents:** 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse, 2025-01-21_STRAT_GDS_StateOfDigitalGovReview, 2025-01-27_BLOG_GDS_SameNameNewAmbitions, 2025-02-10_STRAT_GDS_AIPlaybookUKGovernment, 2025-09-16_PRCO_OpenAI_StargateUK, 2026-01-19_WMS_DSIT_RoadmapMinisterialStatement ...
+- **Evidence quotes:**
+  - "Harnessing AI and using it to deliver our Plan for Change requires ambition, purpose and focus." (2025-01-13_STRAT_DSIT_AIActionPlanGovResponse)
+  - "The UK has the scale, commercial power and political mandate to deliver more to taxpayers through technology." (2025-01-21_STRAT_GDS_StateOfDigitalGovReview)
+  - "We should take a responsible, ambitious stance on using AI to help deliver public services: understanding its potential, and using it where it makes sense to do so." (2025-01-27_BLOG_GDS_SameNameNewAmbitions)
+
+### 5. "unlock" (n=6)
+
+- **Suggested formula:** AI OPPORTUNITIES ARE CONTENTS OF A LOCKED CONTAINER
+- **Suggested source domain:** CONTAINER
+- **Suggested target domain:** AI OPPORTUNITIES
+- **Tentative L&J type:** ontological *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** latent potential waiting to be released; collaboration as the key
+- **What it hides:** what 'locks' the opportunities, who holds the key, and what else may be released when opened
+- **Count:** 6 instance(s) in 5 document(s)
+- **Speakers:** Anthropic, DSIT, DSIT_and_GDS, PMO  |  **Company families:** Anthropic, DeepMind
+- **Documents:** 2024-02-06_REG_DSIT_ProInnovationAIRegulation, 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI, 2025-02-14_PRCO_Anthropic_SignsMOUUKGov, 2025-12-11_PRGOV_DSIT_NationalRenewalDeepMind, 2026-01-19_WMS_DSIT_RoadmapMinisterialStatement
+- **Evidence quotes:**
+  - "Working with these networks, we will unlock the opportunities presented by AI while addressing potential risks." (2024-02-06_REG_DSIT_ProInnovationAIRegulation)
+  - "creating a new National Data Library to safely and securely unlock the value of public data and support AI development" (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "The UK’s AI Opportunities Action Plan is a bold approach that could help unlock AI ’s potential to solve real problems." (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+
+### 6. "cutting-edge" (n=6)
+
+- **Suggested formula:** AI IS A KNIFE
+- **Suggested source domain:** SHARP EDGE (KNIFE)
+- **Suggested target domain:** AI
+- **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** Novelty and superiority
+- **What it hides:** AI as complex and multi-faceted
+- **Count:** 6 instance(s) in 6 document(s)
+- **Speakers:** DSIT, DSIT_and_Cohere, DSIT_and_DeepMind, ElevenLabs  |  **Company families:** Cohere, DeepMind, ElevenLabs, OpenAI
+- **Documents:** 2025-06-16_MOU_Cohere_AIOpportunities, 2025-07-21_PRGOV_DSIT_OpenAIExpandUKOffice, 2025-12-11_MOU_DeepMind_AIOpportunitiesSecurity, 2025-12-11_PRGOV_DSIT_NationalRenewalDeepMind, 2026-01-27_PRGOV_DSIT_TopBritishAIExpertise, 2026-06-08_PRCO_ElevenLabs_UKMOUExpansion
+- **Evidence quotes:**
+  - "As part of this, Cohere will provide fellows with access to their latest state-of-the-art models and expert support, enabling them to leverage cutting-edge AI to research and solve critical societal issues." (2025-06-16_MOU_Cohere_AIOpportunities)
+  - "This partnership is an important element of our mission to ensure the UK continues to participate actively in the development of frontier AI , and that UK citizens continue to benefit from the economic growth provided by cutting-edge models." (2025-07-21_PRGOV_DSIT_OpenAIExpandUKOffice)
+  - "DSIT and Google DeepMind will build on the UK’s established global leadership in AI security and collaborate to drive cutting-edge security research and advance the UK’s scientific understanding of AI ’s transformative impacts." (2025-12-11_MOU_DeepMind_AIOpportunitiesSecurity)
+
+### 7. "frontier" (n=5)
 
 - **Suggested formula:** ADVANCED AI IS UNCHARTED TERRITORY
 - **Suggested source domain:** TERRITORY / EXPLORATION (EDGE OF SETTLED LAND)
@@ -31,263 +110,219 @@ Generated from 113 METAPHOR instances (applies=true) across 5 document(s).
 - **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
 - **What it highlights:** novelty, danger, and heroic exploration at the edge of the known
 - **What it hides:** that these systems are corporate products built in labs, and the colonial connotations of 'frontier' expansion
-- **Count:** 2 instance(s) in 2 document(s)
-- **Speakers:** DSIT
-- **Documents:** 2024-02-06_REG_DSIT_ProInnovationAIRegulation, 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse
+- **Count:** 5 instance(s) in 5 document(s)
+- **Speakers:** Cohere, DSIT, DSIT_and_Cohere, ElevenLabs  |  **Company families:** Cohere, ElevenLabs
+- **Documents:** 2024-02-06_REG_DSIT_ProInnovationAIRegulation, 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse, 2025-06-15_PRCO_Cohere_CanadaUKPartnerships, 2025-06-16_MOU_Cohere_AIOpportunities, 2026-02-18_PRCO_ElevenLabs_UKAISIPartnership
 - **Evidence quotes:**
   - "A number of countries and companies developing frontier AI also agreed to state-led testing of the next generation of systems, including through partnerships with newly announced AI Safety Institutes (see Box 4 for more detail).87" (2024-02-06_REG_DSIT_ProInnovationAIRegulation)
   - "Numerous technology companies, operating at the AI frontier, are proud to call our country home." (2025-01-13_STRAT_DSIT_AIActionPlanGovResponse)
+  - "We’ve previously outlined our unique approach to developing secure AI systems in our secure AI frontier model framework ." (2025-06-15_PRCO_Cohere_CanadaUKPartnerships)
 
-### 3. "deliver" (n=2)
+### 8. "driving" (n=5)
 
-- **Suggested formula:** POLICY IMPLEMENTATION IS DELIVERING A PACKAGE
-- **Suggested source domain:** PHYSICAL DELIVERY OF GOODS
-- **Suggested target domain:** POLICY IMPLEMENTATION
+- **Suggested formula:** ADOPTION IS A VEHICLE
+- **Suggested source domain:** VEHICLE
+- **Suggested target domain:** ADOPTION
 - **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
-- **What it highlights:** Tangible results, reliability, contractual promise to the public
-- **What it hides:** Process complexity, partial outcomes, what happens after 'delivery'
-- **Count:** 2 instance(s) in 2 document(s)
-- **Speakers:** DSIT, DSIT_and_GDS
-- **Documents:** 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse, 2025-01-21_STRAT_GDS_StateOfDigitalGovReview
+- **What it highlights:** control
+- **What it hides:** organic
+- **Count:** 5 instance(s) in 5 document(s)
+- **Speakers:** Anthropic, DSIT, DSIT_and_GDS, OpenAI, PMO  |  **Company families:** Anthropic, OpenAI
+- **Documents:** 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI, 2025-01-21_STRAT_GDS_StateOfDigitalGovReview, 2025-02-14_PRCO_Anthropic_SignsMOUUKGov, 2025-07-21_PRCO_OpenAI_StrategicPartnership, 2025-07-21_PRGOV_DSIT_OpenAIExpandUKOffice
 - **Evidence quotes:**
-  - "Harnessing AI and using it to deliver our Plan for Change requires ambition, purpose and focus." (2025-01-13_STRAT_DSIT_AIActionPlanGovResponse)
-  - "The UK has the scale, commercial power and political mandate to deliver more to taxpayers through technology." (2025-01-21_STRAT_GDS_StateOfDigitalGovReview)
+  - "Driving adoption across all sectors in the UK." (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "Long tenure, low churn, low forced attrition and limited options to reward great performance such as larger bonuses or differentiated promotion opportunities, may be driving top performers to leave the public sector entirely." (2025-01-21_STRAT_GDS_StateOfDigitalGovReview)
+  - "Artificial Intelligence has the potential to transform how governments operate, driving efficiency and accessibility and revolutionizing the delivery of digital services to citizens worldwide." (2025-02-14_PRCO_Anthropic_SignsMOUUKGov)
 
-### 4. "ground" (n=1)
+### 9. "foundation" (n=4)
 
-- **Suggested formula:** RELIABLE AI RESPONSES ARE GROUNDED STRUCTURES
-- **Suggested source domain:** BUILDING / PHYSICAL SUPPORT (TERRITORY)
-- **Suggested target domain:** AI (LLM RESPONSES / KNOWLEDGE)
-- **Tentative L&J type:** structural
-- **What it highlights:** Stability, reliability, factual anchoring of model outputs to organisational information
-- **What it hides:** The selective, constructed nature of retrieval; that 'grounded' outputs can still be wrong; human choices behind what counts as grounding data
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
-- **Evidence quotes:**
-  - "To improve their performance and make them more reliable, relevant information can be used to ‘ground’ the responses, for example by employing retrieval augmented generation." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
-
-### 5. "engines" (n=1)
-
-- **Suggested formula:** LLMS ARE ENGINES
-- **Suggested source domain:** MACHINE
-- **Suggested target domain:** AI (LARGE LANGUAGE MODELS)
-- **Tentative L&J type:** ontological
-- **What it highlights:** Mechanical power, functional transformation of input into output, tool-like instrumentality
-- **What it hides:** The statistical/probabilistic nature of LLMs, their dependence on human-produced training data, and the labour and infrastructure behind them
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
-- **Evidence quotes:**
-  - "LLMs are not databases of knowledge, but advanced text engines." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
-
-### 6. "hallucinations" (n=1)
-
-- **Suggested formula:** AI ERRORS ARE HALLUCINATIONS
-- **Suggested source domain:** HUMAN MIND / PERCEPTION (PSYCHOLOGY)
-- **Suggested target domain:** AI (ERRONEOUS MODEL OUTPUTS)
-- **Tentative L&J type:** personification
-- **What it highlights:** Frames false outputs as the perceptual malfunction of a mind-like agent; naturalises the error as an intrinsic system quirk
-- **What it hides:** That outputs are statistical text generation without any perception; the role of training data and design choices in producing falsehoods
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
-- **Evidence quotes:**
-  - "Collecting and storing metrics such as performance, ease of use and occurrences of problematic behaviour (including hallucinations and potential biases etc) helps to control and improve the AI system." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
-
-### 7. "behaviour" (n=1)
-
-- **Suggested formula:** AI SYSTEMS ARE BEHAVING AGENTS
-- **Suggested source domain:** HUMAN / ANIMAL CONDUCT
-- **Suggested target domain:** AI (SYSTEM OUTPUTS)
-- **Tentative L&J type:** personification
-- **What it highlights:** Casts the system as an agent whose conduct can be observed, controlled and improved
-- **What it hides:** Human and organisational responsibility for design, deployment and oversight decisions behind the 'behaviour'
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
-- **Evidence quotes:**
-  - "Collecting and storing metrics such as performance, ease of use and occurrences of problematic behaviour (including hallucinations and potential biases etc) helps to control and improve the AI system." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
-
-### 8. "leakage" (n=1)
-
-- **Suggested formula:** DATA IS A FLUID HELD IN A CONTAINER
-- **Suggested source domain:** FLUID / CONTAINER
-- **Suggested target domain:** DATA / INFORMATION SECURITY
-- **Tentative L&J type:** ontological
-- **What it highlights:** Unintended escape of information; the need for containment and prevention
-- **What it hides:** Deliberate human action and agency in data breaches; breaches as events rather than seepage
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
-- **Evidence quotes:**
-  - "Consider using PET to prevent data leakage, and if you process personal identifiable information take action to protect peoples’ data e.g. pseudonymising data to reduce the risk of leaking sensitive information." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
-
-### 9. "leaking" (n=1)
-
-- **Suggested formula:** SENSITIVE INFORMATION IS AN ESCAPING FLUID
-- **Suggested source domain:** FLUID / CONTAINER
-- **Suggested target domain:** DATA / INFORMATION SECURITY
-- **Tentative L&J type:** ontological
-- **What it highlights:** Gradual, hard-to-control loss of information; frames protection as sealing a vessel
-- **What it hides:** Intentional exfiltration, misuse by authorised users, and institutional accountability
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
-- **Evidence quotes:**
-  - "Consider using PET to prevent data leakage, and if you process personal identifiable information take action to protect peoples’ data e.g. pseudonymising data to reduce the risk of leaking sensitive information." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
-
-### 10. "architecture" (n=1)
-
-- **Suggested formula:** AI SYSTEM DESIGN IS BUILDING ARCHITECTURE
+- **Suggested formula:** POLICY SUPPORT IS A BUILDING FOUNDATION
 - **Suggested source domain:** BUILDING
-- **Suggested target domain:** AI (SYSTEM DESIGN)
-- **Tentative L&J type:** structural
-- **What it highlights:** Deliberate planning, structure, and reviewable design of the system
-- **What it hides:** The emergent, opaque and non-fully-designable character of trained model internals
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
+- **Suggested target domain:** POLICY
+- **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** Stability, permanence, enabling structure
+- **What it hides:** What is built on top, who builds, ground conditions
+- **Count:** 4 instance(s) in 4 document(s)
+- **Speakers:** DeepMind, OpenAI, PMO  |  **Company families:** DeepMind, OpenAI
+- **Documents:** 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI, 2025-09-16_PRCO_OpenAI_StargateUK, 2025-12-10_PRCO_DeepMind_StrengtheningPartnership, 2025-12-11_PRCO_DeepMind_DeepeningAISIPartnership
 - **Evidence quotes:**
-  - "Keep records from any architecture design reviews." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
+  - "It will give the industry the foundation it needs and will turbocharge the Plan for Change." (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "Stargate UK builds on this foundation to help accelerate scientific breakthroughs, improve productivity, and drive economic growth." (2025-09-16_PRCO_OpenAI_StargateUK)
+  - "The UK has already laid a strong foundation to seize this moment and is uniquely positioned to translate AI innovation into public benefit." (2025-12-10_PRCO_DeepMind_StrengtheningPartnership)
 
-### 11. "human-in-the-loop" (n=1)
+### 10. "power" (n=4)
 
-- **Suggested formula:** AI OVERSIGHT PROCESS IS A LOOP
-- **Suggested source domain:** LOOP (PHYSICAL CIRCLE/CIRCUIT)
-- **Suggested target domain:** AI OVERSIGHT / HUMAN INVOLVEMENT
-- **Tentative L&J type:** structural
-- **What it highlights:** Frames human supervision as a continuous, closed, cyclical circuit in which the human is structurally embedded; suggests completeness and ongoing control.
-- **What it hides:** Power asymmetries within the cycle, the possibility of tokenistic 'rubber-stamping', and who designs or controls the loop.
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
+- **Suggested formula:** AI AMBITIONS ARE MACHINES
+- **Suggested source domain:** ENERGY
+- **Suggested target domain:** AI AMBITIONS
+- **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** energy needed
+- **What it hides:** other resources
+- **Count:** 4 instance(s) in 4 document(s)
+- **Speakers:** DSIT, ElevenLabs, OpenAI, PMO  |  **Company families:** DeepMind, ElevenLabs, OpenAI
+- **Documents:** 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI, 2025-09-16_PRCO_OpenAI_StargateUK, 2025-12-11_PRGOV_DSIT_NationalRenewalDeepMind, 2026-06-08_PRCO_ElevenLabs_UKMOUExpansion
 - **Evidence quotes:**
-  - "Keeping a human-in-the-loop means ensuring that there is human involvement and supervision in the operations and outcomes of generative AI systems." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
+  - "This will also serve a testing ground to drive forward research on how sustainable energy like fusion can power our AI ambitions." (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "Stargate UK ensures OpenAI’s world-leading AI models can run on local computing power in the UK, for the UK—particularly for specialist use cases where jurisdiction matters." (2025-09-16_PRCO_OpenAI_StargateUK)
+  - "Using artificial intelligence and robotics to power new discoveries and run experiments" (2025-12-11_PRGOV_DSIT_NationalRenewalDeepMind)
 
-### 12. "tuning" (n=1)
+### 11. "building" (n=4)
 
-- **Suggested formula:** ADJUSTING AN AI MODEL IS TUNING A MUSICAL INSTRUMENT
-- **Suggested source domain:** MUSICAL INSTRUMENT / MACHINE
-- **Suggested target domain:** AI MODEL
-- **Tentative L&J type:** structural
-- **What it highlights:** Precision, calibration, expert craftsmanship, and the idea that the model can be brought into 'harmony' with desired outcomes.
-- **What it hides:** The opacity of parameter adjustment, trial-and-error practices, and the data labour underlying model improvement.
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
+- **Suggested formula:** TRUST IS A BUILDING
+- **Suggested source domain:** CONSTRUCTION
+- **Suggested target domain:** TRUST
+- **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** Trust as a solid, durable, and deliberately constructed entity
+- **What it hides:** Trust as a dynamic, relational, and context-dependent process
+- **Count:** 4 instance(s) in 4 document(s)
+- **Speakers:** Anthropic, DSIT, DSIT_and_GDS, GDS  |  **Company families:** Anthropic
+- **Documents:** 2025-01-21_STRAT_GDS_BlueprintModernDigitalGov, 2025-01-21_WMS_DSIT_BlueprintMinisterialStatement, 2025-08-18_BLOG_GDS_AIExemplarsProgramme, 2026-01-27_PRCO_Anthropic_GOVUKPartnership
 - **Evidence quotes:**
-  - "In a broader context, humans should be involved with setting up the systems, tuning and testing the model so the decision-making improves, and then actioning the decisions it suggests." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
+  - "Harness the power of AI for the public good establishing an AI adoption unit to build and deploy AI into public services, growing AI capacity and capability across government, and building trust, responsibility and accountability into all we do." (2025-01-21_STRAT_GDS_BlueprintModernDigitalGov)
+  - "building trust, responsibility and accountability into all we do." (2025-01-21_WMS_DSIT_BlueprintMinisterialStatement)
+  - "By taking this portfolio approach to AI innovation, we're not just developing individual technology solutions – we're building the capability, confidence and culture needed to transform public services for the better." (2025-08-18_BLOG_GDS_AIExemplarsProgramme)
 
-### 13. "workflows" (n=1)
+### 12. "deepen" (n=4)
 
-- **Suggested formula:** WORK PROCESSES ARE FLOWING LIQUID
-- **Suggested source domain:** FLOWING LIQUID
-- **Suggested target domain:** WORK PROCESSES
-- **Tentative L&J type:** ontological
-- **What it highlights:** Smoothness, continuity, and effortless movement of tasks through an organisation.
-- **What it hides:** Friction, bottlenecks, interruptions, and the human labour and judgement embedded in administrative work.
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
+- **Suggested formula:** PARTNERSHIP IS A PHYSICAL OBJECT WITH DEPTH
+- **Suggested source domain:** DEPTH
+- **Suggested target domain:** COLLABORATION
+- **Tentative L&J type:** orientational *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** Strengthening and intensifying the relationship.
+- **What it hides:** Potential superficiality or the possibility of the partnership becoming unwieldy.
+- **Count:** 4 instance(s) in 4 document(s)
+- **Speakers:** Anthropic, DSIT_and_DeepMind, DeepMind, ElevenLabs  |  **Company families:** Anthropic, DeepMind, ElevenLabs
+- **Documents:** 2025-02-14_PRCO_Anthropic_SignsMOUUKGov, 2025-12-10_PRCO_DeepMind_StrengtheningPartnership, 2025-12-11_MOU_DeepMind_AIOpportunitiesSecurity, 2026-06-08_PRCO_ElevenLabs_UKMOUExpansion
 - **Evidence quotes:**
-  - "The availability of generative AI tools may contribute towards increasingly automated workflows and decision-making processes." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
+  - "DSIT and Anthropic plan to deepen their partnership by exploring additional opportunities across several areas of shared interest that will help support AI innovation and economic development in the UK" (2025-02-14_PRCO_Anthropic_SignsMOUUKGov)
+  - "That’s why we are excited to deepen our collaboration with the UK government to accelerate this work and offer a blueprint for other countries." (2025-12-10_PRCO_DeepMind_StrengtheningPartnership)
+  - "Google DeepMind will deepen its work with the UK AI Security Institute ( AISI ) through enhanced technical information exchange on frontier AI capabilities and their real-world impacts, including indicators of accelerating AI progress, economic effects, and emerging security risks." (2025-12-11_MOU_DeepMind_AIOpportunitiesSecurity)
 
-### 14. "oversight" (n=1)
+### 13. "accelerate" (n=4)
 
-- **Suggested formula:** SUPERVISING IS SEEING FROM ABOVE
-- **Suggested source domain:** VISION (SEEING FROM ABOVE)
-- **Suggested target domain:** SUPERVISION / GOVERNANCE OF AI
-- **Tentative L&J type:** orientational
-- **What it highlights:** Watchfulness, visibility, and a superior vantage point from which the human monitors the system.
-- **What it hides:** That 'overseeing' may not involve actually seeing or understanding model internals; supervision can be nominal rather than epistemically substantive.
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
+- **Suggested formula:** ADOPTION IS A MOVING OBJECT
+- **Suggested source domain:** MOTION/SPEED
+- **Suggested target domain:** ADOPTION
+- **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** Speed and urgency
+- **What it hides:** Adoption as a complex social process
+- **Count:** 4 instance(s) in 4 document(s)
+- **Speakers:** DSIT, DSIT_and_Cohere, DeepMind, OpenAI  |  **Company families:** Cohere, DeepMind, OpenAI
+- **Documents:** 2025-06-16_MOU_Cohere_AIOpportunities, 2025-09-16_PRCO_OpenAI_StargateUK, 2025-12-10_PRCO_DeepMind_StrengtheningPartnership, 2025-12-11_PRGOV_DSIT_NationalRenewalDeepMind
 - **Evidence quotes:**
-  - "However, relying on AI to make decisions and generate content without meaningful human oversight can have negative consequences." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
+  - "Future collaboration may involve teams like the Government Digital Service ( GDS ) and the Incubator for AI ( i.AI ) to develop and pilot AI tools across departments with the goal of accelerating AI adoption across the UK public sector." (2025-06-16_MOU_Cohere_AIOpportunities)
+  - "It follows the MoU we signed with the UK Government in July 2025 to explore the UK’s infrastructure priorities and accelerate the adoption of AI." (2025-09-16_PRCO_OpenAI_StargateUK)
+  - "That’s why we are excited to deepen our collaboration with the UK government to accelerate this work and offer a blueprint for other countries." (2025-12-10_PRCO_DeepMind_StrengtheningPartnership)
 
-### 15. "flexibility" (n=1)
+### 14. "explore" (n=4)
 
-- **Suggested formula:** COGNITIVE ADAPTABILITY IS PHYSICAL FLEXIBILITY
-- **Suggested source domain:** PHYSICAL BENDABILITY (MATERIAL PROPERTY)
-- **Suggested target domain:** AI SYSTEM (COGNITIVE CAPACITY)
-- **Tentative L&J type:** ontological
-- **What it highlights:** Frames adaptability as a material property that AI, like a rigid object, lacks; makes the deficiency tangible.
-- **What it hides:** The forms of rule-based adaptivity AI systems do exhibit, and the design choices that produce rigidity.
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
+- **Suggested formula:** INVESTIGATION IS EXPLORATION
+- **Suggested source domain:** JOURNEY
+- **Suggested target domain:** INVESTIGATION
+- **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** Discovery and unknown
+- **What it hides:** Opportunities as existing or constructed
+- **Count:** 4 instance(s) in 4 document(s)
+- **Speakers:** DSIT_and_Cohere, DSIT_and_DeepMind, ElevenLabs, OpenAI  |  **Company families:** Cohere, DeepMind, ElevenLabs, OpenAI
+- **Documents:** 2025-06-16_MOU_Cohere_AIOpportunities, 2025-09-16_PRCO_OpenAI_StargateUK, 2025-12-11_MOU_DeepMind_AIOpportunitiesSecurity, 2026-06-08_PRCO_ElevenLabs_UKMOUExpansion
 - **Evidence quotes:**
-  - "Generative AI also lacks flexibility, human understanding and compassion." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
+  - "Both parties commit to exploring opportunities to implement effective and secure AI solutions in areas of strategic importance to the UK, whilst deepening efforts to understand and address the practical risks posed by advanced capabilities." (2025-06-16_MOU_Cohere_AIOpportunities)
+  - "It follows the MoU we signed with the UK Government in July 2025 to explore the UK’s infrastructure priorities and accelerate the adoption of AI." (2025-09-16_PRCO_OpenAI_StargateUK)
+  - "Google DeepMind and DSIT will explore high-impact solutions for responsible AI adoption across the public sector." (2025-12-11_MOU_DeepMind_AIOpportunitiesSecurity)
 
-### 16. "lacks flexibility, human understanding and compassion" (n=1)
+### 15. "shape" (n=3)
 
-- **Suggested formula:** AI IS A PERSON (DEFICIENT IN HUMAN QUALITIES)
-- **Suggested source domain:** PERSON
+- **Suggested formula:** SOCIETIES ARE MALLEABLE MATERIAL (AI IS A SHAPING FORCE)
+- **Suggested source domain:** FORCE / SCULPTURE (MOULDING PHYSICAL MATERIAL)
+- **Suggested target domain:** AI'S EFFECT ON SOCIETY
+- **Tentative L&J type:** ontological *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** AI's transformative, formative power over social and economic structures
+- **What it hides:** human mediation, institutional choice, and the possibility of resisting or redirecting the effect
+- **Count:** 3 instance(s) in 3 document(s)
+- **Speakers:** DSIT, DSIT_and_GDS, External_adviser
+- **Documents:** 2024-02-06_REG_DSIT_ProInnovationAIRegulation, 2025-01-21_STRAT_GDS_BlueprintModernDigitalGov, CONTEXT_2025-01-13_STRAT_DSIT_AIOpportunitiesActionPlan
+- **Evidence quotes:**
+  - "AI knows no borders and its impact will shape societies and economies in all corners of the world: AI developed in one nation will increasingly affect the lives of citizens living in others." (2024-02-06_REG_DSIT_ProInnovationAIRegulation)
+  - "to provide constructive challenge and advice, and shape standards based on best practice." (2025-01-21_STRAT_GDS_BlueprintModernDigitalGov)
+  - "In this next phase of AI development, we want Britain to step up; to shape the AI revolution rather than wait to see how it shapes us." (CONTEXT_2025-01-13_STRAT_DSIT_AIOpportunitiesActionPlan)
+
+### 16. "turbocharge" (n=3)
+
+- **Suggested formula:** POLICY/ECONOMIC GROWTH IS AN ENGINE (TO BE MECHANICALLY BOOSTED)
+- **Suggested source domain:** MACHINE
+- **Suggested target domain:** POLICY
+- **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** Speed, mechanical power, technological enhancement, inevitability of acceleration
+- **What it hides:** Costs, risks, friction, distributional choices, possibility of breakdown
+- **Count:** 3 instance(s) in 3 document(s)
+- **Speakers:** DSIT, PMO  |  **Company families:** OpenAI
+- **Documents:** 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI, 2025-01-13_STRAT_DSIT_AIActionPlanGovResponse, 2025-07-21_PRGOV_DSIT_OpenAIExpandUKOffice
+- **Evidence quotes:**
+  - "It will give the industry the foundation it needs and will turbocharge the Plan for Change." (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "It will turbocharge every mission in this government’s Plan for Change ." (2025-01-13_STRAT_DSIT_AIActionPlanGovResponse)
+  - "OpenAI to expand UK office and work with government departments to turbocharge the UK’s AI infrastructure and transform public services" (2025-07-21_PRGOV_DSIT_OpenAIExpandUKOffice)
+
+### 17. "blueprint" (n=3)
+
+- **Suggested formula:** POLICY IS AN ARCHITECTURAL PLAN
+- **Suggested source domain:** CONSTRUCTION
+- **Suggested target domain:** POLICY
+- **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** Design, precision, technical mastery, intentionality
+- **What it hides:** Uncertainty, contestation, need for revision, political negotiation
+- **Count:** 3 instance(s) in 3 document(s)
+- **Speakers:** DeepMind, GDS, PMO  |  **Company families:** DeepMind
+- **Documents:** 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI, 2025-01-27_BLOG_GDS_SameNameNewAmbitions, 2025-12-10_PRCO_DeepMind_StrengtheningPartnership
+- **Evidence quotes:**
+  - "Prime Minister sets out blueprint to turbocharge AI" (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "We have published its high level plans for the future: A blueprint for modern digital government ." (2025-01-27_BLOG_GDS_SameNameNewAmbitions)
+  - "That’s why we are excited to deepen our collaboration with the UK government to accelerate this work and offer a blueprint for other countries." (2025-12-10_PRCO_DeepMind_StrengtheningPartnership)
+
+### 18. "grow" (n=3)
+
+- **Suggested formula:** THE ECONOMY IS A LIVING ORGANISM (PLANT/BODY)
+- **Suggested source domain:** BODY
 - **Suggested target domain:** AI
-- **Tentative L&J type:** personification
-- **What it highlights:** Evaluates AI on a human moral-cognitive scale, defining it by the human attributes it fails to possess.
-- **What it hides:** That AI is not the kind of entity that could possess these qualities; the technical and institutional reasons behind its limitations.
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
+- **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** Growth as natural, organic, unquestionably good
+- **What it hides:** Limits to growth, distribution, sustainability, what does not grow
+- **Count:** 3 instance(s) in 2 document(s)
+- **Speakers:** DSIT_and_GDS, PMO
+- **Documents:** 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI, 2025-01-21_STRAT_GDS_StateOfDigitalGovReview
 - **Evidence quotes:**
-  - "Generative AI also lacks flexibility, human understanding and compassion." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
+  - "This is a plan which puts us all-in - backing the potential of AI to grow our economy, improve lives for citizens, and make us a global hub for AI investment and innovation." (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "The plan has 3 main pillars that will lay the foundations for AI to grow, boost adoption in existing private and public sectors, and keep the UK ahead of the pack internationally." (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "change, grow, or innovate" (2025-01-21_STRAT_GDS_StateOfDigitalGovReview)
 
-### 17. "align with societal values" (n=1)
+### 19. "scale" (n=3)
 
-- **Suggested formula:** VALUE COMPATIBILITY IS PHYSICAL ALIGNMENT
-- **Suggested source domain:** PHYSICAL ALIGNMENT (SPATIAL LINE)
-- **Suggested target domain:** AI OUTPUTS / SOCIETAL VALUES
-- **Tentative L&J type:** structural
-- **What it highlights:** Values as a fixed reference line and outputs as adjustable objects that can be brought into line; implies correctness is geometrically checkable.
-- **What it hides:** Contestation over whose values define the line, value pluralism, and the political act of setting the reference.
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
+- **Suggested formula:** EXPANSION IS INCREASING SIZE
+- **Suggested source domain:** SIZE
+- **Suggested target domain:** EXPANSION
+- **Tentative L&J type:** orientational *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** growth
+- **What it hides:** complexity
+- **Count:** 3 instance(s) in 3 document(s)
+- **Speakers:** GDS, OpenAI, PMO  |  **Company families:** OpenAI
+- **Documents:** 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI, 2025-09-16_PRCO_OpenAI_StargateUK, 2026-01-20_BLOG_GDS_OurRoadmapLaunch
 - **Evidence quotes:**
-  - "You should assess the quality of AI-generated outputs to ensure they are accurate, relevant, and align with societal values." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
+  - "It will scan for new ideas, pilot them in public sector settings, then scale them as far as they can go." (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "OpenAI will explore offtake up to 8,000 GPUs in Q1 2026 with the potential to scale to 31,000 GPUs over time." (2025-09-16_PRCO_OpenAI_StargateUK)
+  - "2025 was the year our most promising AI tools started to scale, a shift that brought new challenges to technologists across government and one that we’re excited to see continue into this new year." (2026-01-20_BLOG_GDS_OurRoadmapLaunch)
 
-### 18. "supports the public good" (n=1)
+### 20. "embrace" (n=3)
 
-- **Suggested formula:** PROMOTING THE PUBLIC GOOD IS PHYSICALLY SUPPORTING A STRUCTURE
-- **Suggested source domain:** PHYSICAL SUPPORT (LOAD-BEARING STRUCTURE)
-- **Suggested target domain:** PUBLIC GOOD
-- **Tentative L&J type:** structural
-- **What it highlights:** The public good as a structure that needs holding up; human involvement as load-bearing and necessary to prevent collapse.
-- **What it hides:** The contested content of 'the public good' and potential conflicts between different publics.
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
+- **Suggested formula:** ACCEPTING IS EMBRACING
+- **Suggested source domain:** BODY
+- **Suggested target domain:** ACCEPTANCE
+- **Tentative L&J type:** structural *(source/target domain varied across instances; majority shown.)*
+- **What it highlights:** wholehearted acceptance
+- **What it hides:** critical evaluation
+- **Count:** 3 instance(s) in 3 document(s)
+- **Speakers:** ElevenLabs, GDS, PMO  |  **Company families:** ElevenLabs
+- **Documents:** 2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI, 2025-02-10_STRAT_GDS_AIPlaybookUKGovernment, 2026-02-18_PRCO_ElevenLabs_UKAISIPartnership
 - **Evidence quotes:**
-  - "Maintaining meaningful human involvement in generative AI ensures that future innovation aligns with human values and supports the public good." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
-
-### 19. "uphold" (n=1)
-
-- **Suggested formula:** RESPECTING A PRINCIPLE IS HOLDING IT UP
-- **Suggested source domain:** PHYSICALLY HOLDING UP
-- **Suggested target domain:** EXPECTATION / PRINCIPLE
-- **Tentative L&J type:** orientational
-- **What it highlights:** Principles as objects requiring active, effortful support; moral uprightness mapped onto verticality.
-- **What it hides:** The enforcement mechanisms, resources, and sanctions needed to make the expectation real.
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
-- **Evidence quotes:**
-  - "You should uphold the expectation ‘to be heard’ by a human when interacting and receiving services from the government." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
-
-### 20. "building public trust" (n=1)
-
-- **Suggested formula:** PUBLIC TRUST IS A BUILDING
-- **Suggested source domain:** BUILDING / CONSTRUCTION
-- **Suggested target domain:** PUBLIC TRUST
-- **Tentative L&J type:** structural
-- **What it highlights:** Trust as something constructed incrementally through deliberate labour, with foundations and materials.
-- **What it hides:** Trust as a relational and affective phenomenon; how quickly trust can be destroyed rather than built.
-- **Count:** 1 instance(s) in 1 document(s)
-- **Speakers:** CDDO
-- **Documents:** 2024-01-18_STRAT_CDDO_GenerativeAIFramework
-- **Evidence quotes:**
-  - "This supports the principle of transparency and building public trust." (2024-01-18_STRAT_CDDO_GenerativeAIFramework)
+  - "Taken together, this package will set us on course to full embrace the potential of AI – making it work for Britain." (2025-01-12_PRGOV_PMO_BlueprintTurbochargeAI)
+  - "government can help the people of the UK better embrace AI’s potential for positive change." (2025-02-10_STRAT_GDS_AIPlaybookUKGovernment)
+  - "Voice is the most natural way to access the full potential of AI, but people will only embrace this shift if they trust the technology." (2026-02-18_PRCO_ElevenLabs_UKAISIPartnership)
 

@@ -192,6 +192,41 @@
       ],
       "n_doc_profiles": 0,
       "pct_quote_verified_of_successful_calls": 99.77753058954394
+    },
+    {
+      "run_id": "19bb4d20-aea4-4b9f-911c-af8b41e8a793",
+      "timestamp": "2026-08-30T10:48:33.724774+00:00",
+      "model": "deepseek-v4-flash:cloud",
+      "prompt_version": 1,
+      "doc_filter": null,
+      "questions": [
+        "BENEFICIARY",
+        "MECHANISM",
+        "SAFEGUARD",
+        "RESPONSIBILITY",
+        "PROJECTED_FUTURE",
+        "ACTANTS",
+        "NATURALISED_ORDER",
+        "AGENCY",
+        "MODALITY",
+        "METAPHOR",
+        "DEFINITIONAL"
+      ],
+      "n_units": 53,
+      "n_unit_question_calls": 401,
+      "n_records": 2547,
+      "n_records_with_error": 2,
+      "pct_calls_succeeded": 99.92147624656458,
+      "n_docs_with_at_least_one_success": 35,
+      "n_docs_total": 35,
+      "top_errors": [
+        [
+          "HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=180)",
+          2
+        ]
+      ],
+      "n_doc_profiles": 0,
+      "pct_quote_verified_of_successful_calls": 98.78610297195479
     }
   ]
 }

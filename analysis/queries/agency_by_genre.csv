@@ -1,9 +1,8 @@
-# STATUS: PARTIAL -- regenerate after Round 1 completes. Coverage: 6/34 documents contributed at least one successful AGENCY instance (124 instances total, from 124/163 AGENCY unit-question pairs attempted so far; latest Round 1 run at 67.3% of all calls -- see coding/round1/run_meta.json). Counts below are NOT corpus-wide; re-run scripts/11_agency_query.py once Round 1 completes.
 genre,explicit_agent,agentless_passive,nominalisation
-STRAT,37,10,20
-MOU,0,0,0
-PRGOV,7,9,6
-PRCO,0,0,0
-BLOG,0,0,0
-WMS,0,0,0
+STRAT,71,20,43
+MOU,20,3,1
+PRGOV,20,15,8
+PRCO,54,8,8
+BLOG,28,4,4
+WMS,7,5,4
 REG,21,7,7
