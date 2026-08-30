@@ -155,6 +155,7 @@ def phase_status(rows):
 DELIVERABLES = [
     ("PLAN.md", "Thesis plan / operationalization"),
     ("README.md", "Repository guide"),
+    ("HANDOFF.md", "Handoff guide — continuing this project on a new machine"),
     ("interpretation.html", "Consolidated interpretation"),
     ("analysis/networks/authorship_family_map.html", "Authorship and family map (intertextual network)"),
     ("analysis/queries/queries.html", "The three queries from the NVivo plan"),
@@ -162,6 +163,7 @@ DELIVERABLES = [
     ("analysis/metaphors_report.md", "Metaphors report (SO1)"),
     ("coding/model_eval/decision.md", "Model evaluation decision"),
     ("coding/guidebook_draft.yaml", "Guidebook — sub-codes draft"),
+    ("analysis/guidebook_summary.html", "Guidebook review — interactive cluster naming"),
     ("coding/validation/sample_for_author.csv", "Double-coded validation sample"),
     ("data/manifest.csv", "Corpus manifest"),
 ]

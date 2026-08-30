@@ -11,6 +11,8 @@ consolidates.** No interpretive result is final until validated (see checkpoints
 - **Full design and constraints (SO1/SO2/SO3):** [PLAN.md](PLAN.md)
 - **Interpretation guide for each deliverable and its assumptions:** [interpretation.html](interpretation.html)
 - **Consolidated hub (corpus + deliverables + document intake):** [index.html](index.html)
+- **Picking this project up on a new machine (no Ollama available):** [HANDOFF.md](HANDOFF.md)
+- **Reviewing/naming the Phase 5 sub-codes:** [analysis/guidebook_summary.html](analysis/guidebook_summary.html)
 
 ## Quick start
 
