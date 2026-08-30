@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan</title>
+<style>
+:root{
+  --canvas:#ffffff; --band:#f7f7f7; --ink:#0a0b0d; --body:#5b616e; --muted:#7c828a;
+  --hairline:#dee1e6; --card-fill:#eef0f3; --accent:#0052ff; --accent-active:#003ecc;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--canvas);color:var(--ink);
+  font:16px/1.7 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
+.topbar{background:var(--band);border-bottom:1px solid var(--hairline);padding:12px 24px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:13px;font-weight:500}
+.topbar a:hover{color:var(--accent-active)}
+.wrap{max-width:840px;margin:0 auto;padding:40px 24px 100px}
+h1{font-size:28px;font-weight:600;margin:0 0 8px;line-height:1.3}
+h2{font-size:21px;font-weight:600;margin:36px 0 12px;padding-top:8px;border-top:1px solid var(--hairline)}
+h1+h2, h1+p+h2{border-top:none;padding-top:0}
+h3{font-size:17px;font-weight:600;margin:24px 0 8px}
+h4{font-size:14px;font-weight:600;margin:18px 0 6px;color:var(--body)}
+p,li{color:var(--ink)}
+p{margin:0 0 14px}
+ul,ol{margin:0 0 14px;padding-left:24px}
+li{margin-bottom:4px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code{background:var(--card-fill);padding:2px 6px;border-radius:4px;font-size:0.9em;
+  font-family:ui-monospace,Menlo,Consolas,monospace}
+pre{background:var(--card-fill);padding:14px 16px;border-radius:8px;overflow-x:auto;
+  font-size:13px;line-height:1.5;margin:0 0 16px}
+pre code{background:none;padding:0}
+blockquote{border-left:3px solid var(--accent);margin:0 0 16px;padding:2px 0 2px 16px;
+  color:var(--body)}
+hr{border:none;border-top:1px solid var(--hairline);margin:28px 0}
+table{border-collapse:collapse;width:100%;margin:0 0 20px;font-size:14px}
+.table-wrap{overflow-x:auto;margin:0 0 20px}
+.table-wrap table{margin:0}
+th,td{border:1px solid var(--hairline);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--band);font-weight:600;font-size:13px}
+tr:nth-child(even) td{background:var(--band)}
+.note{background:var(--card-fill);border-radius:8px;padding:10px 14px;font-size:13px;
+  color:var(--body);margin-bottom:28px}
+</style>
+</head>
+<body>
+<div class="topbar"><a href="index.html">&larr; Project hub</a></div>
+<div class="wrap">
+<div class="note">Rendered from <code>PLAN.md</code> for readability &mdash; this page is
+generated, not authored; edit the source file, then re-run
+<code>scripts/16_render_markdown.py</code>.</div>
+<h1 id="discourse-analysis-pipeline-ai-for-the-public-good">Discourse analysis pipeline — "AI for the public good"</h1>
+<h3 id="gds-dsit-january-2024-july-2026-frozen-corpus-v1-35-documents">GDS / DSIT, January 2024 – July 2026 · Frozen corpus v1 (35 documents)</h3>
+<p>This plan operationalises the methodological design of <code>Research_Alignment_Matrix.docx</code>
+and <code>Document Analysis v1.xlsx</code>. Two guiding principles:</p>
+<ol>
+<li><strong>The LLM locates and extracts; the author interprets and consolidates</strong> (Saldaña
+   2025: provisional coding guided by questions, not by a closed list of codes).</li>
+<li><strong>The three specific objectives are the pipeline's hard constraint.</strong> No
+   component is built unless it serves SO1, SO2, or SO3. Every output carries an
+   objective tag (<code>so_tags</code>), and anything that only validates the method (without
+   generating findings) is marked as internal QA.</li>
+</ol>
+<hr />
+<h2 id="constraint-the-three-objectives-and-which-component-serves-which">Constraint: the three objectives and which component serves which</h2>
+<blockquote>
+<p><strong>Aim.</strong> To analyse how the framing of "AI for the public good" functions as a
+sociotechnical imaginary in UK government discourse on AI in public services,
+anchored in the Government Digital Service.</p>
+</blockquote>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Objective</th>
+<th>Theoretical framework (matrix)</th>
+<th>Pipeline components serving it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SO1.</strong> Examine the sociotechnical imaginary projected under the rhetoric of "AI for the public good" in GDS texts.</td>
+<td>Jasanoff &amp; Kim (imaginaries); Kaplan (narrative/plot); Lears (hegemony)</td>
+<td>Coding of the 7 questions (all apply to SO1); definitional extractor; chronological comparison of definitions; METAPHOR; NARRATIVE_ARC; THREAT_TYPE</td>
+</tr>
+<tr>
+<td><strong>SO2.</strong> Trace how that imaginary moves from a statement of principles to strategic priorities, policy commitments, and public-facing claims.</td>
+<td>Fairclough (intertextuality); Jasanoff &amp; Kim; Lears (naturalisation)</td>
+<td>Intertextual network (families + references + supersession); MECHANISM, PROJECTED FUTURE, NATURALISED ORDER questions; Period and AUDIENCE attributes; zero-count × Genre queries; semantic retrieval of the distributive claim; visualization's temporal slider</td>
+</tr>
+<tr>
+<td><strong>SO3.</strong> Analyse the evolution of the framing across the department's partnership documents with frontier AI companies.</td>
+<td>Hajer (discourse coalitions); Lears (naturalisation); Fairclough (agent deletion, nominalisation, modality)</td>
+<td>Echo-phrases by MoU family; AGENCY and MODALITY; intra-family and inter-family comparison; SAFEGUARD, RESPONSIBILITY, ACTANTS questions; shared metaphorical source domains government↔company; GDS-control × GDSTier query</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Trimming rule applied.</strong> Everything that does not map was excluded or downgraded:
+- <strong>LEGITIMATION (van Leeuwen)</strong> — dropped: it extends the theoretical framework
+  beyond what the matrix establishes.
+- <strong>Community detection (Leiden) and embedding triangulation</strong> — downgraded to
+  <strong>internal QA</strong>: they help verify that groupings are not an artefact, but generate
+  no findings of their own and do not appear as results.
+- Embedding-based "exploratory discovery" — eliminated as an end in itself;
+  embeddings are only used for retrieving the distributive claim (SO1/SO2) and the QA
+  above.</p>
+<hr />
+<h2 id="decisions-already-made">Decisions already made</h2>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Corpus v1</td>
+<td>Only rows with a decision made in <code>Official_Document Selection</code> (before the "EITHER BRING COHERE..." row). Pending blocks A/B do NOT enter v1.</td>
+</tr>
+<tr>
+<td>Text source</td>
+<td><code>Link for document</code> column → full document. <code>Exact phrase</code> only as cross-verification where it exists.</td>
+</tr>
+<tr>
+<td>LLM</td>
+<td>Ollama Cloud. 2–3 models are evaluated on a sample and the best one is chosen (Phase 3).</td>
+</tr>
+<tr>
+<td>Codes</td>
+<td>The 7 parent codes from Table 3 + the nodes from the <code>method</code> sheet. New codes: only aligned ones (see Codes section); the author decides which ones go in before the run.</td>
+</tr>
+<tr>
+<td>Extensibility</td>
+<td>Incremental document intake using the corpus admission rules as a filter (see Phase 7).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr />
+<h2 id="project-structure">Project structure</h2>
+<pre><code>Tafoya/
+├── PLAN.md                       ← this document
+├── data/
+│   ├── manifest.csv              ← frozen corpus v1, append-only
+│   ├── raw/                      ← downloaded PDFs/HTML + archive.org snapshot
+│   └── text/                     ← structured JSON per document (hierarchical sections)
+├── coding/
+│   ├── prompts/                  ← one prompt per question, versioned; each declares its so_tags
+│   ├── model_eval/                ← model comparison + documented decision
+│   ├── round1/                   ← raw LLM output, JSONL per document
+│   ├── validation/               ← hand-coded sample + agreement report
+│   └── guidebook.yaml            ← Round 2: consolidated sub-codes (edited by the author)
+├── analysis/
+│   ├── networks/                 ← GraphML + interactive HTML visualization
+│   ├── queries/                  ← the three queries from the NVivo plan (CSV + charts)
+│   ├── qa/                       ← internal validations (not results)
+│   └── nvivo/                    ← exports ready for import into NVivo
+└── scripts/
+    ├── 01_manifest.py … 07_analyze.py
+    └── add_document.py           ← incremental intake with admission checklist
+</code></pre>
+<hr />
+<h2 id="phase-0-freeze-the-corpus-manifest">Phase 0 — Freeze the corpus (manifest)</h2>
+<p><strong>Input:</strong> <code>Official_Document Selection</code> sheet. <strong>Output:</strong> <code>data/manifest.csv</code> with:
+<code>doc_id</code> (NVivo name <code>YYYY-MM-DD_GENRE_ACTOR_Slug</code>), <code>date</code>, <code>genre</code>
+(STRAT/MOU/PRGOV/PRCO/BLOG/WMS/REG), <code>speaker</code> (cleaned value, column U), <code>side</code>,
+<code>family</code> (Anthropic/Cohere/OpenAI/DeepMind/ElevenLabs/None), <code>gds_tier</code> (T1/T2/T3),
+<code>stage</code> (1/2), <code>term_status</code> (present/variant/absent), <code>url</code>, <code>archive_url</code>,
+<code>corpus_version</code> (=1), <code>is_context</code> (bool).</p>
+<p>Decisions made (2026-08-29): the <code>CONTEXT_..._AIOpportunitiesActionPlan</code> row
+<strong>enters the corpus</strong> coded with <code>Speaker = External_adviser</code>; new archive.org
+snapshots are created for the whole corpus; local git repository with <code>data/raw/</code> in
+<code>.gitignore</code> (originals on disk + archive.org).</p>
+<p>Checks (reported to the author, not resolved silently):
+- <strong>Count</strong>: confirm that the decided rows add up to 37; discrepancies are listed.
+- <code>term_status = CHECK</code> (docs 7, 10): remain flagged; Phase 2 resolves them using the
+  full text and the author confirms.
+- Broken links or withdrawn documents → <code>archive_url</code>.</p>
+<h2 id="phase-1-download-and-archiving">Phase 1 — Download and archiving</h2>
+<p>Download from <code>url</code>; fallback to web.archive.org where the document changed or was
+withdrawn (already happened with the Generative AI Framework); <strong>new archive.org
+snapshot for anything that doesn't have one</strong> — protection against link rot during
+the dissertation.</p>
+<p>Text extraction <strong>preserving structure</strong> (PyMuPDF for PDFs with heading hierarchy;
+DOM parsing for gov.uk/blogs with h1–h4, blockquotes and attributed quotations).
+Each block carries <code>structural_position</code> (title / pillar_name / section_heading /
+body / quotation) — the "Phrase position" attribute from Table 4 depends on this,
+and the structural position is itself a finding declared in the matrix.</p>
+<h2 id="phase-2-segmentation-and-term-detection-so1-so2">Phase 2 — Segmentation and term detection <em>(SO1, SO2)</em></h2>
+<p>Faithful to the declared method: <em>full scan → detailed coding of the section that
+contains the term.</em></p>
+<ol>
+<li>Versioned <strong>variant lexicon</strong> (approved by the author): nominal ("public good",
+   "the public good", "AI for public good") and distributive/competing ("public
+   benefit", "public interest", "benefits reach every citizen", "delivers for all",
+   "improve people's lives", "working people", "taxpayer") — mirroring the
+   <code>PublicGood_Nominal</code> / <code>PublicBenefit_Distributive</code> nodes and the 8 beneficiary
+   nodes. Stemming off (NVivo rule: don't catch "goods").</li>
+<li>Sections-with-term → detailed coding queue. Documents without the term →
+   semantic retrieval (paragraph embeddings) of the distributive claim, so that the
+   zero-count comes accompanied by "and instead X is said" (SO1/SO2). Passages
+   retrieved by embedding are flagged <code>retrieval=semantic</code> (auditable).</li>
+<li>Embeddings via Ollama (<code>nomic-embed-text</code> or <code>mxbai-embed-large</code>; decided in
+   Phase 3). Persistent index for incremental reuse. <strong>Sole analytical use of
+   embeddings</strong>; any other use is QA.</li>
+<li>Automatic update of <code>term_status</code> in the manifest (resolves the <code>CHECK</code> cases).</li>
+</ol>
+<h2 id="phase-3-model-evaluation-ollama-cloud">Phase 3 — Model evaluation (Ollama Cloud)</h2>
+<ol>
+<li>Stratified sample: ~5 documents (1 long STRAT, 1 MoU, 1 PRCO, 1 BLOG, 1 WMS)
+   → ~25–40 passages.</li>
+<li>Candidates: 2–3 large models from the Ollama Cloud catalogue current at run time.</li>
+<li>Same prompt, temperature 0, forced JSON, the 7 questions per passage.</li>
+<li>Decision metrics:
+   - <strong>Extractive fidelity</strong>: every returned quote exists verbatim in the passage
+     (automatic verification — the best hallucination detector for this task).
+   - Valid-JSON rate and correct "not applicable" rate.
+   - <strong>Agreement with the author</strong> on the sample (or inter-model agreement + the
+     author's adjudication on disagreements).</li>
+<li>Output: <code>coding/model_eval/decision.md</code> — model, exact version, metrics; text
+   nearly ready to drop into the methods chapter.</li>
+</ol>
+<blockquote>
+<p>The documents are public: running on Ollama Cloud poses no confidentiality issue;
+provider, model and date are logged all the same.</p>
+</blockquote>
+<h2 id="phase-4-round-1-coding-llm">Phase 4 — Round 1 coding (LLM)</h2>
+<ul>
+<li><strong>One prompt per question</strong>, each with: the exact wording from Table 3, its
+  theoretical source in one line, its <code>so_tags</code> per the matrix (BENEFICIARY →
+  SO1/SO2/SO3; MECHANISM → SO1/SO2; SAFEGUARD → SO1/SO3; RESPONSIBILITY → SO1/SO3;
+  PROJECTED FUTURE → SO1/SO2; ACTANTS → SO1/SO3; NATURALISED ORDER → SO1/SO2), the
+  passage and minimal document context.</li>
+<li>Output per passage/question: <code>{doc_id, passage_id, question, so_tags,
+  answer_summary, verbatim_quote, applies, confidence, model, prompt_version,
+  run_id, timestamp}</code>.</li>
+<li>Separate <strong>definitional extractor</strong> (SO1): statements where the document says what
+  the phrase means or requires → <code>definitional_instances.jsonl</code> with structural
+  position. The pipeline only aligns the instances chronologically; reading what
+  each definition retains, drops, adds or replaces is the author's analysis (as the
+  matrix sets out).</li>
+<li>Post-check: every <code>verbatim_quote</code> is validated against the source text; those
+  that don't match are flagged and retried or discarded.</li>
+</ul>
+<p><strong>Validation (for the methods chapter):</strong> 15–20% of passages, stratified by genre
+and family, double-coded (the author + LLM); per-question agreement; disagreements
+feed at most one round of prompt iteration, then are frozen.</p>
+<h2 id="phase-5-round-2-consolidation-the-author-with-support">Phase 5 — Round 2 consolidation (the author, with support)</h2>
+<ul>
+<li><code>06_consolidate.py</code> groups the responses per question by semantic similarity and
+  presents each cluster with its quotes — raw material for <strong>the author to name the
+  sub-codes</strong> in <code>guidebook.yaml</code> (name, definition, inclusion/exclusion rule,
+  exemplar passage). The 8 beneficiary nodes already defined in the <code>method</code> sheet
+  enter the guidebook as-is as BENEFICIARY sub-codes.</li>
+<li>Automatic cluster→sub-code assignment pass; the author reviews the edge cases.</li>
+</ul>
+<h2 id="phase-6-analysis-only-outputs-mapped-to-objectives">Phase 6 — Analysis: only outputs mapped to objectives</h2>
+<p><strong>A. Intertextual network</strong> <em>(SO2 — Fairclough)</em>: nodes = documents with manifest
+attributes; edges directed by (i) family, (ii) explicit references in the text
+(titles of other corpus documents, gov.uk links between them), (iii) declared
+supersession. Reading: the path declaration → priority → commitment → public claim.</p>
+<p><strong>B. Echo-phrases</strong> <em>(SO3 — Hajer)</em>: shared n-grams (≥6 words) between government
+text and company text within each MoU family, with who published first — material
+evidence of interdiscursive borrowing/coalition. Intra-family and cross-family
+comparison by counterparty, as the matrix requires.</p>
+<p><strong>C. Thematic network</strong> <em>(SO1/SO2)</em>: bipartite document↔sub-code, projected onto a
+weighted document–document graph by shared codes, faceted by Period, Speaker,
+Family and TermStatus.</p>
+<p><strong>D. The three NVivo plan queries</strong> <em>(replicated as-is)</em>: zero count × Genre
+(SO1/SO2); agency × Genre — agentless passive vs. first-person government agent
+(SO3); PublicGood_Nominal × GDSTier — the query that kills the obvious objection
+(SO3). CSV + chart for each.</p>
+<p><strong>E. NVivo exports</strong>: coded passages + attribute classification sheet, in
+direct-import format.</p>
+<p><strong>F. Metaphor report</strong> <em>(SO1)</em>: the corpus's most frequent metaphorical
+expressions, and for each <strong>a suggested source domain and target domain</strong> with its
+proposed <code>TARGET IS SOURCE</code> formula, tentative L&amp;J type and evidence passages —
+presented as a proposal for the author to validate, correct or rename the mappings
+(the final domain assignment is her interpretive decision, not the pipeline's).</p>
+<p><strong>G. Visualization</strong>: self-contained interactive HTML; nodes colourable by
+Period/Speaker/Family/TermStatus, edges by type (family, reference, echo), temporal
+slider Jan-2024 → Jul-2026 with the July 2024 cutoff marked.</p>
+<p>Main view ("authorship and families map", per the author's visual reference
+2026-08-29): <strong>node colour = authoring actor</strong> (GDS / DSIT / DSIT+GDS / CDDO / PMO /
+External_adviser / each company — companies share a palette range, distinguishable
+from one another); <strong>spatial grouping = family</strong> (the 5 MoU families as bounded
+clusters with hull/label, the GDS/DSIT strategy trunk at the centre); <strong>node size =
+in-degree</strong> (how many times other corpus documents reference it — proxy for
+authority); <strong>edge thickness = reference frequency</strong>; arrow direction = who cites
+whom; line type distinguishes explicit reference / family / supersession / echo.
+Per-node tooltip: doc_id, date, genre, term_status.
+<em>Schedule preview</em>: this view is generated in a preliminary version at the close of
+Phase 1 (requires only texts + manifest: extraction of explicit references), and is
+enriched in Phase 6 with echo-phrases and shared codes.</p>
+<p><strong>Internal QA (not results)</strong>: Leiden comparison vs. families/groupings and
+semantic similarity matrix — live in <code>analysis/qa/</code>, cited only if the author
+decides to use them as a robustness check in the methods section.</p>
+<h2 id="phase-7-incremental-document-intake">Phase 7 — Incremental document intake</h2>
+<p><code>add_document.py &lt;url&gt; [--family X --genre Y ...]</code>:
+1. <strong>Admission checklist first</strong> — the rules from the <code>method</code> sheet applied as an
+   explicit filter: Rule 1 (supersession/window), Rule 3 (speaker, not publisher),
+   Rule 4 (functional boundary of the digital centre), Rule 5 (blog criterion),
+   producer-vs-scrutineer (parliamentary scrutiny/audit is context, not corpus)
+   and written-vs-spoken (Hansard excluded). The script presents the evaluated
+   checklist and <strong>the author approves admission</strong>; nothing enters automatically.
+2. New row in the manifest with the next <code>corpus_version</code> — v1 stays intact: the
+   dissertation's analysis can always be regenerated by filtering
+   <code>corpus_version == 1</code>.
+3. Phases 1–4 only on the new document, with <strong>prompts, model and guidebook
+   frozen</strong> at the current version.
+4. Responses without an existing sub-code → <code>candidate_code</code>, accumulated for the
+   author's review; new codes never arise without a human decision.
+5. Phase 6 is regenerated in full (it is idempotent from the JSONL files).</p>
+<p>Each run logs <code>run_id</code>, model, prompt version and guidebook version: any number in
+the dissertation is traceable to an exact run.</p>
+<hr />
+<h2 id="codes-and-attributes">Codes and attributes</h2>
+<p><strong>Taken as-is:</strong> the 7 parent codes from Table 3, <code>PublicGood_Nominal</code>,
+<code>PublicBenefit_Distributive</code>, the 8 beneficiary nodes, and the Table 4 attributes
+(Period, Authorship, Side, Partnership family, Phrase position, Definitional
+status) + Genre, GDSTier, Stage, TermStatus from the NVivo plan.</p>
+<p><strong>Proposed additions — only those that fit within the matrix's framework</strong> (the
+author decides before the run):</p>
+<ol>
+<li><strong>AGENCY</strong> <em>(SO3; extensible to the full corpus)</em> — Fairclough 2003, already
+   declared in the matrix for SO3: <code>explicit_agent / agentless_passive /
+   nominalisation</code>. Its corpus-wide application is sanctioned by query 2 of the
+   NVivo plan itself (agency × Genre).</li>
+<li><strong>MODALITY</strong> <em>(SO3)</em> — Fairclough, explicit in the matrix: <code>deontic</code>
+   (must/should/commit) vs. <code>epistemic/predictive</code> (will/could/expected). Crosses
+   with the "force" question from Table 2: distinguishes commitment from prophecy.</li>
+<li><strong>NARRATIVE_ARC</strong> <em>(SO1; per-document attribute)</em> — Kaplan 2020 (beginnings,
+   middles, ends), already implicit in the memos ("ARC POSITION 1"); formalising
+   it makes it queryable.</li>
+<li><strong>THREAT_TYPE</strong> <em>(SO1/SO3; sub-dimension of ACTANTS)</em> — Kaplan:
+   <code>technological_risk / geopolitical_lag / bureaucratic_status_quo /
+   public_distrust</code>. The migration of the threat over the period is a likely
+   finding (doc 1's memo already detects it: "AI is the risk").</li>
+<li><strong>METAPHOR</strong> <em>(SO1, feeds NATURALISED ORDER for SO1/SO2)</em> — Lakoff &amp; Johnson
+   1980; MIP/MIPVU procedure (Pragglejaz 2007; Steen et al. 2010); optional bridge
+   with Fairclough: Charteris-Black 2004. Per instance: verbatim expression →
+   source domain → target domain → <code>TARGET IS SOURCE</code> formula (e.g. "turbocharge"
+   → THE GOVERNMENT IS A MACHINE; "frontier AI" → AI DEVELOPMENT IS TERRITORIAL
+   EXPLORATION; "harness" → AI IS A FORCE TO BE TAMED) → L&amp;J type (structural /
+   orientational / ontological / personification) → <strong>what it illuminates / what
+   it hides</strong>. The "hides" field is the lexical mechanism of naturalisation
+   (Lears) and feeds directly into question 7. Aggregates enabled, all within the
+   SOs: source domains by speaker (SO1), shared government↔company domains by
+   family (SO3, complements ECHO), temporal migration of domains (SO2). <em>The only
+   addition that adds citations to the framework: requires incorporating L&amp;J
+   (+ MIP) into the theory chapter.</em></li>
+<li><strong>ECHO</strong> <em>(SO3)</em> — computationally generated in Phase 6B (Hajer); not
+   hand-coded.</li>
+<li><strong>AUDIENCE</strong> <em>(SO2; per-document attribute)</em> — <code>parliament / practitioners /
+   general_public / industry</code>; already recorded as prose in the function memo
+   (Table 2); as a closed value it enables the crossing "before which audience does
+   the term appear, and before which does it disappear?", which is the heart of
+   SO2.</li>
+</ol>
+<p><strong>Dropped by the alignment constraint:</strong> LEGITIMATION (van Leeuwen 2007) —
+extended the theoretical framework beyond what the matrix establishes, without
+being needed for any SO.</p>
+<hr />
+<h2 id="execution-order-and-human-checkpoints">Execution order and human checkpoints</h2>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Does</th>
+<th>Serves</th>
+<th>Author checkpoint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Manifest from the Excel file</td>
+<td>base</td>
+<td>Confirm count of 37 and flagged cases</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Download + archiving + structured text</td>
+<td>base</td>
+<td>Review broken-links report</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Segmentation + term/variants + embeddings</td>
+<td>SO1/SO2</td>
+<td>Confirm <code>CHECK</code> cases; approve lexicon</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Model evaluation</td>
+<td>base</td>
+<td>Code the sample; approve model</td>
+</tr>
+<tr>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td><strong>Decide which proposed codes go in</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Round 1 coding</td>
+<td>SO1/SO2/SO3</td>
+<td>15–20% validation + agreement report</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Clustering for consolidation</td>
+<td>SO1/SO2/SO3</td>
+<td><strong>Name sub-codes (guidebook)</strong></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Networks, queries, exports, viz</td>
+<td>SO1/SO2/SO3</td>
+<td>Analytical reading — interpretation begins here</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Incremental intake</td>
+<td>per doc</td>
+<td>Approve admission (checklist) and <code>candidate_codes</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Stack: Python (project venv), PyMuPDF, requests/BeautifulSoup, Ollama API (cloud
+for LLM; embeddings local or cloud), networkx + python-igraph, self-contained HTML
+visualization. Intermediate data in flat files (CSV/JSONL/YAML), version-controllable.</p>
+<hr />
+<p>Label language: coding labels standardised to English on 2026-08-29; prompts_v1.yaml
+already emits Spanish label values for AGENCY/MODALITY/ACTANTS — mapped at
+consolidation.</p>
+</div>
+</body>
+</html>

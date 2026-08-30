@@ -152,18 +152,21 @@ def phase_status(rows):
 # Deliverables
 # ---------------------------------------------------------------------------
 
+# All .md deliverables are listed by their rendered .html sibling (scripts/16_render_markdown.py)
+# so they're readable without a Markdown-aware viewer. The .md stays the source of truth.
 DELIVERABLES = [
-    ("PLAN.md", "Thesis plan / operationalization"),
-    ("README.md", "Repository guide"),
-    ("HANDOFF.md", "Handoff guide — continuing this project on a new machine"),
+    ("PLAN.html", "Thesis plan / operationalization"),
+    ("README.html", "Repository guide"),
+    ("HANDOFF.html", "Handoff guide — continuing this project on a new machine"),
     ("interpretation.html", "Consolidated interpretation"),
     ("analysis/networks/authorship_family_map.html", "Authorship and family map (intertextual network)"),
     ("analysis/queries/queries.html", "The three queries from the NVivo plan"),
-    ("analysis/queries/echo_summary.md", "Echo-phrases summary (SO3)"),
-    ("analysis/metaphors_report.md", "Metaphors report (SO1)"),
-    ("coding/model_eval/decision.md", "Model evaluation decision"),
+    ("analysis/queries/echo_summary.html", "Echo-phrases summary (SO3)"),
+    ("analysis/metaphors_report.html", "Metaphors report (SO1)"),
+    ("coding/model_eval/decision.html", "Model evaluation decision"),
     ("coding/guidebook_draft.yaml", "Guidebook — sub-codes draft"),
     ("analysis/guidebook_summary.html", "Guidebook review — interactive cluster naming"),
+    ("analysis/qa/communities_vs_families.html", "Communities vs. families QA (internal)"),
     ("coding/validation/sample_for_author.csv", "Double-coded validation sample"),
     ("data/manifest.csv", "Corpus manifest"),
 ]

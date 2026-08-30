@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Readme</title>
+<style>
+:root{
+  --canvas:#ffffff; --band:#f7f7f7; --ink:#0a0b0d; --body:#5b616e; --muted:#7c828a;
+  --hairline:#dee1e6; --card-fill:#eef0f3; --accent:#0052ff; --accent-active:#003ecc;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--canvas);color:var(--ink);
+  font:16px/1.7 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
+.topbar{background:var(--band);border-bottom:1px solid var(--hairline);padding:12px 24px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:13px;font-weight:500}
+.topbar a:hover{color:var(--accent-active)}
+.wrap{max-width:840px;margin:0 auto;padding:40px 24px 100px}
+h1{font-size:28px;font-weight:600;margin:0 0 8px;line-height:1.3}
+h2{font-size:21px;font-weight:600;margin:36px 0 12px;padding-top:8px;border-top:1px solid var(--hairline)}
+h1+h2, h1+p+h2{border-top:none;padding-top:0}
+h3{font-size:17px;font-weight:600;margin:24px 0 8px}
+h4{font-size:14px;font-weight:600;margin:18px 0 6px;color:var(--body)}
+p,li{color:var(--ink)}
+p{margin:0 0 14px}
+ul,ol{margin:0 0 14px;padding-left:24px}
+li{margin-bottom:4px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code{background:var(--card-fill);padding:2px 6px;border-radius:4px;font-size:0.9em;
+  font-family:ui-monospace,Menlo,Consolas,monospace}
+pre{background:var(--card-fill);padding:14px 16px;border-radius:8px;overflow-x:auto;
+  font-size:13px;line-height:1.5;margin:0 0 16px}
+pre code{background:none;padding:0}
+blockquote{border-left:3px solid var(--accent);margin:0 0 16px;padding:2px 0 2px 16px;
+  color:var(--body)}
+hr{border:none;border-top:1px solid var(--hairline);margin:28px 0}
+table{border-collapse:collapse;width:100%;margin:0 0 20px;font-size:14px}
+.table-wrap{overflow-x:auto;margin:0 0 20px}
+.table-wrap table{margin:0}
+th,td{border:1px solid var(--hairline);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--band);font-weight:600;font-size:13px}
+tr:nth-child(even) td{background:var(--band)}
+.note{background:var(--card-fill);border-radius:8px;padding:10px 14px;font-size:13px;
+  color:var(--body);margin-bottom:28px}
+</style>
+</head>
+<body>
+<div class="topbar"><a href="index.html">&larr; Project hub</a></div>
+<div class="wrap">
+<div class="note">Rendered from <code>README.md</code> for readability &mdash; this page is
+generated, not authored; edit the source file, then re-run
+<code>scripts/16_render_markdown.py</code>.</div>
+<h1 id="ai-for-the-public-good-corpus-and-analysis-pipeline">AI for the public good — corpus and analysis pipeline</h1>
+<h3 id="discourse-analysis-gdsdsit-united-kingdom-january-2024-july-2026">Discourse analysis · GDS/DSIT, United Kingdom · January 2024 – July 2026</h3>
+<p>Pipeline supporting the author's dissertation on "AI for the public good" as a
+sociotechnical imaginary in UK government discourse on AI in public services,
+anchored in the Government Digital Service.</p>
+<p><strong>Guiding principle: the LLM locates and extracts; the author interprets and
+consolidates.</strong> No interpretive result is final until validated (see checkpoints).</p>
+<ul>
+<li><strong>Full design and constraints (SO1/SO2/SO3):</strong> <a href="PLAN.html">PLAN.md</a></li>
+<li><strong>Interpretation guide for each deliverable and its assumptions:</strong> <a href="interpretation.html">interpretation.html</a></li>
+<li><strong>Consolidated hub (corpus + deliverables + document intake):</strong> <a href="index.html">index.html</a></li>
+<li><strong>Picking this project up on a new machine (no Ollama available):</strong> <a href="HANDOFF.html">HANDOFF.md</a></li>
+<li><strong>Reviewing/naming the Phase 5 sub-codes:</strong> <a href="analysis/guidebook_summary.html">analysis/guidebook_summary.html</a></li>
+</ul>
+<h2 id="quick-start">Quick start</h2>
+<pre><code class="language-bash"># local hub with incremental document intake (&quot;Add document&quot; form)
+.venv/bin/python scripts/serve_site.py
+# → http://localhost:8765
+</code></pre>
+<h2 id="reproducing-on-another-machine">Reproducing on another machine</h2>
+<pre><code class="language-bash">python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+ollama pull embeddinggemma        # local embeddings (768-dim)
+ollama pull kimi-k3:cloud         # Round 1 coding model (needs an Ollama Cloud session)
+</code></pre>
+<p>Requirements: Python 3.13+, <a href="https://ollama.com">Ollama</a> on <code>localhost:11434</code>.
+What travels with the repo so the analysis is fully reproducible without re-fetching
+or re-embedding anything:</p>
+<ul>
+<li><code>data/text/</code> — the full structured transcription of the 35 corpus documents
+  (the raw PDFs/HTML stay out of git; <code>data/raw/*.meta.json</code> records each fetch —
+  URL, hash, source — and <code>data/raw/archive_urls.json</code> the archive.org snapshots).</li>
+<li><code>data/embeddings/</code> — the persisted embeddinggemma vectors: one L2-normalised
+  vector per document section (<code>sections_embeddinggemma.npz</code> + row index) and the
+  beneficiary-probe vectors, with model/dim metadata in <code>meta.json</code>. Scripts that
+  embed at runtime produce these same vectors; the export exists so results can be
+  verified without Ollama.</li>
+<li><code>coding/round1/</code> — every raw Round 1 record with model, prompt version and run id.</li>
+<li><code>coding/model_eval/</code> — the model comparison behind the kimi-k3 decision.</li>
+</ul>
+<h2 id="structure">Structure</h2>
+<pre><code>data/manifest.csv        frozen corpus v1 (35 docs) + attributes; append-only (v2+ = new intakes)
+data/raw/                downloaded originals + metadata per doc (outside git; snapshots on archive.org)
+data/text/                structured text per doc (blocks: title/pillar/heading/body/quotation)
+coding/lexicon_v1.yaml   term variants (nominal / variant / distributive) — versioned
+coding/units.jsonl       53 coding units (retrieval: lexicon | semantic | full_short_doc)
+coding/prompts/          prompts for the 11 questions + document profile, versioned
+coding/model_eval/       Ollama model evaluation and documented decision
+coding/round1/           raw Round 1 output (JSONL per doc, with run metadata)
+coding/validation/       sample for the author's double coding + agreement
+coding/guidebook_draft.yaml  candidate sub-code clusters (DRAFT until the author names them)
+analysis/networks/       intertextual network v0 (JSON with evidence) + interactive map
+analysis/queries/        term counts, queries (zero-count, GDS-tier), echoes by family
+analysis/metaphors_report.md  most frequent metaphors with suggested source/target (to validate)
+</code></pre>
+<h2 id="scripts-in-pipeline-order">Scripts (in pipeline order)</h2>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Script</th>
+<th>Phase</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>01_manifest.py</code></td>
+<td>0</td>
+<td>Selection Excel → <code>data/manifest.csv</code></td>
+</tr>
+<tr>
+<td><code>02a/02b_fetch_*.py</code></td>
+<td>1</td>
+<td>Download and structured extraction (gov / companies)</td>
+</tr>
+<tr>
+<td><code>02c_archive_snapshots.py</code></td>
+<td>1</td>
+<td>Snapshots on web.archive.org</td>
+</tr>
+<tr>
+<td><code>03_qa_merge.py</code></td>
+<td>1</td>
+<td>Extraction QA + metadata merge into the manifest</td>
+</tr>
+<tr>
+<td><code>04_segment.py</code></td>
+<td>2</td>
+<td>Coding units + term/variants + semantic retrieval</td>
+</tr>
+<tr>
+<td><code>05_code.py</code></td>
+<td>4</td>
+<td>Round 1 with Ollama (11 questions × unit; <code>--doc</code> for a single one)</td>
+</tr>
+<tr>
+<td><code>06_consolidate.py</code></td>
+<td>5</td>
+<td>Response grouping → guidebook draft</td>
+</tr>
+<tr>
+<td><code>06_network_v0.py</code></td>
+<td>6</td>
+<td>Explicit-reference network (title alias + MoU rule)</td>
+</tr>
+<tr>
+<td><code>07_echo.py</code> / <code>07b_queries.py</code></td>
+<td>6</td>
+<td>Echo-phrases by MoU family + queries (3 charts)</td>
+</tr>
+<tr>
+<td><code>09_round1_watchdog.py</code></td>
+<td>4</td>
+<td>Resumes Round 1 in bursts until the Ollama Cloud quota allows completion</td>
+</tr>
+<tr>
+<td><code>10_thematic_network.py</code></td>
+<td>6</td>
+<td>Bipartite document↔sub-code network (from the guidebook draft)</td>
+</tr>
+<tr>
+<td><code>11_agency_query.py</code></td>
+<td>6</td>
+<td>Agency × genre query (NVivo plan query 2) from Round 1 AGENCY records</td>
+</tr>
+<tr>
+<td><code>12_nvivo_export.py</code></td>
+<td>6</td>
+<td>NVivo classification sheet + coded passages CSVs</td>
+</tr>
+<tr>
+<td><code>13_qa_communities.py</code></td>
+<td>QA</td>
+<td>Leiden communities vs families/speakers (ARI) — internal, not results</td>
+</tr>
+<tr>
+<td><code>10_finalize.py</code></td>
+<td>—</td>
+<td>Re-runs the whole analysis chain in order (use after Round 1 completes)</td>
+</tr>
+<tr>
+<td><code>08_build_site.py</code></td>
+<td>—</td>
+<td>Regenerates <code>index.html</code> from the data</td>
+</tr>
+<tr>
+<td><code>add_document.py</code></td>
+<td>7</td>
+<td>Incremental intake: admission checklist → fetch → recompute</td>
+</tr>
+<tr>
+<td><code>serve_site.py</code></td>
+<td>—</td>
+<td>Hub on localhost:8765 with the intake form</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Everything runs with <code>.venv/bin/python scripts/&lt;script&gt;.py</code>.</p>
+<h2 id="author-checkpoints-non-delegable-human-decisions">Author checkpoints (non-delegable human decisions)</h2>
+<ol>
+<li>Variant lexicon (<code>coding/lexicon_v1.yaml</code>) — approve/extend.</li>
+<li><code>gds_tier</code> — the current assignment is automatic and provisional (column
+   <code>gds_tier_source</code>).</li>
+<li>Validation sample (<code>coding/validation/sample_for_author.csv</code>) — double coding
+   and agreement report before signing off on Round 1.</li>
+<li>Guidebook (<code>coding/guidebook_draft.yaml</code>) — name/merge/reject sub-codes.</li>
+<li>Metaphors (<code>analysis/metaphors_report.md</code>) — validate suggested source/target
+   domains.</li>
+<li>Document intake (Phase 7) — confirm the admission checklist for each new URL.</li>
+</ol>
+<h2 id="decisions-on-record">Decisions on record</h2>
+<ul>
+<li>Corpus v1 = 35 documents (the decided range in the Excel file contains an empty
+  row; cutoff at row 38, the "EITHER BRING" marker). The <code>CONTEXT_</code> document (AI
+  Opportunities Action Plan) <strong>enters the corpus</strong> with <code>Speaker=External_adviser</code>
+  (decision 2026-08-29).</li>
+<li>LEGITIMATION (van Leeuwen) dropped: exceeds the matrix's theoretical framework.</li>
+<li><code>data/raw/</code> outside git; persistence via local copies + archive.org (33/35).</li>
+<li>METAPHOR anchored in Lakoff &amp; Johnson (1980) + MIP; the domains the pipeline
+  produces are suggestions.</li>
+</ul>
+</div>
+</body>
+</html>
