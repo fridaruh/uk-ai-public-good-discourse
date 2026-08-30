@@ -52,11 +52,12 @@
 <div class="wrap">
   <h1>Authorship and family map — corpus v1 (35 documents)</h1>
   <div class="sub">Nodes = documents · color = author actor · shape = actor type · size = inbound references ·
-    arrow thickness = reference frequency · grouping = MoU family. <b>Preliminary version</b> (explicit references by title alias; Phase 6 adds echoes and shared codes).</div>
+    arrow thickness = reference frequency · grouping = MoU family. References detected by title alias; gold dotted edges are discursive echoes (shared phrasing between government and company texts). Shared-code edges arrive with Round 2 consolidation.</div>
 
   <div class="controls">
     <label><input type="checkbox" id="tRef" checked> References</label>
     <label><input type="checkbox" id="tSup" checked> Supersession</label>
+    <label><input type="checkbox" id="tEcho" checked> Echoes</label>
     <label><input type="checkbox" id="tLbl" checked> Labels</label>
     <label>Until: <input type="range" id="tTime" min="0" max="100" value="100"><span id="dateLabel"></span></label>
   </div>
@@ -785,7 +786,84 @@ const DATA = {
    "target": "2024-01-18_STRAT_CDDO_GenerativeAIFramework",
    "type": "supersession",
    "count": 1,
-   "evidence": "El AI Playbook sustituye al Generative AI Framework (gov.uk, 2025-02-10)."
+   "evidence": "The AI Playbook supersedes the Generative AI Framework (gov.uk, 2025-02-10)."
+  },
+  {
+   "source": "2025-02-14_PRCO_Anthropic_SignsMOUUKGov",
+   "target": "2025-02-14_MOU_Anthropic_AIOpportunities",
+   "type": "echo",
+   "count": 5,
+   "evidence": "5 shared n-grams; longest (13 words): \"securing the supply chain for advanced ai and the uk s future infrastructure\""
+  },
+  {
+   "source": "2026-01-27_PRCO_Anthropic_GOVUKPartnership",
+   "target": "2025-02-14_MOU_Anthropic_AIOpportunities",
+   "type": "echo",
+   "count": 1,
+   "evidence": "1 shared n-grams; longest (7 words): \"department for science innovation and technology dsit\""
+  },
+  {
+   "source": "2025-06-15_PRCO_Cohere_CanadaUKPartnerships",
+   "target": "2025-06-16_MOU_Cohere_AIOpportunities",
+   "type": "echo",
+   "count": 4,
+   "evidence": "4 shared n-grams; longest (11 words): \"secure ai solutions in areas of strategic importance to the uk\""
+  },
+  {
+   "source": "2025-07-21_PRCO_OpenAI_StrategicPartnership",
+   "target": "2025-07-21_MOU_OpenAI_AIOpportunities",
+   "type": "echo",
+   "count": 4,
+   "evidence": "4 shared n-grams; longest (33 words): \"how advanced ai models can be deployed throughout government and the private sector to help civil servants work more efficiently and to support small businesses and citizens to nav\""
+  },
+  {
+   "source": "2025-07-21_PRCO_OpenAI_StrategicPartnership",
+   "target": "2025-07-21_PRGOV_DSIT_OpenAIExpandUKOffice",
+   "type": "echo",
+   "count": 10,
+   "evidence": "10 shared n-grams; longest (118 words): \"technology secretary peter kyle said ai will be fundamental in driving the change we need to see across the country whether that s in fixing the nhs breaking down barriers to oppor\""
+  },
+  {
+   "source": "2025-10-22_PRCO_OpenAI_NextChapterSovereignAI",
+   "target": "2025-07-21_PRGOV_DSIT_OpenAIExpandUKOffice",
+   "type": "echo",
+   "count": 1,
+   "evidence": "1 shared n-grams; longest (8 words): \"in minutes while leaving important decisions to experts\""
+  },
+  {
+   "source": "2025-12-10_PRCO_DeepMind_StrengtheningPartnership",
+   "target": "2025-12-11_MOU_DeepMind_AIOpportunitiesSecurity",
+   "type": "echo",
+   "count": 3,
+   "evidence": "3 shared n-grams; longest (7 words): \"ai enhanced approaches to national cyber resilience\""
+  },
+  {
+   "source": "2025-12-11_PRCO_DeepMind_DeepeningAISIPartnership",
+   "target": "2025-12-11_MOU_DeepMind_AIOpportunitiesSecurity",
+   "type": "echo",
+   "count": 1,
+   "evidence": "1 shared n-grams; longest (8 words): \"with the uk ai security institute aisi through\""
+  },
+  {
+   "source": "2025-12-10_PRCO_DeepMind_StrengtheningPartnership",
+   "target": "2025-12-11_PRGOV_DSIT_NationalRenewalDeepMind",
+   "type": "echo",
+   "count": 6,
+   "evidence": "6 shared n-grams; longest (13 words): \"will be built from the ground up to be fully integrated with gemini\""
+  },
+  {
+   "source": "2025-12-11_PRCO_DeepMind_DeepeningAISIPartnership",
+   "target": "2025-12-11_PRGOV_DSIT_NationalRenewalDeepMind",
+   "type": "echo",
+   "count": 1,
+   "evidence": "1 shared n-grams; longest (6 words): \"is developed safely and benefits everyone\""
+  },
+  {
+   "source": "2026-06-08_PRCO_ElevenLabs_UKMOUExpansion",
+   "target": "2026-06-08_MOU_ElevenLabs_AIOpportunities",
+   "type": "echo",
+   "count": 5,
+   "evidence": "5 shared n-grams; longest (18 words): \"to make the uk one of the best places in the world to build deploy and use ai\""
   }
  ]
 };
@@ -900,6 +978,7 @@ function edgeVisible(e){
   if(e.s.hidden||e.t.hidden)return false;
   if(e.type==='reference'&&!document.getElementById('tRef').checked)return false;
   if(e.type==='supersession'&&!document.getElementById('tSup').checked)return false;
+  if(e.type==='echo'&&!document.getElementById('tEcho').checked)return false;
   return true; }
 
 function draw(){
@@ -912,11 +991,12 @@ function draw(){
           ex=e.t.x-dx*(e.t.r+7), ey=e.t.y-dy*(e.t.r+7),
           mx=(sx+ex)/2-dy*16, my=(sy+ey)/2+dx*16;
     el('path',{d:`M${sx.toFixed(1)} ${sy.toFixed(1)}Q${mx.toFixed(1)} ${my.toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)}`,
-      fill:'none', stroke:e.type==='supersession'?'#e8ecf3':'#8b98ad',
-      'stroke-opacity':e.type==='supersession'?0.85:0.5,
+      fill:'none',
+      stroke:e.type==='supersession'?'#ffffff':(e.type==='echo'?'#b8862f':'#8b98ad'),
+      'stroke-opacity':e.type==='supersession'?0.85:(e.type==='echo'?0.75:0.5),
       'stroke-width':(1+Math.log2(e.count+1)).toFixed(2),
-      'stroke-dasharray':e.type==='supersession'?'6 5':'none',
-      'marker-end':e.type==='supersession'?'url(#arrSup)':'url(#arrRef)'},gEdge);
+      'stroke-dasharray':e.type==='supersession'?'6 5':(e.type==='echo'?'2 5':'none'),
+      'marker-end':e.type==='echo'?'none':(e.type==='supersession'?'url(#arrSup)':'url(#arrRef)')},gEdge);
   }
   for(const n of nodes){
     if(n.hidden)continue;
@@ -946,7 +1026,7 @@ function applyTime(){
   for(const n of nodes)n.hidden=n.date>cut;
   draw(); }
 slider.addEventListener('input',applyTime);
-for(const id of['tRef','tSup','tLbl'])document.getElementById(id).addEventListener('change',draw);
+for(const id of['tRef','tSup','tEcho','tLbl'])document.getElementById(id).addEventListener('change',draw);
 
 // leyenda
 const legend=document.getElementById('legend');
@@ -967,6 +1047,7 @@ legend.innerHTML=`
  <div><h3>How to read</h3>
    <div class="row">— gray with arrow: explicit reference (thickness = mentions)</div>
    <div class="row">- - white: supersession (the new replaces the old)</div>
+   <div class="row">· · gold, no arrow: discursive echo (shared phrasing, gov ↔ company)</div>
    <div class="row">node size = times referenced in the corpus</div>
    <div class="row">zone outline = partnership family</div></div>`;
 

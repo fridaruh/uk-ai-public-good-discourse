@@ -707,7 +707,84 @@
    "target": "2024-01-18_STRAT_CDDO_GenerativeAIFramework",
    "type": "supersession",
    "count": 1,
-   "evidence": "El AI Playbook sustituye al Generative AI Framework (gov.uk, 2025-02-10)."
+   "evidence": "The AI Playbook supersedes the Generative AI Framework (gov.uk, 2025-02-10)."
+  },
+  {
+   "source": "2025-02-14_PRCO_Anthropic_SignsMOUUKGov",
+   "target": "2025-02-14_MOU_Anthropic_AIOpportunities",
+   "type": "echo",
+   "count": 5,
+   "evidence": "5 shared n-grams; longest (13 words): \"securing the supply chain for advanced ai and the uk s future infrastructure\""
+  },
+  {
+   "source": "2026-01-27_PRCO_Anthropic_GOVUKPartnership",
+   "target": "2025-02-14_MOU_Anthropic_AIOpportunities",
+   "type": "echo",
+   "count": 1,
+   "evidence": "1 shared n-grams; longest (7 words): \"department for science innovation and technology dsit\""
+  },
+  {
+   "source": "2025-06-15_PRCO_Cohere_CanadaUKPartnerships",
+   "target": "2025-06-16_MOU_Cohere_AIOpportunities",
+   "type": "echo",
+   "count": 4,
+   "evidence": "4 shared n-grams; longest (11 words): \"secure ai solutions in areas of strategic importance to the uk\""
+  },
+  {
+   "source": "2025-07-21_PRCO_OpenAI_StrategicPartnership",
+   "target": "2025-07-21_MOU_OpenAI_AIOpportunities",
+   "type": "echo",
+   "count": 4,
+   "evidence": "4 shared n-grams; longest (33 words): \"how advanced ai models can be deployed throughout government and the private sector to help civil servants work more efficiently and to support small businesses and citizens to nav\""
+  },
+  {
+   "source": "2025-07-21_PRCO_OpenAI_StrategicPartnership",
+   "target": "2025-07-21_PRGOV_DSIT_OpenAIExpandUKOffice",
+   "type": "echo",
+   "count": 10,
+   "evidence": "10 shared n-grams; longest (118 words): \"technology secretary peter kyle said ai will be fundamental in driving the change we need to see across the country whether that s in fixing the nhs breaking down barriers to oppor\""
+  },
+  {
+   "source": "2025-10-22_PRCO_OpenAI_NextChapterSovereignAI",
+   "target": "2025-07-21_PRGOV_DSIT_OpenAIExpandUKOffice",
+   "type": "echo",
+   "count": 1,
+   "evidence": "1 shared n-grams; longest (8 words): \"in minutes while leaving important decisions to experts\""
+  },
+  {
+   "source": "2025-12-10_PRCO_DeepMind_StrengtheningPartnership",
+   "target": "2025-12-11_MOU_DeepMind_AIOpportunitiesSecurity",
+   "type": "echo",
+   "count": 3,
+   "evidence": "3 shared n-grams; longest (7 words): \"ai enhanced approaches to national cyber resilience\""
+  },
+  {
+   "source": "2025-12-11_PRCO_DeepMind_DeepeningAISIPartnership",
+   "target": "2025-12-11_MOU_DeepMind_AIOpportunitiesSecurity",
+   "type": "echo",
+   "count": 1,
+   "evidence": "1 shared n-grams; longest (8 words): \"with the uk ai security institute aisi through\""
+  },
+  {
+   "source": "2025-12-10_PRCO_DeepMind_StrengtheningPartnership",
+   "target": "2025-12-11_PRGOV_DSIT_NationalRenewalDeepMind",
+   "type": "echo",
+   "count": 6,
+   "evidence": "6 shared n-grams; longest (13 words): \"will be built from the ground up to be fully integrated with gemini\""
+  },
+  {
+   "source": "2025-12-11_PRCO_DeepMind_DeepeningAISIPartnership",
+   "target": "2025-12-11_PRGOV_DSIT_NationalRenewalDeepMind",
+   "type": "echo",
+   "count": 1,
+   "evidence": "1 shared n-grams; longest (6 words): \"is developed safely and benefits everyone\""
+  },
+  {
+   "source": "2026-06-08_PRCO_ElevenLabs_UKMOUExpansion",
+   "target": "2026-06-08_MOU_ElevenLabs_AIOpportunities",
+   "type": "echo",
+   "count": 5,
+   "evidence": "5 shared n-grams; longest (18 words): \"to make the uk one of the best places in the world to build deploy and use ai\""
   }
  ]
 }

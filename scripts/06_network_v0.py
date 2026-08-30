@@ -127,8 +127,32 @@ def main():
         edges.append({"source": a, "target": b, "type": "supersession", "count": 1,
                       "evidence": "The AI Playbook supersedes the Generative AI Framework (gov.uk, 2025-02-10)."})
 
+    # echo edges (SO3, Hajer): non-formulaic shared n-grams within each MoU family,
+    # from Phase 6B output. Undirected in reading (drawn without direction weight);
+    # excluded from in_degree, which measures reference authority only.
+    echo_csv = ROOT / "analysis" / "queries" / "echo_phrases.csv"
+    if echo_csv.exists():
+        pair_stats = {}
+        for row in csv.DictReader(echo_csv.open()):
+            if row.get("formulaic", "").strip().lower() in ("true", "1", "yes"):
+                continue
+            key = (row["gov_doc"], row["company_doc"])
+            st = pair_stats.setdefault(key, {"n": 0, "max_words": 0, "phrase": ""})
+            st["n"] += 1
+            if int(row["n_words"]) > st["max_words"]:
+                st["max_words"] = int(row["n_words"])
+                st["phrase"] = row["phrase"]
+        for (gov, comp), st in sorted(pair_stats.items()):
+            edges.append({"source": comp, "target": gov, "type": "echo",
+                          "count": st["n"],
+                          "evidence": f'{st["n"]} shared n-grams; longest '
+                                      f'({st["max_words"]} words): "{st["phrase"][:180]}"'})
+        print(f"echo edges: {len(pair_stats)} document pairs")
+
     indeg = {}
     for e in edges:
+        if e["type"] == "echo":
+            continue
         indeg[e["target"]] = indeg.get(e["target"], 0) + e["count"]
 
     nodes = []
