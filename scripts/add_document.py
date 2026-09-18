@@ -54,13 +54,18 @@ TIMEOUT = 30
 WINDOW_START = date(2024, 1, 1)
 WINDOW_END = date(2026, 7, 31)
 
-FAMILIES = ["Anthropic", "Cohere", "OpenAI", "DeepMind", "ElevenLabs"]
+FAMILIES = ["Anthropic", "Cohere", "OpenAI", "DeepMind", "ElevenLabs", "NVIDIA", "Cisco", "Synthesia"]
 COMPANY_DOMAINS = {
     "anthropic.com": "Anthropic",
     "cohere.com": "Cohere",
     "openai.com": "OpenAI",
     "deepmind.google": "DeepMind",
     "elevenlabs.io": "ElevenLabs",
+    "nvidia.com": "NVIDIA",
+    "nvidianews.nvidia.com": "NVIDIA",
+    "cisco.com": "Cisco",
+    "news-blogs.cisco.com": "Cisco",
+    "synthesia.io": "Synthesia",
 }
 GOV_DOMAINS = ("gov.uk", "parliament.uk", "campaign.gov.uk")
 SCRUTINY_DOMAINS = (
@@ -441,7 +446,7 @@ def assign_doc_id(doc_date, genre, speaker, title, existing_ids):
 # ---------------------------------------------------------------------------
 
 def load_lexicon():
-    lex = yaml.safe_load(LEXICON.read_text())
+    lex = yaml.safe_load(LEXICON.read_text(encoding="utf-8"))
     rx = lambda pats: [re.compile(p, re.I) for p in pats]
     return rx(lex["nominal"]), rx(lex["variant_nominal"]), rx(lex["distributive"])
 
@@ -507,7 +512,7 @@ def gds_tier_of(speaker, full_text):
 # ---------------------------------------------------------------------------
 
 def read_manifest():
-    with MANIFEST.open(newline="") as f:
+    with MANIFEST.open(newline="", encoding="utf-8") as f:
         return list(csv.DictReader(f)), f
 
 
@@ -528,7 +533,7 @@ def append_manifest_row(row):
         if k not in fieldnames:
             fieldnames.append(k)
     rows.append(row)
-    with MANIFEST.open("w", newline="") as f:
+    with MANIFEST.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         for r in rows:
@@ -536,7 +541,7 @@ def append_manifest_row(row):
 
 
 def append_units(doc_units):
-    with UNITS.open("a") as f:
+    with UNITS.open("a", encoding="utf-8") as f:
         for u in doc_units:
             f.write(json.dumps(u, ensure_ascii=False) + "\n")
 
@@ -547,7 +552,7 @@ def append_term_counts(row, manifest_row):
     full_row = {"doc_id": row["doc_id"], "genre": manifest_row["genre"], "speaker": manifest_row["speaker"],
                 "family": manifest_row["family"], "n_nominal": row["n_nominal"], "n_variant": row["n_variant"],
                 "n_distributive": row["n_distributive"], "nominal_forms": row["nominal_forms"]}
-    with TERM_COUNTS.open("a", newline="") as f:
+    with TERM_COUNTS.open("a", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fields)
         if not exists:
             w.writeheader()
@@ -558,13 +563,13 @@ def rebuild_network_html():
     """Runs 06_network_v0.py and re-embeds the JSON into authorship_family_map.html."""
     subprocess.run([sys.executable, str(ROOT / "scripts" / "06_network_v0.py")],
                     check=True, cwd=str(ROOT))
-    data = json.loads((ROOT / "analysis" / "networks" / "intertextual_v0.json").read_text())
-    html = NETWORK_HTML.read_text()
+    data = json.loads((ROOT / "analysis" / "networks" / "intertextual_v0.json").read_text(encoding="utf-8"))
+    html = NETWORK_HTML.read_text(encoding="utf-8")
     new_block = "const DATA = " + json.dumps(data, indent=1, ensure_ascii=False) + ";"
     html2, count = re.subn(r"const DATA = \{.*?\n\};", new_block, html, flags=re.S)
     if count == 0:
         raise RuntimeError("could not find 'const DATA = {...};' in authorship_family_map.html")
-    NETWORK_HTML.write_text(html2)
+    NETWORK_HTML.write_text(html2, encoding="utf-8")
 
 
 def rebuild_all_recompute():
@@ -633,7 +638,7 @@ def admit_document(url: str, family: str | None, genre: str | None, result: dict
     TEXT_DIR.mkdir(parents=True, exist_ok=True)
     doc_json = build_doc_json(url, blocks, fmt)
     doc_json["doc_id"] = doc_id
-    (TEXT_DIR / f"{doc_id}.json").write_text(json.dumps(doc_json, indent=2, ensure_ascii=False))
+    (TEXT_DIR / f"{doc_id}.json").write_text(json.dumps(doc_json, indent=2, ensure_ascii=False), encoding="utf-8")
 
     append_manifest_row(manifest_row)
     append_units(doc_units)

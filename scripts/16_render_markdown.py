@@ -15,11 +15,11 @@ ROOT = Path(__file__).resolve().parent.parent
 SOURCES = [
     "PLAN.md",
     "README.md",
-    "HANDOFF.md",
     "analysis/metaphors_report.md",
     "analysis/qa/communities_vs_families.md",
     "analysis/queries/echo_summary.md",
     "coding/model_eval/decision.md",
+    "coding/nvivo_r1_r2_review.md",
 ]
 
 PAGE = """<!doctype html>
@@ -119,12 +119,12 @@ def main():
             print(f"skip (missing): {rel}")
             continue
         MD.reset()
-        body = wrap_tables(retarget_md_links(MD.convert(src.read_text()), rendered_rels))
+        body = wrap_tables(retarget_md_links(MD.convert(src.read_text(encoding="utf-8")), rendered_rels))
         title = src.stem.replace("_", " ").title()
         depth = len(Path(rel).parts) - 1
         home = ("../" * depth + "index.html") if depth else "index.html"
         out = src.with_suffix(".html")
-        out.write_text(PAGE.format(title=title, body=body, src=rel, home=home))
+        out.write_text(PAGE.format(title=title, body=body, src=rel, home=home), encoding="utf-8")
         print(f"wrote {out.relative_to(ROOT)}")
 
 

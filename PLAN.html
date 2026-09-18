@@ -83,17 +83,17 @@ anchored in the Government Digital Service.</p>
 <tr>
 <td><strong>SO1.</strong> Examine the sociotechnical imaginary projected under the rhetoric of "AI for the public good" in GDS texts.</td>
 <td>Jasanoff &amp; Kim (imaginaries); Kaplan (narrative/plot); Lears (hegemony)</td>
-<td>Coding of the 7 questions (all apply to SO1); definitional extractor; chronological comparison of definitions; METAPHOR; NARRATIVE_ARC; THREAT_TYPE</td>
+<td><strong>Round 1.1</strong> — the author's own interpretive coding in NVIVO: reading each document for the phrase, coding it against the 7 core questions (beneficiary, mechanism, safeguard, responsible, projected future, hero/threat, naturalised order) plus the definitional term-search, on the documents she read closely. <strong>Round 1.2</strong> — LLM-assisted coding extends that same question set across the full 66-document corpus, entirely via Ollama Cloud (<code>kimi-k3:cloud</code>, with a <code>deepseek-v4-flash:cloud</code> fallback for quota limits — see "Note on tooling" below), then clusters every resulting instance by cosine similarity into a candidate codebook the author names. The chronological comparison of definitions stays the author's own reading of what Round 1.1/1.2 locates (METAPHOR/Lakoff &amp; Johnson analysis was dropped 2026-09-13 — not part of the committed framework).</td>
 </tr>
 <tr>
 <td><strong>SO2.</strong> Trace how that imaginary moves from a statement of principles to strategic priorities, policy commitments, and public-facing claims.</td>
 <td>Fairclough (intertextuality); Jasanoff &amp; Kim; Lears (naturalisation)</td>
-<td>Intertextual network (families + references + supersession); MECHANISM, PROJECTED FUTURE, NATURALISED ORDER questions; Period and AUDIENCE attributes; zero-count × Genre queries; semantic retrieval of the distributive claim; visualization's temporal slider</td>
+<td><strong>Round 2.1</strong> — the author's own intertextuality coding in NVIVO (the <code>r2_intertextuality</code> node: which documents cite, echo or supersede which). This is assisted by an intertextual network that the author designed and directed Claude Code to build computationally (title-alias reference detection + declared supersession over the full corpus) — the network surfaces candidate links at a scale manual reading alone cannot cover; the author still decides which links matter. MECHANISM, PROJECTED FUTURE and NATURALISED ORDER (from Round 1.2) supply the passage-level evidence for how the framing changes as it moves across genres.</td>
 </tr>
 <tr>
 <td><strong>SO3.</strong> Analyse the evolution of the framing across the department's partnership documents with frontier AI companies.</td>
 <td>Hajer (discourse coalitions); Lears (naturalisation); Fairclough (agent deletion, nominalisation, modality)</td>
-<td>Echo-phrases by MoU family; AGENCY and MODALITY; intra-family and inter-family comparison; SAFEGUARD, RESPONSIBILITY, ACTANTS questions; shared metaphorical source domains government↔company; GDS-control × GDSTier query</td>
+<td><strong>Round 2.2</strong> — the author's own MoU-family coding in NVIVO (the <code>MouFam1</code>–<code>MouFam8</code> nodes: benefits, mechanism, safeguards, narratives and trust coded separately per partner company). This is assisted by echo-phrase detection and AGENCY/MODALITY analysis that the author designed and directed Claude Code to run across every MoU family at once — surfacing which n-grams and grammatical patterns (agentless passive vs. first-person government agent) repeat within and across families, which the author then reads for the intra-family and inter-family comparison Hajer's framework calls for.</td>
 </tr>
 </tbody>
 </table>
@@ -107,6 +107,73 @@ anchored in the Government Digital Service.</p>
 - Embedding-based "exploratory discovery" — eliminated as an end in itself;
   embeddings are only used for retrieving the distributive claim (SO1/SO2) and the QA
   above.</p>
+<hr />
+<h2 id="note-on-rounds-vs-phases-read-this-before-the-phase-0-7-walkthrough">Note on rounds vs. phases (read this before the Phase 0-7 walkthrough)</h2>
+<p>This document tracks two different things, and they are not the same axis:</p>
+<ul>
+<li><strong>Rounds</strong> are the author's own coding process — what she did, in what order,
+  in NVIVO, and what she directed this pipeline to do to assist it. Rounds are
+  named the way the author names them in her NVIVO project and codebook.</li>
+<li><strong>Phases</strong> are this pipeline's engineering steps (0-7) — what script produces
+  what file, in what order, so the pipeline itself is reproducible. Phases are
+  a <em>build process</em>, not a coding methodology; several phases can serve one
+  round, and one phase's output can assist more than one round.</li>
+</ul>
+<p>The mapping, current as of 2026-09-12:</p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Round</th>
+<th>What it is</th>
+<th>Who does it</th>
+<th>Which phase(s) it uses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1.1</strong></td>
+<td>The author's interpretive coding in NVIVO: reading documents closely, coding the 7 core questions (beneficiary, mechanism, safeguard, responsible, projected future, hero/threat, naturalised order) plus the definitional term-search, and noting emerging codes as they surface.</td>
+<td>Author, manually, in NVIVO. Predates and grounds this repo.</td>
+<td>No phase — this is outside the pipeline. Reviewed in <code>coding/nvivo_r1_r2_review.md</code>; recorded in the author's <code>Codebook - Dissertation.docx</code> NVIVO export.</td>
+</tr>
+<tr>
+<td><strong>1.2</strong></td>
+<td>LLM-assisted coding: the same question set, extended across the <em>entire</em> 66-document corpus by an LLM, then every resulting instance clustered by cosine similarity into a candidate codebook. This is what lets Round 1.1's scheme scale from the documents the author read closely to the full corpus.</td>
+<td>LLM does the locating/extracting/clustering; the author names and validates the resulting clusters (<code>analysis/guidebook_summary.html</code>).</td>
+<td>Phases 2 (segmentation), 3 (model evaluation), 4 (full-corpus coding), 5 (clustering).</td>
+</tr>
+<tr>
+<td><strong>2.1</strong></td>
+<td>Intertextuality coding: which documents cite, echo, or supersede which (the author's <code>r2_intertextuality</code> NVIVO node — 35 files, 58 references).</td>
+<td>Author, manually, in NVIVO — <strong>assisted</strong> by a network the author designed and directed this pipeline to compute.</td>
+<td>Part of Phase 6 (the intertextual network specifically).</td>
+</tr>
+<tr>
+<td><strong>2.2</strong></td>
+<td>MoU-family coding: benefits, mechanism, safeguards, narratives and trust, coded separately for each of the 8 partner companies (the author's <code>MouFam1</code>-<code>MouFam8</code> NVIVO nodes).</td>
+<td>Author, manually, in NVIVO — <strong>assisted</strong> by echo-phrase and agency/modality analysis the author designed and directed this pipeline to compute across every family at once.</td>
+<td>Part of Phase 6 (echo-phrases + <code>agency_by_genre.csv</code> specifically).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>There is no "Round 3" — MoU-family coding is Round 2.2, not a separate round, per
+the author's 2026-09-12 clarification. "Phase 3" (model evaluation) is a
+pipeline engineering step, not a coding round; it belongs inside Round 1.2 above,
+not on its own.</p>
+<p><strong>On "Incremental intake (ongoing)"</strong> (Phase 7, tracked separately from the
+rounds): this is the mechanism (<code>add_document.py</code>) for adding documents to the
+corpus <em>after</em> v1 was frozen — the checklist → fetch → extract → segment →
+append flow that brought the corpus from 35 to 66 documents on 2026-09-10. It
+stays open-ended ("ongoing") because nothing about the design assumes the
+corpus is finished — the author can run it again whenever a new document
+needs to enter. It is not itself a coding round; every document it admits
+still needs to go through Round 1.2 (and, if relevant, 2.1/2.2) like any other
+document. The decision open to the author is simply whether to treat the
+corpus as closed now (no more intake expected) or keep it open for documents
+published after 2026-09-10 — the mechanism works either way; nothing in the
+pipeline needs to change based on that choice.</p>
 <hr />
 <h2 id="decisions-already-made">Decisions already made</h2>
 <div class="table-wrap">
@@ -229,7 +296,7 @@ contains the term.</em></p>
 <p>The documents are public: running on Ollama Cloud poses no confidentiality issue;
 provider, model and date are logged all the same.</p>
 </blockquote>
-<h2 id="phase-4-round-1-coding-llm">Phase 4 — Round 1 coding (LLM)</h2>
+<h2 id="phase-4-llm-assisted-coding-full-corpus-round-12-part-1">Phase 4 — LLM-assisted coding, full corpus (Round 1.2, part 1)</h2>
 <ul>
 <li><strong>One prompt per question</strong>, each with: the exact wording from Table 3, its
   theoretical source in one line, its <code>so_tags</code> per the matrix (BENEFICIARY →
@@ -250,7 +317,7 @@ provider, model and date are logged all the same.</p>
 <p><strong>Validation (for the methods chapter):</strong> 15–20% of passages, stratified by genre
 and family, double-coded (the author + LLM); per-question agreement; disagreements
 feed at most one round of prompt iteration, then are frozen.</p>
-<h2 id="phase-5-round-2-consolidation-the-author-with-support">Phase 5 — Round 2 consolidation (the author, with support)</h2>
+<h2 id="phase-5-clustering-by-cosine-similarity-round-12-part-2">Phase 5 — Clustering by cosine similarity (Round 1.2, part 2)</h2>
 <ul>
 <li><code>06_consolidate.py</code> groups the responses per question by semantic similarity and
   presents each cluster with its quotes — raw material for <strong>the author to name the
@@ -288,7 +355,7 @@ slider Jan-2024 → Jul-2026 with the July 2024 cutoff marked.</p>
 <p>Main view ("authorship and families map", per the author's visual reference
 2026-08-29): <strong>node colour = authoring actor</strong> (GDS / DSIT / DSIT+GDS / CDDO / PMO /
 External_adviser / each company — companies share a palette range, distinguishable
-from one another); <strong>spatial grouping = family</strong> (the 5 MoU families as bounded
+from one another); <strong>spatial grouping = family</strong> (the 8 MoU families as bounded
 clusters with hull/label, the GDS/DSIT strategy trunk at the centre); <strong>node size =
 in-degree</strong> (how many times other corpus documents reference it — proxy for
 authority); <strong>edge thickness = reference frequency</strong>; arrow direction = who cites
@@ -341,19 +408,17 @@ author decides before the run):</p>
    <code>technological_risk / geopolitical_lag / bureaucratic_status_quo /
    public_distrust</code>. The migration of the threat over the period is a likely
    finding (doc 1's memo already detects it: "AI is the risk").</li>
-<li><strong>METAPHOR</strong> <em>(SO1, feeds NATURALISED ORDER for SO1/SO2)</em> — Lakoff &amp; Johnson
-   1980; MIP/MIPVU procedure (Pragglejaz 2007; Steen et al. 2010); optional bridge
-   with Fairclough: Charteris-Black 2004. Per instance: verbatim expression →
-   source domain → target domain → <code>TARGET IS SOURCE</code> formula (e.g. "turbocharge"
-   → THE GOVERNMENT IS A MACHINE; "frontier AI" → AI DEVELOPMENT IS TERRITORIAL
-   EXPLORATION; "harness" → AI IS A FORCE TO BE TAMED) → L&amp;J type (structural /
-   orientational / ontological / personification) → <strong>what it illuminates / what
-   it hides</strong>. The "hides" field is the lexical mechanism of naturalisation
-   (Lears) and feeds directly into question 7. Aggregates enabled, all within the
-   SOs: source domains by speaker (SO1), shared government↔company domains by
-   family (SO3, complements ECHO), temporal migration of domains (SO2). <em>The only
-   addition that adds citations to the framework: requires incorporating L&amp;J
-   (+ MIP) into the theory chapter.</em></li>
+<li>~~<strong>METAPHOR</strong>~~ <em>(dropped, 2026-09-13)</em> — was proposed as Lakoff &amp; Johnson
+   1980 + MIP/MIPVU (Pragglejaz 2007; Steen et al. 2010), per-instance source
+   domain → target domain → <code>TARGET IS SOURCE</code> formula → L&amp;J type → what it
+   illuminates/hides. <strong>The author confirmed this is not part of her committed
+   analytical framework</strong> — it was the only proposed addition that would have
+   added citations to the theory chapter, and she is not incorporating L&amp;J/MIP
+   into it. <code>coding/round1/*.jsonl</code>'s METAPHOR records and
+   <code>analysis/metaphors_report.md</code> (419 candidate expressions) still exist as
+   raw pipeline output from when this was still a live candidate, but are not
+   presented as a finding anywhere (<code>analysis/guidebook_summary.html</code> no
+   longer surfaces them; see <code>dissertation_outputs/analytical_tools_table.md</code>).</li>
 <li><strong>ECHO</strong> <em>(SO3)</em> — computationally generated in Phase 6B (Hajer); not
    hand-coded.</li>
 <li><strong>AUDIENCE</strong> <em>(SO2; per-document attribute)</em> — <code>parliament / practitioners /
@@ -372,6 +437,7 @@ being needed for any SO.</p>
 <thead>
 <tr>
 <th>Step</th>
+<th>Round</th>
 <th>Does</th>
 <th>Serves</th>
 <th>Author checkpoint</th>
@@ -379,25 +445,36 @@ being needed for any SO.</p>
 </thead>
 <tbody>
 <tr>
+<td>—</td>
+<td>1.1</td>
+<td>Author's interpretive coding in NVIVO</td>
+<td>SO1/SO2/SO3</td>
+<td>Manual — predates the pipeline</td>
+</tr>
+<tr>
 <td>0</td>
+<td>—</td>
 <td>Manifest from the Excel file</td>
 <td>base</td>
 <td>Confirm count of 37 and flagged cases</td>
 </tr>
 <tr>
 <td>1</td>
+<td>—</td>
 <td>Download + archiving + structured text</td>
 <td>base</td>
 <td>Review broken-links report</td>
 </tr>
 <tr>
 <td>2</td>
+<td>1.2</td>
 <td>Segmentation + term/variants + embeddings</td>
 <td>SO1/SO2</td>
 <td>Confirm <code>CHECK</code> cases; approve lexicon</td>
 </tr>
 <tr>
 <td>3</td>
+<td>1.2</td>
 <td>Model evaluation</td>
 <td>base</td>
 <td>Code the sample; approve model</td>
@@ -406,28 +483,47 @@ being needed for any SO.</p>
 <td>—</td>
 <td>—</td>
 <td>—</td>
+<td>—</td>
 <td><strong>Decide which proposed codes go in</strong></td>
 </tr>
 <tr>
 <td>4</td>
-<td>Round 1 coding</td>
+<td>1.2</td>
+<td>Full-corpus LLM-assisted coding</td>
 <td>SO1/SO2/SO3</td>
 <td>15–20% validation + agreement report</td>
 </tr>
 <tr>
 <td>5</td>
-<td>Clustering for consolidation</td>
+<td>1.2</td>
+<td>Clustering by cosine similarity</td>
 <td>SO1/SO2/SO3</td>
 <td><strong>Name sub-codes (guidebook)</strong></td>
 </tr>
 <tr>
-<td>6</td>
-<td>Networks, queries, exports, viz</td>
-<td>SO1/SO2/SO3</td>
+<td>6a</td>
+<td>2.1</td>
+<td>Intertextual network (assists <code>r2_intertextuality</code>)</td>
+<td>SO2</td>
 <td>Analytical reading — interpretation begins here</td>
 </tr>
 <tr>
+<td>6b</td>
+<td>2.2</td>
+<td>Echo-phrases + agency/modality (assists <code>MouFam1-8</code>)</td>
+<td>SO3</td>
+<td>Intra/inter-family comparative reading</td>
+</tr>
+<tr>
+<td>6c</td>
+<td>—</td>
+<td>Other outputs: queries, metaphors, NVivo exports</td>
+<td>SO1/SO2/SO3</td>
+<td>Validate metaphor domains</td>
+</tr>
+<tr>
 <td>7</td>
+<td>—</td>
 <td>Incremental intake</td>
 <td>per doc</td>
 <td>Approve admission (checklist) and <code>candidate_codes</code></td>
@@ -442,6 +538,402 @@ visualization. Intermediate data in flat files (CSV/JSONL/YAML), version-control
 <p>Label language: coding labels standardised to English on 2026-08-29; prompts_v1.yaml
 already emits Spanish label values for AGENCY/MODALITY/ACTANTS — mapped at
 consolidation.</p>
+<hr />
+<h2 id="phase-7-incremental-intake-round-1-2026-09-10">Phase 7 — Incremental intake, round 1 (2026-09-10)</h2>
+<p>Corpus v1 (35 documents, frozen) was extended by 31 new documents in one intake
+session, run against the author's own <code>corpus.xlsx</code> selection sheet (the
+successor to <code>Official_Document Selection</code>). Two tiers, both approved by the
+author before fetching:</p>
+<ul>
+<li><strong>Tier A (15 entries, admitted on the author's own "family completion" /
+  "baseline zero" reasoning):</strong> the <code>AI Opportunities Action Plan</code> promoted out
+  of <code>CONTEXT_</code> status into a full corpus member (per the 2026-08-29 decision
+  below); five parliamentary written statements closing gaps in the Action
+  Plan / regulation-response lineages; three brand-new MoU-partner
+  families — <strong>Cisco</strong>, <strong>NVIDIA</strong> (two MoUs), <strong>Synthesia</strong> — with their
+  companion government/company announcements; the OpenAI–Ministry of Justice
+  data-hosting announcement; and the GDS <strong>Data and AI Ethics Framework</strong>,
+  which turned out to carry the corpus's most explicit (if still glossed
+  rather than freestanding) definitional instance — see the Appendix below.</li>
+<li><strong>Tier B (17 departmental/local-government blog posts</strong> from CDDO,
+  Technology in Government, Data in Government, GDS and Inside GOV.UK,
+  surfaced by an earlier AI-assisted <code>site:blog.gov.uk</code> sweep and marked
+  <code>NOT REVIEWED</code> in the author's spreadsheet): evaluated against <code>add_document.py</code>'s
+  automated checklist (Rules 1, 3–5, producer-vs-scrutineer, written-vs-spoken)
+  — zero hard failures; the only recurring flag was that the checklist's blog
+  recognizer only whitelists <code>gds.blog.gov.uk</code> by name, not the other three
+  official government blog subdomains, which is a script limitation rather
+  than an admission problem (all four are the same institutional family
+  already present in the corpus — CDDO is an existing v1 speaker). The author
+  approved admission of all 17 on that basis.</li>
+</ul>
+<p><strong>Corpus after this intake: 66 documents, 8 partner-company families</strong>
+(Anthropic, Cisco, Cohere, Google DeepMind, ElevenLabs, NVIDIA, OpenAI,
+Synthesia — corrects the Appendix matrix's "9 Companies" line below, which
+also names Meta; Meta is mentioned in passing in one press release
+(<code>2026-01-27_PRGOV_DSIT_TopBritishAIExpertise</code>, a skills partnership) but has
+no MoU or dedicated document in the corpus, so it is not counted as a
+partnership family here). <code>data/manifest.csv</code> stays append-only: v1 filtered
+by <code>corpus_version == 1</code> still reproduces the frozen 35-document analysis
+exactly; the 31 additions carry <code>corpus_version</code> 7 and 16–37 (each admission
+bumps the counter by one, so the numbering is not contiguous with the batch
+boundary — this is <code>add_document.py</code>'s existing per-document versioning
+behaviour, not an error).</p>
+<p><strong>Coding of the 31 new documents</strong> could not use Ollama on 2026-09-10 (none
+available on the machine performing this intake), so it ran as an interim
+<code>claude-code-local</code> pass; that pass was fully superseded on 2026-09-18 by a
+real Ollama re-code of all 31 documents (<code>kimi-k3:cloud</code> + <code>deepseek-v4-flash:cloud</code>
+fallback) from a machine with Ollama Cloud access — see "Note on tooling"
+below for the full account, including a definitional-status finding that
+changed once the real model, not the interim one, coded the passage.</p>
+<p><strong>A cross-platform bug fixed during this intake:</strong> every script that reads or
+writes UTF-8 text without an explicit <code>encoding=</code> argument (<code>add_document.py</code>,
+<code>06_network_v0.py</code>, <code>04_segment.py</code>, <code>08_build_site.py</code>, <code>03_qa_merge.py</code>,
+<code>01_manifest.py</code>, <code>02b_fetch_companies.py</code>, <code>09_round1_watchdog.py</code>,
+<code>14_export_embeddings.py</code>, <code>15_guidebook_summary.py</code>, <code>16_render_markdown.py</code>)
+silently defaulted to the OS locale encoding. On macOS/Linux that default is
+UTF-8, so the bug was invisible; on Windows it is <code>cp1252</code>, which corrupted or
+crashed on non-ASCII characters (curly quotes, en-dashes) the moment a new
+document was admitted. All affected calls now pass <code>encoding="utf-8"</code>
+explicitly. <code>scripts/06_consolidate.py</code> additionally now checks Ollama's
+reachability <strong>once</strong>, up front, and — if unreachable — skips clustering
+entirely rather than overwriting <code>guidebook_draft.yaml</code> with an empty result;
+<code>metaphors_report.md</code> regenerates regardless, since it needs no embeddings.</p>
+<h2 id="note-on-tooling-the-claude-code-local-interim-pass-and-its-2026-09-18-reconciliation">Note on tooling: the claude-code-local interim pass, and its 2026-09-18 reconciliation</h2>
+<p><code>coding/round1/*.jsonl</code> records every Round 1 call with a <code>model</code> field —
+that provenance is what caught and let us fix the issue described below.</p>
+<ol>
+<li><strong>Corpus v1 (35 documents): <code>kimi-k3:cloud</code> via Ollama Cloud.</strong> Chosen in
+   Phase 3 on extractive-fidelity and agreement grounds — see
+   <code>coding/model_eval/decision.md</code>.</li>
+<li><strong>The 2026-09-10 intake (31 documents), interim pass: <code>claude-code-local</code>.</strong>
+   No Ollama instance was available on the machine performing the intake, so
+   a Claude Code agent read each unit's text directly and answered the same
+   11 questions from <code>prompts_v1.yaml</code> in place of a real model call, with
+   the same mechanical <code>quote in unit_text</code> verification <code>05_code.py</code> runs on
+   Ollama output. This was <strong>never put through Phase 3's model comparison</strong>
+   and does not carry the same evidentiary weight as an actual LLM run,
+   however careful the read — an agent choosing what counts as an "instance"
+   is a different process from a model doing so under a fixed decoding
+   procedure, and the whole point of Phase 3 was to pick and document one
+   such procedure. 434 records were written this way and briefly stood in
+   for real Round 1 coding of the intake.</li>
+<li><strong>2026-09-18: the interim pass was fully superseded.</strong> All 31 documents
+   were re-coded from a machine with Ollama Cloud access — <code>kimi-k3:cloud</code>
+   first (the Phase 3 winner), falling back to <code>deepseek-v4-flash:cloud</code> for
+   the ~80% of calls that hit the session usage quota (the same fallback
+   corpus v1 itself used, per the "Model switch addendum" in the commit
+   history). Every <code>claude-code-local</code> record was discarded, not merged or
+   reconciled by hand; <code>coding/round1/*.jsonl</code> now contains <strong>zero</strong>
+   <code>claude-code-local</code> records anywhere in the corpus, so
+   <code>grep '"model": "claude-code-local"'</code> returns nothing. <strong>This changed a
+   substantive finding, not just the provenance label</strong>: the interim pass
+   had found a DEFINITIONAL instance in <code>2025-12-18_STRAT_GDS_DataAIEthicsFramework</code>
+   (the basis for the "single most direct definitional gloss in the whole
+   corpus" claim below, under "What surprised us"); <code>deepseek-v4-flash:cloud</code>
+   coded all 7 of that document's units as DEFINITIONAL <code>applies: false</code>.
+   That claim is retracted — see the updated Table 4 and the corrected
+   "What surprised us" note. The other two intake documents that had DOC_PROFILE
+   or unit-level records survive the re-code with materially the same content
+   (re-verify against <code>coding/round1/*.jsonl</code> before citing any per-document
+   number from before 2026-09-18).</li>
+<li><strong>The admission checklist itself (<code>add_document.py</code>) is pure Python</strong> — no
+   model of any kind evaluates Rules 1/3/4/5; it is regex and domain-list
+   matching, run identically regardless of who or what is driving the intake.</li>
+<li><strong>The METAPHOR question's suggested source/target domain and L&amp;J type</strong>
+   remains the author's call, not the model's, for both the corpus v1 run and
+   the 2026-09-18 re-code (see Phase 6F below).</li>
+</ol>
+<p>The upshot: as of 2026-09-18, <strong>every Round 1 record in the corpus was
+produced by an Ollama Cloud model</strong> (<code>kimi-k3:cloud</code> or
+<code>deepseek-v4-flash:cloud</code>), with full per-record traceability. A reader who
+wants to isolate the original Phase-3-evaluated model's output alone can
+still <code>grep '"model": "kimi-k3:cloud"'</code>.</p>
+<h2 id="discussion-what-was-tried-what-worked-what-didnt-methods-reflection">Discussion — what was tried, what worked, what didn't (methods reflection)</h2>
+<p><strong>What worked as designed.</strong> The append-only manifest with <code>corpus_version</code>
+did exactly its intended job during a same-day 66-document expansion: nothing
+about the frozen 35-document analysis needed touching, and the whole
+incremental-intake machinery (checklist → fetch → extract → segment → append)
+ran unattended for 31 documents without a single admission decision being
+made silently. <code>quote_verified</code> caught every typography mismatch (curly vs.
+straight apostrophes, a stray space before a period, bullet lines joined by
+<code>\n</code> rather than a space) as a hard failure rather than a wrong-but-plausible
+quote slipping through — the fidelity mechanism worked precisely because it
+is mechanical and does not trust either coder's transcription.</p>
+<p><strong>What surprised us.</strong> (1) The definitional-status finding was sharper than
+either the design or the author's own manual notes anticipated: only 3 of the
+now 23 documents that use the phrase or a named variant offer anything
+resembling a definition, and even the automated Round 1 coding — running on a
+looser bar than "explicit definition" — could not find more than that. The
+phrase behaves almost entirely as a citation of itself, not a concept anyone
+commits to elaborating. (2) <strong>Retracted 2026-09-18.</strong> An earlier version of
+this note claimed the GDS <em>Data and AI Ethics Framework</em>, added in this
+intake as a routine "family completion" candidate, was the single most
+direct definitional gloss in the whole corpus. That claim came from the
+<code>claude-code-local</code> interim pass; once the document was re-coded by a real
+Ollama model (<code>deepseek-v4-flash:cloud</code>), none of its 7 units coded as an
+explicit DEFINITIONAL instance (see Table 4 and "Note on tooling"). The
+reminder stands the other way round: an ad hoc agent read, however careful,
+is not a substitute for the evaluated model pipeline, which is exactly why
+Phase 3 exists and why this repo insists on per-record model provenance.
+(3) The blog
+checklist's institutional-voice recognizer (<code>Rule 5</code>) was written narrowly
+enough (only <code>gds.blog.gov.uk</code>) that it flagged 12 of the 17 Tier B blogs as
+"not-determinable" even though none of them raised a real admission concern
+once read — a script-vs-substance gap worth knowing about before trusting a
+"no flags" result at face value on a future intake.</p>
+<p><strong>What didn't work / had to be worked around.</strong> (1) <code>scripts/06_consolidate.py</code>
+requires Ollama for guidebook clustering with no offline fallback in the
+original design; the first attempt at re-running it on this machine silently
+overwrote 3,516 lines of the author's existing (Ollama-computed) clusters
+with an empty skeleton, which was caught only because <code>git status</code> showed the
+diff before it was compounded by further runs — restored from git, and the
+script now checks Ollama's reachability once and refuses to touch
+<code>guidebook_draft.yaml</code> at all if it is unreachable, rather than writing a
+partial result. (2) <code>add_document.py</code>'s single-document design assumes a
+short-document fallback under 9,000 characters; two zero-count, term-absent
+documents in this intake (an NVIDIA press release, an Inside GOV.UK blog)
+exceeded that without triggering section-based segmentation either, and were
+left with zero coding units until a manual full-text unit was added for each
+— a real gap in the incremental-intake script for long, headingless
+documents, not something that needs the author's judgment call to fix, but
+worth patching before the next intake. (3) Every file-encoding bug above was
+invisible on the machine the pipeline was designed and run on (macOS
+default UTF-8) and would have surfaced as silent corruption rather than a
+crash for several of the affected scripts had the corrupted bytes happened to
+fall inside cp1252's mapped range instead of outside it — worth a
+cross-platform smoke test before this repo is handed to any other
+Windows-based collaborator. (4) <code>add_document.py</code>'s heuristics for <code>family</code> and <code>date</code> are
+both too permissive/too fragile respectively for a batch of 31: <code>guess_family()</code> substring-matches
+company names anywhere in the first 4,000 characters, which wrongly tagged 4 documents with a
+company family from a passing mention (e.g. a blog naming "Anthropic models" as GOV.UK Chat's
+backend, an omnibus press release's joint statement with four labs) rather than an actual
+partnership; and <code>guess_date()</code>'s fallback to "today" when it cannot parse a publication date
+from the page silently back-dated 7 documents to 2026-09-09/10 in the manifest even though
+their <code>doc_id</code> (assigned by hand from the source) carried the correct date. Both were caught
+only by eyeballing the rendered corpus table in <code>index.html</code> after the fact, not by any
+automated check — worth adding a manifest-vs-doc_id date-prefix consistency check to the intake
+script before the next round.</p>
+<h2 id="appendix-research-alignment-matrix-filled-with-what-was-actually-used">Appendix. Research Alignment Matrix — filled with what was actually used</h2>
+<p>Regenerated per the author's request (2026-09-03): the same shape as the
+original single-page matrix (Saldaña 2025, after Auerbach &amp; Silverstein), now
+completed against the pipeline as it actually ran rather than as it was
+planned. Corpus figures below are corpus-wide (all 66 documents, both coding
+runs) unless marked "v1 only."</p>
+<h3 id="table-1-research-aim-objective-framework-methods-data-analysis-as-run">Table 1. Research aim → objective → framework → methods → data → analysis (as run)</h3>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Research Objective</th>
+<th>Methods actually used</th>
+<th>Data actually used</th>
+<th>Analysis actually produced</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SO1.</strong> Sociotechnical imaginary in GDS texts.</td>
+<td>91 coding units (53 lexicon-triggered, 33 full/short-document, 3 semantic-retrieval, 2 manually added for oversized zero-count documents) scored against the 11 <code>prompts_v1.yaml</code> questions + DOC_PROFILE, one prompt-run per document; 4,078 Round 1 records, all Ollama Cloud-produced (3,790 <code>applies: true</code>, 3,758 with <code>quote_verified: true</code> — 99.2%).</td>
+<td>66 documents: 9 STRAT, 9 MOU, 12 PRCO, 7 PRGOV, 21 BLOG, 7 WMS, 1 REG; <code>term_status</code> 16 present / 7 variant / 43 absent.</td>
+<td>Definitional-status finding (re-run 2026-09-18 against the full Ollama re-code): of the 23 documents carrying the phrase or a named variant, only 3 (13%) contain an explicit DEFINITIONAL instance, and each of those glosses the term via a criterion or mechanism rather than defining it as a standing concept (Table 4 below has the full breakdown). <code>metaphors_report.md</code>: 592 distinct metaphorical expressions ranked by frequency, each with a suggested source/target domain — author validation pending.</td>
+</tr>
+<tr>
+<td><strong>SO2.</strong> Declared principle → strategic priority → policy commitment → public claim.</td>
+<td><code>06_network_v0.py</code> (title-alias reference detection + declared supersession) + <code>07_echo.py</code> (≥6-word shared n-grams by MoU family) run against the full 66-document text; <code>07b_queries.py</code> for the zero-count × Genre and PublicGood_Nominal × GDSTier crossings.</td>
+<td>Full 66-document corpus; <code>gds_tier</code> still <code>auto_provisional</code> for all rows (10 T1/8 T2/17 T3 in v1, 15/23/28 corpus-wide) — unreviewed, so the GDSTier query is not yet reportable.</td>
+<td>Intertextual network: 66 nodes, 107 edges (93 reference, 13 echo, 1 declared supersession — the AI Playbook superseding the CDDO Generative AI Framework). <code>zero_count_by_genre.csv</code> / <code>nominal_by_gdstier.csv</code> / <code>queries.html</code> regenerated corpus-wide.</td>
+</tr>
+<tr>
+<td><strong>SO3.</strong> Evolution across the partnership documents with frontier AI companies.</td>
+<td>AGENCY/MODALITY coding (558 and 557 records respectively) + <code>11_agency_query.py</code>'s agency × Genre crossing; echo-phrase detection within and across MoU families.</td>
+<td><strong>8 partnership families</strong>, not the 5 in the original design: Anthropic (3 docs, unchanged from v1), OpenAI (6), Google DeepMind (4), Cohere (2, unchanged from v1), ElevenLabs (3), <strong>NVIDIA (3, new)</strong>, <strong>Cisco (2, new)</strong>, <strong>Synthesia (1, new)</strong>.</td>
+<td><code>agency_by_genre.csv</code>: 558 AGENCY instances from 62/66 documents (564/564 unit-question pairs succeeded). Echo-phrase edges: 13 document pairs. Cross-family comparison (safety-security framing, "hardworking people" vs. universalist "benefit humanity" registers) still an author-level reading, not automated.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="table-3-coding-question-map-sub-codes-round-1-inductive">Table 3. Coding question map — Sub-codes (Round 1, inductive)</h3>
+<p>Sub-code clusters below come from <code>coding/guidebook_draft.yaml</code>, computed by
+cosine similarity of <code>answer_summary</code> (<code>embeddinggemma</code>, corpus-wide, all
+2,981 records across both coding runs). <strong>Re-clustered 2026-09-11</strong>: the
+2026-09-10 intake's 434 <code>claude-code-local</code> records had been held back
+because Ollama was unreachable on the intake machine (see "What didn't
+work" above); the author supplied an Ollama Cloud API key on 2026-09-11,
+which was used to run Ollama locally (<code>embeddinggemma</code> pulled and served on
+<code>localhost:11434</code>) and re-run <code>06_consolidate.py</code> against the full corpus —
+this table now reflects all 66 documents, not v1 alone. Names are the
+auto-generated <code>candidate_name</code> heuristic label, <strong>not</strong> author-approved
+code names.</p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Coding question</th>
+<th>NVivo code</th>
+<th>Instances (corpus-wide)</th>
+<th>Clusters</th>
+<th>Largest candidate sub-codes (unnamed, DRAFT)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Who is named as beneficiary?</td>
+<td>BENEFICIARY</td>
+<td>370</td>
+<td>24</td>
+<td><code>the_public</code>, <code>innovators</code>, <code>the_next_generation</code>, <code>humanity</code>, <code>young_people</code>, <code>Beneficiary_PublicGood</code></td>
+</tr>
+<tr>
+<td>Through what mechanism does benefit arise?</td>
+<td>MECHANISM</td>
+<td>270</td>
+<td>155</td>
+<td><code>economic_growth</code>, <code>scientific_discovery_innovation</code>, <code>upskilling_productivity</code>, <code>personal_opportunities</code>, <code>faster_innovation_speed_to_market</code>, <code>innovation_via_openness</code> — highly granular; needs author-led merging before it is usable as a codebook</td>
+</tr>
+<tr>
+<td>What safeguards are attached?</td>
+<td>SAFEGUARD</td>
+<td>253</td>
+<td>16</td>
+<td><code>documentation_and_record_keeping_for_aud</code>, <code>human_involvement_in_public_sector_tasks</code>, <code>cost_monitoring_finops_oversight</code>, <code>alignment_with_human_values_and_intentio</code>, <code>possible_pause_of_model_development_unde</code></td>
+</tr>
+<tr>
+<td>To whom is responsibility for delivery assigned?</td>
+<td>RESPONSIBILITY</td>
+<td>102</td>
+<td>65</td>
+<td><code>we_gds</code>, <code>you_unnamed</code>, <code>regulators</code>, <code>a_new_steering_committee_with_government</code>, <code>a_new_digital_centre_of_government_withi</code>, <code>the_cabinet_their_departments_tasked_per</code></td>
+</tr>
+<tr>
+<td>What future does the passage project?</td>
+<td>PROJECTED FUTURE</td>
+<td>290</td>
+<td>142</td>
+<td><code>a_future_in_which_innovation_in_generati</code>, <code>the_lives_of_the_british_people_are_impr</code>, <code>the_state_is_technologically_transformed</code>, <code>generative_ai_systems_whose_performance_</code>, <code>the_uk_will_revolutionise_its_economy_an</code></td>
+</tr>
+<tr>
+<td>Who is cast as hero, threat or obstacle?</td>
+<td>ACTANTS</td>
+<td>255</td>
+<td>32</td>
+<td><code>ai</code>, <code>the_private_sector</code>, <code>matt_clifford</code>, <code>elevenlabs</code>, <code>llms_outdated_and_non_knowledge_base_nat</code>, <code>pet_and_pseudonymisation</code></td>
+</tr>
+<tr>
+<td>What social order does the passage naturalise?</td>
+<td>NATURALISED ORDER</td>
+<td>236</td>
+<td>161</td>
+<td><code>the_government_is_the_natural_guarantor_</code>, <code>the_uk_s_role_as_global_leader_in_ai_saf</code>, <code>workers_are_expected_to_adapt_themselves</code>, <code>central_government_gds_is_the_natural_le</code>, <code>a_fixed_hierarchy_in_which_humans_design</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The very high cluster counts for MECHANISM (155), PROJECTED_FUTURE (142) and
+NATURALISED_ORDER (161) relative to their instance counts are themselves a
+finding worth the author's attention before naming: at a ~0.75 cosine
+threshold, <code>answer_summary</code> texts for these three questions are not merging
+much at all, which either means the underlying passages are genuinely that
+heterogeneous, or that the threshold/embedding choice is too strict for this
+kind of free-text answer. Both AGENCY and MODALITY are excluded from
+consolidation by design (<code>CORE_QUESTIONS</code> in <code>06_consolidate.py</code>) since they
+are closed-vocabulary codes, not open clusters to name.</p>
+<h3 id="table-4-attribute-register-filled">Table 4. Attribute register — filled</h3>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Values</th>
+<th>Information (corpus-wide, 66 docs)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Period</td>
+<td>2024 / 2025 / 2026</td>
+<td>Derived from <code>date</code>; the corpus now runs to 2026-07 documents on both ends of the window (earliest: 2024-01-18 CDDO framework; latest: 2026-07-02 TechInGov blog).</td>
+</tr>
+<tr>
+<td>Authorship</td>
+<td>Unit / Department / Joint / Company</td>
+<td><code>speaker</code>: GDS, DSIT, DSIT_and_GDS, CDDO, PMO, External_adviser, DSIT_and_<Company>, <Company> — 42 documents carry <code>family = None</code> (the trunk + all departmental/local-government blogs), 24 sit within one of the 8 partnership families.</td>
+</tr>
+<tr>
+<td>Side</td>
+<td>Public / Joint / Private</td>
+<td>50 Public, 10 Private, 5 Private (partnership — MoU text), 1 "Public, led by external actor" (the AI Opportunities Action Plan).</td>
+</tr>
+<tr>
+<td>Partnership family</td>
+<td>Anthropic / Cohere / OpenAI / Google DeepMind / ElevenLabs / <strong>NVIDIA / Cisco / Synthesia</strong></td>
+<td>3 Anthropic, 6 OpenAI, 4 DeepMind, 2 Cohere, 3 ElevenLabs, 3 NVIDIA, 2 Cisco, 1 Synthesia (24 total; unchanged from v1 for Anthropic/Cohere/OpenAI/DeepMind/ElevenLabs).</td>
+</tr>
+<tr>
+<td>Phrase position</td>
+<td>Title / pillar name / section heading / body text / quotation / not present</td>
+<td>Not yet tabulated as a standalone attribute-register column; recoverable per-instance from <code>structural_position</code> on the block each <code>verbatim_quote</code> falls in — an author-level cross-tab, not run here to avoid pre-empting the reading.</td>
+</tr>
+<tr>
+<td><strong>Definitional status</strong></td>
+<td>Explicit definition / use without elaboration / not present</td>
+<td><strong>Explicit definition: 3 documents, 3 instances</strong> (<code>2025-01-21_WMS_DSIT_BlueprintMinisterialStatement</code> — "public benefit" gloss; <code>2025-02-10_STRAT_GDS_AIPlaybookUKGovernment</code> — conceptual "societal wellbeing… means" definition; <code>2025-12-11_PRGOV_DSIT_NationalRenewalDeepMind</code>) — <strong>unchanged from corpus v1</strong>; re-verified 2026-09-18 against the full Ollama re-code (see "Note on tooling"). Note this <strong>corrects an earlier claim</strong>: the interim <code>claude-code-local</code> pass had also flagged <code>2025-12-18_STRAT_GDS_DataAIEthicsFramework</code> as a 4th definitional document, which drove the "single most direct definitional gloss in the whole corpus" note under "What surprised us" below; <code>deepseek-v4-flash:cloud</code> coded all 7 of that document's units <code>applies: false</code> for DEFINITIONAL, so that claim — and anything in <code>dissertation_outputs/umbrella_term_definitional_analysis.md</code> that relies on it — needs the author's re-check. Two dominant surface <strong>forms</strong> of the umbrella term itself: "societal wellbeing and public good" (Playbook only) and "harness the power of AI for (the) public good" (8 documents, Jan 2025 – Jan 2026, always followed by a list of entailments) — see <code>dissertation_outputs/umbrella_term_definitional_analysis.md</code> for the full 3-way breakdown (defined / used / listed-entailments) the author requested 2026-09-13. <strong>Use without elaboration: 19 documents.</strong> <strong>Not present: 43 documents.</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="things-to-run-w-claude-status">Things to run w/ Claude — status</h3>
+<ul>
+<li>~~Round 2 and 3 of coding~~ — Round 1 now covers all 66 documents (two
+  coding runs, see "Note on tooling" above); Round 2 consolidation
+  (<code>guidebook_draft.yaml</code>) was re-run 2026-09-11 against the full corpus
+  once the author supplied an Ollama Cloud API key (see Table 3 above) —
+  <strong>naming the sub-codes is still entirely the author's open task</strong>, this
+  only reran the clustering step, not the naming.</li>
+<li><strong>Identify all AI terms defined in the corpus</strong> — done for "AI for the
+  public good" / "public benefit" and close variants specifically (Table 4
+  above); a broader sweep for <em>any</em> defined AI term (e.g. "AI", "frontier
+  AI", "agentic AI", "sovereign AI") was not attempted and remains open.</li>
+</ul>
+<h3 id="addendum-2026-09-11-ollama-cloud-re-clustering">Addendum, 2026-09-11 — Ollama Cloud re-clustering</h3>
+<p>The guidebook gap flagged above ("What didn't work," item 1; Table 3's
+original note) is closed: the author supplied an Ollama Cloud API key,
+which was used to install Ollama locally, pull <code>embeddinggemma</code> (621 MB,
+runs locally — cloud auth was not actually required for this specific
+model, only for the account-gated pull), and re-run <code>06_consolidate.py</code>
+against all 2,981 Round 1 records. Effect: cluster counts roughly doubled
+for several questions (e.g. RESPONSIBILITY 36→59 clusters, NATURALISED_ORDER
+105→137) simply from more instances entering the same 0.75-threshold
+clustering, not from any change in method. <code>analysis/networks/thematic_network.json</code>
+was regenerated immediately after: sub-code coverage moved from 35/66 to
+<strong>66/66 documents</strong>, and the network grew from 365 to 1,953 edges over 467
+sub-codes. The Ollama server and API key were used only for this one
+recomputation and were not left running or stored anywhere in the repo.</p>
+<h3 id="addendum-2026-09-18-the-claude-code-local-interim-pass-fully-replaced-with-ollama">Addendum, 2026-09-18 — the <code>claude-code-local</code> interim pass fully replaced with Ollama</h3>
+<p>Per "Note on tooling" above: all 434 <code>claude-code-local</code> records from the
+2026-09-10 intake were discarded and the 31 documents re-coded end to end
+with <code>05_code.py</code> against Ollama Cloud (<code>kimi-k3:cloud</code>, falling back to
+<code>deepseek-v4-flash:cloud</code> once the session quota was hit mid-run — the same
+pattern as corpus v1's own model-switch history). <code>coding/round1/*.jsonl</code>
+now has zero <code>claude-code-local</code> records; every one of the 1,001 unit ×
+question pairs (91 units × 11 questions) across all 66 documents succeeded
+with a real Ollama call, producing 4,078 records (3,790 <code>applies: true</code>,
+3,758 <code>quote_verified: true</code> — 99.2%). The entire downstream chain was
+re-run against this corrected corpus (<code>10_finalize.py</code>, plus
+<code>14_export_embeddings.py</code>, <code>15_guidebook_summary.py</code> and
+<code>16_render_markdown.py</code>): <code>guidebook_draft.yaml</code> (Table 3 above),
+<code>metaphors_report.md</code> (592 distinct expressions), the intertextual network
+(66 nodes, 107 edges), <code>agency_by_genre.csv</code> (558 AGENCY instances from
+62/66 documents, 564/564 unit-question pairs succeeded), the NVivo exports, the thematic
+network (66 document nodes, 534 sub-codes, 1,893 edges, 66/66 coverage), and
+the Leiden communities QA. One finding did not survive the correction: see
+the retraction under "What surprised us" and the updated Table 4 — the
+<code>claude-code-local</code> pass's DEFINITIONAL hit on the <em>Data and AI Ethics
+Framework</em> was not reproduced by the real model. No other per-document
+claim elsewhere in this file was individually re-verified against the
+2026-09-18 numbers; treat any specific number attributed to the 31-document
+intake from before this date as superseded by <code>coding/round1/*.jsonl</code> and
+the regenerated <code>analysis/</code> outputs.</p>
 </div>
 </body>
 </html>

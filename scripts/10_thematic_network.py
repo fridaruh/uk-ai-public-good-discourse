@@ -90,7 +90,7 @@ def build_subcodes(guidebook, unit_to_doc):
     questions = guidebook.get("questions", {})
     for qname in CORE_QUESTIONS:
         qdata = questions.get(qname) or {}
-        for cluster in qdata.get("clusters", []):
+        for cluster in qdata.get("clusters", []) or []:
             name = cluster.get("candidate_name") or "unnamed_cluster"
             key = (qname, name)
             for unit_id in cluster.get("member_unit_ids", []):

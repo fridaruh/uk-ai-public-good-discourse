@@ -200,52 +200,71 @@ def main():
     if warning:
         print(warning)
 
-    guidebook = {
-        "status": "DRAFT_pending_author",
-        "generated_from": "coding/round1/*.jsonl",
-        "similarity_threshold": SIM_THRESHOLD,
-        "embedding_model": EMBED_MODEL,
-        "note": (
-            "Clusters proposed automatically by cosine similarity of "
-            "answer_summary. candidate_name is a heuristic label -- "
-            "the author decides the final name, definition and "
-            "inclusion/exclusion rule in guidebook.yaml."
-        ),
-        "questions": {},
-    }
-    if warning:
-        guidebook["coverage_warning"] = warning
+    # Ollama (embeddinggemma) is required for clustering. Check ONCE, up front:
+    # if it's unreachable, skip clustering entirely and leave guidebook_draft.yaml
+    # untouched on disk (never overwrite good, previously-computed clusters with
+    # an empty/partial run just because this machine has no Ollama). The metaphor
+    # report needs no embeddings, so it always regenerates regardless.
+    ollama_available = True
+    try:
+        requests.post(OLLAMA_URL, json={"model": EMBED_MODEL, "input": ["ping"]}, timeout=5).raise_for_status()
+    except requests.exceptions.RequestException:
+        ollama_available = False
 
-    for qname in CORE_QUESTIONS:
-        recs = [r for r in by_q.get(qname, []) if r.get("applies")]
-        if not recs:
-            guidebook["questions"][qname] = {"clusters": [], "n_applies_true": 0}
-            continue
-        clusters = cluster_question(qname, recs)
-        q_out = []
-        for cl in clusters:
-            name = name_candidate(qname, cl)
-            examples = []
-            for m in cl[:3]:
-                examples.append(m.get("verbatim_quote") or "")
-            q_out.append({
-                "candidate_name": name,
-                "n_instances": len(cl),
-                "example_quotes": examples,
-                "member_unit_ids": sorted(set(m["unit_id"] for m in cl)),
-                "status": "DRAFT_pending_author",
-            })
-        guidebook["questions"][qname] = {
-            "n_applies_true": len(recs),
-            "n_clusters": len(q_out),
-            "clusters": q_out,
+    if not ollama_available:
+        print(f"Ollama ({EMBED_MODEL}) unreachable at {OLLAMA_URL} -- skipping guidebook "
+              "clustering entirely. coding/guidebook_draft.yaml is left UNCHANGED on disk "
+              "(not overwritten with an empty/partial result). Re-run this script on a "
+              "machine with Ollama running to (re)generate clusters, e.g. after adding new "
+              "documents' Round 1 records. Proceeding to regenerate metaphors_report.md, "
+              "which does not require embeddings.")
+    else:
+        guidebook = {
+            "status": "DRAFT_pending_author",
+            "generated_from": "coding/round1/*.jsonl",
+            "similarity_threshold": SIM_THRESHOLD,
+            "embedding_model": EMBED_MODEL,
+            "note": (
+                "Clusters proposed automatically by cosine similarity of "
+                "answer_summary. candidate_name is a heuristic label -- "
+                "the author decides the final name, definition and "
+                "inclusion/exclusion rule in guidebook.yaml."
+            ),
+            "questions": {},
         }
-        print(f"{qname}: {len(recs)} instances -> {len(q_out)} clusters")
+        if warning:
+            guidebook["coverage_warning"] = warning
 
-    out_path = os.path.join(ROOT, "coding/guidebook_draft.yaml")
-    with open(out_path, "w", encoding="utf-8") as f:
-        yaml.dump(guidebook, f, allow_unicode=True, sort_keys=False, width=100)
-    print(f"Wrote {out_path}")
+        for qname in CORE_QUESTIONS:
+            recs = [r for r in by_q.get(qname, []) if r.get("applies")]
+            if not recs:
+                guidebook["questions"][qname] = {"clusters": [], "n_applies_true": 0}
+                continue
+            clusters = cluster_question(qname, recs)
+            q_out = []
+            for cl in clusters:
+                name = name_candidate(qname, cl)
+                examples = []
+                for m in cl[:3]:
+                    examples.append(m.get("verbatim_quote") or "")
+                q_out.append({
+                    "candidate_name": name,
+                    "n_instances": len(cl),
+                    "example_quotes": examples,
+                    "member_unit_ids": sorted(set(m["unit_id"] for m in cl)),
+                    "status": "DRAFT_pending_author",
+                })
+            guidebook["questions"][qname] = {
+                "n_applies_true": len(recs),
+                "n_clusters": len(q_out),
+                "clusters": q_out,
+            }
+            print(f"{qname}: {len(recs)} instances -> {len(q_out)} clusters")
+
+        out_path = os.path.join(ROOT, "coding/guidebook_draft.yaml")
+        with open(out_path, "w", encoding="utf-8") as f:
+            yaml.dump(guidebook, f, allow_unicode=True, sort_keys=False, width=100)
+        print(f"Wrote {out_path}")
 
     write_metaphors_report(warning)
 

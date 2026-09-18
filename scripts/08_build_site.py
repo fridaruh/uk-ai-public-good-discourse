@@ -22,21 +22,64 @@ FAMILY_COLORS = {
     "Cohere": "#cc4455",
     "DeepMind": "#9678e8",
     "ElevenLabs": "#b3901f",
+    "NVIDIA": "#5fa832",
+    "Cisco": "#0098d8",
+    "Synthesia": "#7a5cd6",
     "None": "#4a5164",
 }
+
+# Steps grouped by the author's actual coding rounds (not the old Phase 0-7
+# numbering) -- see PLAN.md's "Execution order" table and the "Note on
+# rounds vs. phases" section for the full explanation of this mapping.
+# Round 1.1 (the author's own NVIVO coding) and Round 2 (2.1 intertextuality,
+# 2.2 MoU-family) are the author's manual, interpretive work; Round 1.2 and
+# "corpus & setup" are what this repo's pipeline does mechanically to support
+# and scale that work.
+PHASE_ROUNDS = [
+    ("Corpus & setup", ["0", "1"]),
+    ("Round 1.1 — author's interpretive coding (NVIVO)", ["1.1"]),
+    ("Round 1.2 — LLM-assisted coding & clustering", ["2", "3", "4", "5"]),
+    ("Round 2.1 — intertextuality coding (assisted)", ["6a"]),
+    ("Round 2.2 — MoU-family coding (assisted)", ["6b"]),
+    ("Other analysis outputs", ["6c"]),
+    ("Incremental intake (ongoing)", ["7"]),
+]
+
+
+def load_definitional_doc_ids():
+    """doc_ids with at least one DEFINITIONAL applies=true record, corpus-wide."""
+    path = ROOT / "coding" / "round1" / "definitional_instances.jsonl"
+    if not path.exists():
+        return set()
+    ids = set()
+    with path.open(encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            ids.add(json.loads(line)["doc_id"])
+    return ids
+
+
+def definitional_status(doc_id, term_status, defined_doc_ids):
+    if doc_id in defined_doc_ids:
+        return "defined"
+    if term_status in ("present", "variant"):
+        return "used"
+    return "not_present"
 
 
 def load_manifest():
     if not MANIFEST.exists():
         return []
-    with MANIFEST.open(newline="") as f:
+    with MANIFEST.open(newline="", encoding="utf-8") as f:
         return list(csv.DictReader(f))
 
 
 def load_archive_urls():
     if not ARCHIVE_URLS.exists():
         return {}
-    return json.loads(ARCHIVE_URLS.read_text())
+    return json.loads(ARCHIVE_URLS.read_text(encoding="utf-8"))
 
 
 def best_archive_url(doc_id, archive_urls):
@@ -67,83 +110,122 @@ def phase_status(rows):
     def add(n, name, status, detail):
         phases.append({"n": n, "name": name, "status": status, "detail": detail})
 
-    # Phase 0 — manifest
-    if rows:
-        add(0, "Freeze the corpus (manifest)", "hecho", f"{len(rows)} documents in data/manifest.csv")
+    # Round 1.1 — the author's own interpretive coding in NVIVO. Manual work
+    # that predates and grounds this repo; not a script-checkable artifact,
+    # so this entry is evidenced by the review file instead of a pipeline
+    # output. See coding/nvivo_r1_r2_review.md and PLAN.md's "Note on rounds
+    # vs. phases" for what this covers and how it differs from Round 1.2.
+    nvivo_review = ROOT / "coding" / "nvivo_r1_r2_review.md"
+    if nvivo_review.exists():
+        add("1.1", "Author's interpretive coding (NVIVO)", "hecho",
+            "Manual coding in NVIVO — reviewed in coding/nvivo_r1_r2_review.md")
     else:
-        add(0, "Freeze the corpus (manifest)", "pendiente", "data/manifest.csv does not exist or is empty")
+        add("1.1", "Author's interpretive coding (NVIVO)", "hecho",
+            "Manual coding in NVIVO (see the author's NVIVO project / Codebook export)")
 
-    # Phase 1 — download and structured text
+    # Corpus & setup
+    if rows:
+        add("0", "Freeze the corpus (manifest)", "hecho", f"{len(rows)} documents in data/manifest.csv")
+    else:
+        add("0", "Freeze the corpus (manifest)", "pendiente", "data/manifest.csv does not exist or is empty")
+
     n_text = sum(1 for r in rows if (ROOT / "data" / "text" / f"{r['doc_id']}.json").exists())
     if rows and n_text == len(rows):
-        add(1, "Download and archiving", "hecho", f"{n_text}/{len(rows)} documents with extracted text")
+        add("1", "Download and archiving", "hecho", f"{n_text}/{len(rows)} documents with extracted text")
     elif n_text > 0:
-        add(1, "Download and archiving", "en curso", f"{n_text}/{len(rows)} documents with extracted text")
+        add("1", "Download and archiving", "en curso", f"{n_text}/{len(rows)} documents with extracted text")
     else:
-        add(1, "Download and archiving", "pendiente", "no extracted texts in data/text/")
+        add("1", "Download and archiving", "pendiente", "no extracted texts in data/text/")
 
-    # Phase 2 — segmentation + term
+    # Round 1.2 — LLM-assisted coding & clustering (segmentation, model
+    # selection, full-corpus LLM coding, and cosine-similarity clustering are
+    # all one round from the author's perspective: the LLM extending her
+    # 1.1 coding scheme to the full corpus and organising the result).
     lexicon_ok = (ROOT / "coding" / "lexicon_v1.yaml").exists()
     units_ok = (ROOT / "coding" / "units.jsonl").exists() and (ROOT / "coding" / "units.jsonl").stat().st_size > 0
     if lexicon_ok and units_ok:
-        n_units = sum(1 for _ in (ROOT / "coding" / "units.jsonl").open())
-        add(2, "Segmentation and term detection", "hecho", f"{n_units} units in coding/units.jsonl")
+        n_units = sum(1 for _ in (ROOT / "coding" / "units.jsonl").open(encoding="utf-8"))
+        add("2", "Segmentation and term detection", "hecho", f"{n_units} units in coding/units.jsonl")
     elif lexicon_ok:
-        add(2, "Segmentation and term detection", "en curso", "lexicon approved; units missing")
+        add("2", "Segmentation and term detection", "en curso", "lexicon approved; units missing")
     else:
-        add(2, "Segmentation and term detection", "pendiente", "no variant lexicon")
+        add("2", "Segmentation and term detection", "pendiente", "no variant lexicon")
 
-    # Phase 3 — model evaluation
     decision_md = ROOT / "coding" / "model_eval" / "decision.md"
     model_eval_dir = ROOT / "coding" / "model_eval"
     if decision_md.exists():
-        add(3, "Model evaluation (Ollama Cloud)", "hecho", "coding/model_eval/decision.md")
+        add("3", "Model evaluation (Ollama Cloud)", "hecho", "coding/model_eval/decision.md")
     elif model_eval_dir.exists() and any(model_eval_dir.iterdir()):
-        add(3, "Model evaluation (Ollama Cloud)", "en curso", "coding/model_eval/ has files, decision.md missing")
+        add("3", "Model evaluation (Ollama Cloud)", "en curso", "coding/model_eval/ has files, decision.md missing")
     else:
-        add(3, "Model evaluation (Ollama Cloud)", "pendiente", "coding/model_eval/ empty")
+        add("3", "Model evaluation (Ollama Cloud)", "pendiente", "coding/model_eval/ empty")
 
-    # Phase 4 — round 1 coding
     run_meta = ROOT / "coding" / "round1" / "run_meta.json"
     round1_dir = ROOT / "coding" / "round1"
     if run_meta.exists():
-        add(4, "Round 1 Coding (LLM)", "hecho", "coding/round1/run_meta.json")
+        add("4", "LLM-assisted coding, full corpus (kimi-k3:cloud + deepseek-v4-flash:cloud)", "hecho", "coding/round1/run_meta.json")
     elif round1_dir.exists() and any(round1_dir.iterdir()):
-        add(4, "Round 1 Coding (LLM)", "en curso", "coding/round1/ has files, run_meta.json missing")
+        add("4", "LLM-assisted coding, full corpus (kimi-k3:cloud + deepseek-v4-flash:cloud)", "en curso", "coding/round1/ has files, run_meta.json missing")
     else:
-        add(4, "Round 1 Coding (LLM)", "pendiente", "coding/round1/ empty")
+        add("4", "LLM-assisted coding, full corpus (kimi-k3:cloud + deepseek-v4-flash:cloud)", "pendiente", "coding/round1/ empty")
 
-    # Phase 5 — round 2 consolidation (guidebook)
     guidebook = ROOT / "coding" / "guidebook.yaml"
     guidebook_draft = ROOT / "coding" / "guidebook_draft.yaml"
     if guidebook.exists():
-        add(5, "Round 2 Consolidation (guidebook)", "hecho", "coding/guidebook.yaml")
+        add("5", "Clustering by cosine similarity (guidebook)", "hecho", "coding/guidebook.yaml")
     elif guidebook_draft.exists():
-        add(5, "Round 2 Consolidation (guidebook)", "en curso", "draft: coding/guidebook_draft.yaml")
+        add("5", "Clustering by cosine similarity (guidebook)", "en curso", "draft: coding/guidebook_draft.yaml")
     else:
-        add(5, "Round 2 Consolidation (guidebook)", "pendiente", "no guidebook")
+        add("5", "Clustering by cosine similarity (guidebook)", "pendiente", "no guidebook")
 
-    # Phase 6 — analysis
-    outs_6 = [
-        ROOT / "analysis" / "networks" / "authorship_family_map.html",
-        ROOT / "analysis" / "queries" / "queries.html",
+    # Round 2.1 — intertextuality coding (the author's r2_intertextuality
+    # NVIVO node), assisted by this repo's intertextual network.
+    network_html = ROOT / "analysis" / "networks" / "authorship_family_map.html"
+    if network_html.exists():
+        add("6a", "Intertextual network (assists r2_intertextuality coding)", "hecho", network_html.relative_to(ROOT).as_posix())
+    else:
+        add("6a", "Intertextual network (assists r2_intertextuality coding)", "pendiente", "no network output")
+
+    # Round 2.2 — MoU-family coding (the author's MouFam1-8 NVIVO nodes),
+    # assisted by this repo's echo-phrase and agency-by-genre analysis.
+    outs_6b = [
         ROOT / "analysis" / "queries" / "echo_summary.md",
+        ROOT / "analysis" / "queries" / "agency_by_genre.csv",
+    ]
+    n6b = sum(1 for p in outs_6b if p.exists())
+    if n6b == len(outs_6b):
+        add("6b", "Echo-phrases & agency-by-genre (assist MoU-family coding)", "hecho", "echo_summary.md + agency_by_genre.csv present")
+    elif n6b > 0:
+        add("6b", "Echo-phrases & agency-by-genre (assist MoU-family coding)", "en curso", f"{n6b}/{len(outs_6b)} outputs present")
+    else:
+        add("6b", "Echo-phrases & agency-by-genre (assist MoU-family coding)", "pendiente", "no outputs yet")
+
+    # Other analysis outputs — support SO1/SO2 broadly but are not one of the
+    # author's named coding rounds.
+    outs_6 = [
+        ROOT / "analysis" / "queries" / "queries.html",
         ROOT / "analysis" / "metaphors_report.md",
+        ROOT / "analysis" / "nvivo" / "classification_sheet.csv",
     ]
     n6 = sum(1 for p in outs_6 if p.exists())
     if n6 == len(outs_6):
-        add(6, "Analysis (networks, queries, echoes, metaphors)", "hecho", "all Phase 6 outputs present")
+        add("6c", "Other analysis outputs (queries, metaphors, NVivo exports)", "hecho", "all outputs present")
     elif n6 > 0:
-        add(6, "Analysis (networks, queries, echoes, metaphors)", "en curso", f"{n6}/{len(outs_6)} outputs present")
+        add("6c", "Other analysis outputs (queries, metaphors, NVivo exports)", "en curso", f"{n6}/{len(outs_6)} outputs present")
     else:
-        add(6, "Analysis (networks, queries, echoes, metaphors)", "pendiente", "no Phase 6 outputs")
+        add("6c", "Other analysis outputs (queries, metaphors, NVivo exports)", "pendiente", "no outputs yet")
 
-    # Phase 7 — incremental document intake
+    # Incremental intake -- corpus history: started at 35 documents (v1,
+    # frozen, corpus_version == 1), expanded to len(rows) via one or more
+    # add_document.py intakes since.
     incrementales = [r for r in rows if str(r.get("corpus_version", "1")).strip() not in ("", "1")]
+    n_v1 = len(rows) - len(incrementales)
     if incrementales:
-        add(7, "Incremental document intake", "en curso", f"{len(incrementales)} document(s) with corpus_version > 1")
+        add("7", "Incremental document intake", "en curso",
+            f"Corpus grew from {n_v1} documents (frozen v1) to {len(rows)}: "
+            f"{len(incrementales)} added via add_document.py since (corpus_version > 1)")
     else:
-        add(7, "Incremental document intake", "pendiente", "tool ready (add_document.py); no intakes yet")
+        add("7", "Incremental document intake", "pendiente", "tool ready (add_document.py); no intakes yet")
 
     return phases
 
@@ -157,13 +239,13 @@ def phase_status(rows):
 DELIVERABLES = [
     ("PLAN.html", "Thesis plan / operationalization"),
     ("README.html", "Repository guide"),
-    ("HANDOFF.html", "Handoff guide — continuing this project on a new machine"),
     ("interpretation.html", "Consolidated interpretation"),
     ("analysis/networks/authorship_family_map.html", "Authorship and family map (intertextual network)"),
     ("analysis/queries/queries.html", "The three queries from the NVivo plan"),
     ("analysis/queries/echo_summary.html", "Echo-phrases summary (SO3)"),
     ("analysis/metaphors_report.html", "Metaphors report (SO1)"),
     ("coding/model_eval/decision.html", "Model evaluation decision"),
+    ("coding/nvivo_r1_r2_review.html", "Review: author's NVIVO coding, Round 1.1 vs. Round 2 (2.1/2.2)"),
     ("coding/guidebook_draft.yaml", "Guidebook — sub-codes draft"),
     ("analysis/guidebook_summary.html", "Guidebook review — interactive cluster naming"),
     ("analysis/qa/communities_vs_families.html", "Communities vs. families QA (internal)"),
@@ -191,30 +273,55 @@ STATUS_LABEL = {"hecho": "✓ done", "en curso": "in progress", "pendiente": "pe
 
 
 def render_phases(phases):
-    rows = []
-    for p in phases:
-        rows.append(
-            f'<div class="phase phase-{p["status"].replace(" ", "-")}">'
-            f'<div class="phase-n">Phase {p["n"]}</div>'
-            f'<div class="phase-body"><div class="phase-name">{p["name"]}</div>'
-            f'<div class="phase-detail">{p["detail"]}</div></div>'
-            f'<div class="phase-badge">{STATUS_LABEL[p["status"]]}</div>'
-            f"</div>"
+    by_n = {p["n"]: p for p in phases}
+    groups = []
+    for group_name, phase_ns in PHASE_ROUNDS:
+        rows = []
+        for n in phase_ns:
+            p = by_n.get(n)
+            if not p:
+                continue
+            rows.append(
+                f'<div class="phase phase-{p["status"].replace(" ", "-")}">'
+                f'<div class="phase-n">Step {p["n"]}</div>'
+                f'<div class="phase-body"><div class="phase-name">{p["name"]}</div>'
+                f'<div class="phase-detail">{p["detail"]}</div></div>'
+                f'<div class="phase-badge">{STATUS_LABEL[p["status"]]}</div>'
+                f"</div>"
+            )
+        statuses = [by_n[n]["status"] for n in phase_ns if n in by_n]
+        if statuses and all(s == "hecho" for s in statuses):
+            group_status = "hecho"
+        elif any(s in ("hecho", "en curso") for s in statuses):
+            group_status = "en curso"
+        else:
+            group_status = "pendiente"
+        groups.append(
+            f'<div class="phase-round">'
+            f'<div class="phase-round-head">'
+            f'<span class="phase-round-name">{group_name}</span>'
+            f'<span class="phase-round-badge phase-round-{group_status.replace(" ", "-")}">{STATUS_LABEL[group_status]}</span>'
+            f'</div>'
+            f'<div class="phases">{"".join(rows)}</div>'
+            f'</div>'
         )
-    return "\n".join(rows)
+    return "\n".join(groups)
 
 
 def build_corpus_json(rows, archive_urls):
+    defined_doc_ids = load_definitional_doc_ids()
     out = []
     for r in rows:
         doc_id = r["doc_id"]
+        term_status = r.get("term_status", "")
         out.append({
             "doc_id": doc_id,
             "date": r.get("date", ""),
             "speaker": r.get("speaker", ""),
             "genre": r.get("genre", ""),
             "family": r.get("family", "None") or "None",
-            "term_status": r.get("term_status", ""),
+            "term_status": term_status,
+            "definitional_status": definitional_status(doc_id, term_status, defined_doc_ids),
             "url": r.get("url", ""),
             "archive": best_archive_url(doc_id, archive_urls) or "",
             "text": text_relpath(doc_id) or "",
@@ -260,6 +367,16 @@ def main():
   a, a:visited{{color:var(--accent);text-decoration:none}}
   a:hover{{color:var(--accent-active);text-decoration:underline}}
 
+  .phase-round{{margin-bottom:14px}}
+  .phase-round:last-child{{margin-bottom:0}}
+  .phase-round-head{{display:flex;align-items:center;justify-content:space-between;
+    padding:0 2px 6px}}
+  .phase-round-name{{font-size:12px;font-weight:600;color:var(--ink);letter-spacing:.02em}}
+  .phase-round-badge{{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    padding:2px 8px;border-radius:20px;background:var(--surface-strong)}}
+  .phase-round-hecho{{color:var(--ok)}}
+  .phase-round-en-curso{{color:var(--warn)}}
+  .phase-round-pendiente{{color:var(--muted)}}
   .phases{{display:flex;flex-direction:column;gap:6px}}
   .phase{{display:flex;align-items:center;gap:14px;background:var(--surface);
     border:1px solid var(--hairline);border-radius:8px;padding:9px 14px}}
@@ -302,6 +419,11 @@ def main():
   .term-present{{color:var(--ok)}}
   .term-variant{{color:var(--warn)}}
   .term-absent, .term-check{{color:var(--muted)}}
+  .def-badge{{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.04em;
+    padding:2px 8px;border-radius:20px;white-space:nowrap}}
+  .def-defined{{background:#05b16922;color:var(--ok)}}
+  .def-used{{background:#a8770022;color:var(--warn)}}
+  .def-not_present{{background:var(--surface-strong);color:var(--muted)}}
 
   form#addForm{{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;
     padding:18px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}}
@@ -346,8 +468,16 @@ def main():
 
   <section id="corpus">
     <h2>Corpus (<span id="corpusTotal">{len(corpus)}</span> documents)</h2>
+    <p style="font-size:12px;color:var(--muted);margin:-4px 0 12px">
+      <strong>Term</strong> = does the passage carry the nominal phrase or a named variant
+      (lexicon v1, mechanical). <strong>Definition</strong> = does it go further and state what
+      the phrase means or requires (DEFINITIONAL question, Round 1 coding) — "used" means the
+      term appears but is never elaborated; "defined" means at least one passage glosses it via
+      a mechanism or criterion. See <a href="interpretation.html#defined-vs-used">Term defined
+      vs. term used</a> for the full reading (4 defined, 19 used-only, 43 not present).
+    </p>
     <div class="toolbar">
-      <input id="filterInput" type="text" placeholder="Filter by doc_id, date, speaker, genre, family, or term status…">
+      <input id="filterInput" type="text" placeholder="Filter by doc_id, date, speaker, genre, family, term, or definition…">
       <span id="corpusCount"></span>
     </div>
     <div style="overflow-x:auto">
@@ -358,8 +488,9 @@ def main():
           <th data-key="date">date</th>
           <th data-key="speaker">speaker</th>
           <th data-key="genre">genre</th>
-          <th data-key="family">family</th>
+          <th data-key="family">MoU Family</th>
           <th data-key="term_status">term</th>
+          <th data-key="definitional_status">definition</th>
           <th data-key="_links">links</th>
         </tr>
       </thead>
@@ -376,7 +507,7 @@ def main():
         <input type="url" id="url" name="url" placeholder="https://www.gov.uk/government/…" required>
       </div>
       <div class="field">
-        <label for="family">Family (optional)</label>
+        <label for="family">MoU Family (optional)</label>
         <select id="family" name="family">
           <option value="">—</option>
           <option>Anthropic</option>
@@ -384,6 +515,9 @@ def main():
           <option>Cohere</option>
           <option>DeepMind</option>
           <option>ElevenLabs</option>
+          <option>NVIDIA</option>
+          <option>Cisco</option>
+          <option>Synthesia</option>
         </select>
       </div>
       <div class="field">
@@ -427,10 +561,13 @@ function fmtLinks(row) {{
   return `<span class="links">${{parts.join('')}}</span>`;
 }}
 
+const DEF_LABEL = {{defined: 'defined', used: 'used, not defined', not_present: 'not present'}};
+
 function renderTable(rows) {{
   const tbody = document.querySelector('#corpusTable tbody');
   tbody.innerHTML = rows.map(r => {{
     const color = FAMILY_COLORS[r.family] || FAMILY_COLORS['None'];
+    const defStatus = r.definitional_status || 'not_present';
     return `<tr>
       <td>${{r.doc_id}}</td>
       <td>${{r.date}}</td>
@@ -438,6 +575,7 @@ function renderTable(rows) {{
       <td>${{r.genre}}</td>
       <td><span class="fam-dot" style="background:${{color}}"></span>${{r.family}}</td>
       <td class="term-${{r.term_status}}">${{r.term_status}}</td>
+      <td><span class="def-badge def-${{defStatus}}">${{DEF_LABEL[defStatus] || defStatus}}</span></td>
       <td>${{fmtLinks(r)}}</td>
     </tr>`;
   }}).join('');
@@ -501,7 +639,7 @@ if (location.protocol === 'file:') {{
 </body>
 </html>
 """
-    OUT.write_text(html)
+    OUT.write_text(html, encoding="utf-8")
     print(f"index.html generated ({len(corpus)} documents, {sum(1 for p in phases if p['status']=='hecho')}/{len(phases)} phases done) -> {OUT}")
 
 

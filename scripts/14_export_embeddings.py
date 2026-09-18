@@ -25,7 +25,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 def main():
     index, texts = [], []
     for p in sorted((ROOT / "data" / "text").glob("*.json")):
-        doc = json.loads(p.read_text())
+        doc = json.loads(p.read_text(encoding="utf-8"))
         for si, (head, blocks) in enumerate(seg.sections(doc)):
             text = "\n".join(b["text"] for b in blocks)
             if len(text) < 40:
@@ -36,7 +36,7 @@ def main():
     print(f"Embedding {len(texts)} sections with {seg.EMB_MODEL}...")
     vecs = seg.embed(texts)
     np.savez_compressed(OUT / "sections_embeddinggemma.npz", vectors=vecs)
-    (OUT / "sections_index.json").write_text(json.dumps(index, ensure_ascii=False, indent=1))
+    (OUT / "sections_index.json").write_text(json.dumps(index, ensure_ascii=False, indent=1), encoding="utf-8")
 
     probes = seg.embed(seg.LEX["beneficiary_probes"])
     np.savez_compressed(OUT / "probes_embeddinggemma.npz", vectors=probes,

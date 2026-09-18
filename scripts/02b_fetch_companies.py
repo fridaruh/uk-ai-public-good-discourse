@@ -365,7 +365,7 @@ def fetch(url, timeout=TIMEOUT, retries=RETRIES, headers=None):
 
 
 def load_company_rows():
-    with MANIFEST.open() as f:
+    with MANIFEST.open(encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
     out = []
     for row in rows:
@@ -490,7 +490,7 @@ def process_doc(row, use_existing_raw=False):
             "n_blocks": 0,
             "error": error,
         }
-        meta_path.write_text(json.dumps(meta, indent=2, ensure_ascii=False))
+        meta_path.write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
         print(f"  [{doc_id}] FAILED: {error}")
         return meta
 
@@ -506,7 +506,7 @@ def process_doc(row, use_existing_raw=False):
         "format": "html",
         "blocks": blocks,
     }
-    text_path.write_text(json.dumps(doc, indent=2, ensure_ascii=False))
+    text_path.write_text(json.dumps(doc, indent=2, ensure_ascii=False), encoding="utf-8")
 
     sha256 = hashlib.sha256(html_bytes).hexdigest()
     meta = {
@@ -521,7 +521,7 @@ def process_doc(row, use_existing_raw=False):
         "n_blocks": len(blocks),
         "error": error,
     }
-    meta_path.write_text(json.dumps(meta, indent=2, ensure_ascii=False))
+    meta_path.write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
 
     n_titles = sum(1 for b in blocks if b["structural_position"] == "title")
     bc = body_chars(blocks)

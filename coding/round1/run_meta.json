@@ -227,6 +227,126 @@
       ],
       "n_doc_profiles": 0,
       "pct_quote_verified_of_successful_calls": 98.78610297195479
+    },
+    {
+      "run_id": "c25e3e3c-1b8c-4145-a83c-06245f2158ce",
+      "timestamp": "2026-09-17T22:44:52.935242+00:00",
+      "model": "kimi-k3:cloud",
+      "prompt_version": 1,
+      "doc_filter": null,
+      "questions": [
+        "BENEFICIARY",
+        "MECHANISM",
+        "SAFEGUARD",
+        "RESPONSIBILITY",
+        "PROJECTED_FUTURE",
+        "ACTANTS",
+        "NATURALISED_ORDER",
+        "AGENCY",
+        "MODALITY",
+        "METAPHOR",
+        "DEFINITIONAL"
+      ],
+      "n_units": 91,
+      "n_unit_question_calls": 420,
+      "n_records": 3321,
+      "n_records_with_error": 338,
+      "pct_calls_succeeded": 89.82234266787113,
+      "n_docs_with_at_least_one_success": 43,
+      "n_docs_total": 66,
+      "top_errors": [
+        [
+          "500 Server Error: Internal Server Error for url: http://localhost:11434/api/generate",
+          10
+        ],
+        [
+          "HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=180)",
+          1
+        ],
+        [
+          "429 {\"StatusCode\":429,\"Status\":\"429 Too Many Requests\",\"error\":\"you (fridaruh) have reached your session usage limit, upgrade for higher limits: https://ollama.com/upgrade or add usage credits: https://ollama.com/settings (ref: f8f8f15e-bce4-419c-ac3b-67165854a2bf)\"}",
+          1
+        ],
+        [
+          "429 {\"StatusCode\":429,\"Status\":\"429 Too Many Requests\",\"error\":\"you (fridaruh) have reached your session usage limit, upgrade for higher limits: https://ollama.com/upgrade or add usage credits: https://ollama.com/settings (ref: be50fe43-3963-438b-8445-c921d6abdc2f)\"}",
+          1
+        ],
+        [
+          "429 {\"StatusCode\":429,\"Status\":\"429 Too Many Requests\",\"error\":\"you (fridaruh) have reached your session usage limit, upgrade for higher limits: https://ollama.com/upgrade or add usage credits: https://ollama.com/settings (ref: c1401400-4fe6-43b8-ad0e-ad844f029131)\"}",
+          1
+        ]
+      ],
+      "n_doc_profiles": 31,
+      "pct_quote_verified_of_successful_calls": 98.86080455678177
+    },
+    {
+      "run_id": "0de7ddfc-45cd-4fbb-ab95-3f6c646b8cd4",
+      "timestamp": "2026-09-18T02:10:53.744171+00:00",
+      "model": "deepseek-v4-flash:cloud",
+      "prompt_version": 1,
+      "doc_filter": null,
+      "questions": [
+        "BENEFICIARY",
+        "MECHANISM",
+        "SAFEGUARD",
+        "RESPONSIBILITY",
+        "PROJECTED_FUTURE",
+        "ACTANTS",
+        "NATURALISED_ORDER",
+        "AGENCY",
+        "MODALITY",
+        "METAPHOR",
+        "DEFINITIONAL"
+      ],
+      "n_units": 91,
+      "n_unit_question_calls": 338,
+      "n_records": 4068,
+      "n_records_with_error": 2,
+      "pct_calls_succeeded": 99.95083579154375,
+      "n_docs_with_at_least_one_success": 66,
+      "n_docs_total": 66,
+      "top_errors": [
+        [
+          "500 Server Error: Internal Server Error for url: http://localhost:11434/api/generate",
+          1
+        ],
+        [
+          "HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=180)",
+          1
+        ]
+      ],
+      "n_doc_profiles": 0,
+      "pct_quote_verified_of_successful_calls": 99.15299100052938
+    },
+    {
+      "run_id": "485ee5e7-dd5a-4d60-b1d0-7c037d6a9cd6",
+      "timestamp": "2026-09-18T02:11:25.302742+00:00",
+      "model": "deepseek-v4-flash:cloud",
+      "prompt_version": 1,
+      "doc_filter": null,
+      "questions": [
+        "BENEFICIARY",
+        "MECHANISM",
+        "SAFEGUARD",
+        "RESPONSIBILITY",
+        "PROJECTED_FUTURE",
+        "ACTANTS",
+        "NATURALISED_ORDER",
+        "AGENCY",
+        "MODALITY",
+        "METAPHOR",
+        "DEFINITIONAL"
+      ],
+      "n_units": 91,
+      "n_unit_question_calls": 2,
+      "n_records": 4078,
+      "n_records_with_error": 0,
+      "pct_calls_succeeded": 100.0,
+      "n_docs_with_at_least_one_success": 66,
+      "n_docs_total": 66,
+      "top_errors": [],
+      "n_doc_profiles": 0,
+      "pct_quote_verified_of_successful_calls": 99.15567282321899
     }
   ]
 }

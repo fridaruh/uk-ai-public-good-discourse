@@ -16,7 +16,7 @@ MIN_CHARS = {"STRAT": 1000, "MOU": 1000, "REG": 1000, "BLOG": 500, "WMS": 500,
 
 
 def main():
-    rows = list(csv.DictReader(MANIFEST.open()))
+    rows = list(csv.DictReader(MANIFEST.open(encoding="utf-8")))
     problems = []
     for r in rows:
         doc_id = r["doc_id"]
@@ -26,7 +26,7 @@ def main():
             problems.append(f"{doc_id}: missing data/text JSON")
             r["fetch_status"] = "missing"
             continue
-        doc = json.loads(tpath.read_text())
+        doc = json.loads(tpath.read_text(encoding="utf-8"))
         blocks = doc.get("blocks", [])
         titles = [b for b in blocks if b["structural_position"] == "title"]
         badpos = {b["structural_position"] for b in blocks} - VOCAB
@@ -41,7 +41,7 @@ def main():
             problems.append(f"{doc_id}: positions outside vocabulary {badpos}")
         if total < MIN_CHARS.get(r["genre"], 400):
             problems.append(f"{doc_id}: only {total} chars (threshold {MIN_CHARS.get(r['genre'])})")
-        meta = json.loads(mpath.read_text()) if mpath.exists() else {}
+        meta = json.loads(mpath.read_text(encoding="utf-8")) if mpath.exists() else {}
         r["fetch_status"] = meta.get("fetch_status", "ok?")
         r["n_blocks"] = len(blocks)
         r["n_quotes"] = quotes
@@ -50,7 +50,7 @@ def main():
         r["source"] = meta.get("source", "direct")
 
     fieldnames = list(rows[0].keys())
-    with MANIFEST.open("w", newline="") as f:
+    with MANIFEST.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(rows)

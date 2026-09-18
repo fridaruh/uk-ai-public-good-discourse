@@ -25,14 +25,14 @@ SLEEP_S = 1800  # 30 min between probes
 
 
 def missing_pairs():
-    units = [json.loads(l) for l in (ROOT / "coding" / "units.jsonl").open()]
+    units = [json.loads(l) for l in (ROOT / "coding" / "units.jsonl").open(encoding="utf-8")]
     want = {(u["unit_id"], q) for u in units for q in QUESTIONS}
     have = set()
     for u in units:
         p = ROOT / "coding" / "round1" / f"{u['doc_id']}.jsonl"
         if not p.exists():
             continue
-        for line in p.open():
+        for line in p.open(encoding="utf-8"):
             try:
                 rec = json.loads(line)
             except json.JSONDecodeError:
