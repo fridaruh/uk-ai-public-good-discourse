@@ -13,6 +13,7 @@ import markdown
 ROOT = Path(__file__).resolve().parent.parent
 
 SOURCES = [
+    "HANDOFF.md",
     "PLAN.md",
     "README.md",
     "analysis/metaphors_report.md",

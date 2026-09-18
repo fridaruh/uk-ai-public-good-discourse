@@ -15,7 +15,7 @@ from pathlib import Path
 import requests
 
 ROOT = Path(__file__).resolve().parent.parent
-PY = str(ROOT / ".venv" / "bin" / "python")
+PY = sys.executable  # the venv interpreter running this script (cross-platform)
 MODEL = "kimi-k3:cloud"
 QUESTIONS = ["BENEFICIARY", "MECHANISM", "SAFEGUARD", "RESPONSIBILITY",
              "PROJECTED_FUTURE", "ACTANTS", "NATURALISED_ORDER", "AGENCY",

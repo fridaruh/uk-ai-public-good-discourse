@@ -9,9 +9,11 @@ Usage: .venv/bin/python scripts/08_build_site.py
 """
 import csv
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+VENV_PY = ".venv\\Scripts\\python.exe" if sys.platform == "win32" else ".venv/bin/python"
 MANIFEST = ROOT / "data" / "manifest.csv"
 ARCHIVE_URLS = ROOT / "data" / "raw" / "archive_urls.json"
 OUT = ROOT / "index.html"
@@ -237,6 +239,7 @@ def phase_status(rows):
 # All .md deliverables are listed by their rendered .html sibling (scripts/16_render_markdown.py)
 # so they're readable without a Markdown-aware viewer. The .md stays the source of truth.
 DELIVERABLES = [
+    ("HANDOFF.html", "Handoff guide — picking this project up on a new machine"),
     ("PLAN.html", "Thesis plan / operationalization"),
     ("README.html", "Repository guide"),
     ("interpretation.html", "Consolidated interpretation"),
@@ -539,7 +542,7 @@ def main():
     <div id="staticNote">
       This page was opened as a file (<code>file://</code>), so the form cannot POST.
       To add documents from the hub, start the local server:
-      <p><code>.venv/bin/python scripts/serve_site.py</code></p>
+      <p><code>{VENV_PY} scripts/serve_site.py</code></p>
       and open <code>http://localhost:8765</code>.
     </div>
   </section>

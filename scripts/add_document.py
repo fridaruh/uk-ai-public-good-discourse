@@ -38,6 +38,7 @@ import yaml
 from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parent.parent
+VENV_PY = ".venv\\Scripts\\python.exe" if sys.platform == "win32" else ".venv/bin/python"
 MANIFEST = ROOT / "data" / "manifest.csv"
 TEXT_DIR = ROOT / "data" / "text"
 RAW_DIR = ROOT / "data" / "raw"
@@ -647,7 +648,7 @@ def admit_document(url: str, family: str | None, genre: str | None, result: dict
     report = {
         "ok": True, "doc_id": doc_id, "manifest_row": manifest_row,
         "n_blocks": len(blocks), "n_units": len(doc_units), "corpus_version": corpus_version,
-        "coding_pending_cmd": f".venv/bin/python scripts/05_code.py --doc {doc_id}",
+        "coding_pending_cmd": f"{VENV_PY} scripts/05_code.py --doc {doc_id}",
     }
     try:
         rebuild_all_recompute()

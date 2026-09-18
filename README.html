@@ -59,24 +59,48 @@ anchored in the Government Digital Service.</p>
 <p><strong>Guiding principle: the LLM locates and extracts; the author interprets and
 consolidates.</strong> No interpretive result is final until validated (see checkpoints).</p>
 <ul>
+<li><strong>Picking this project up on a new machine (Windows setup included):</strong> <a href="HANDOFF.html">HANDOFF.md</a></li>
 <li><strong>Full design and constraints (SO1/SO2/SO3):</strong> <a href="PLAN.html">PLAN.md</a></li>
 <li><strong>Interpretation guide for each deliverable and its assumptions:</strong> <a href="interpretation.html">interpretation.html</a></li>
 <li><strong>Consolidated hub (corpus + deliverables + document intake):</strong> <a href="index.html">index.html</a></li>
 <li><strong>Reviewing/naming the Phase 5 sub-codes:</strong> <a href="analysis/guidebook_summary.html">analysis/guidebook_summary.html</a></li>
 </ul>
 <h2 id="quick-start">Quick start</h2>
+<p><strong>macOS / Linux:</strong></p>
 <pre><code class="language-bash"># local hub with incremental document intake (&quot;Add document&quot; form)
 .venv/bin/python scripts/serve_site.py
 # → http://localhost:8765
 </code></pre>
+<p><strong>Windows (PowerShell):</strong></p>
+<pre><code class="language-powershell">.venv\Scripts\python.exe scripts\serve_site.py
+# → http://localhost:8765
+</code></pre>
 <h2 id="reproducing-on-another-machine">Reproducing on another machine</h2>
+<p><strong>macOS / Linux:</strong></p>
 <pre><code class="language-bash">python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 ollama pull embeddinggemma        # local embeddings (768-dim)
 ollama pull kimi-k3:cloud         # Round 1 coding model (needs an Ollama Cloud session)
 ollama pull deepseek-v4-flash:cloud   # fallback when kimi-k3:cloud hits the session usage quota
 </code></pre>
+<p><strong>Windows (PowerShell):</strong></p>
+<pre><code class="language-powershell">py -3 -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+ollama pull embeddinggemma
+ollama pull kimi-k3:cloud
+ollama pull deepseek-v4-flash:cloud
+</code></pre>
+<p>Install Ollama for Windows from <a href="https://ollama.com/download">ollama.com/download</a>
+first; it runs as a background service on <code>localhost:11434</code> the same as on
+macOS/Linux, no WSL required.</p>
 <p>Requirements: Python 3.13+, <a href="https://ollama.com">Ollama</a> on <code>localhost:11434</code>.
+Every command below is shown in the macOS/Linux form
+(<code>.venv/bin/python scripts/&lt;script&gt;.py</code>); on Windows substitute
+<code>.venv\Scripts\python.exe scripts\&lt;script&gt;.py</code> (backslash path, <code>python.exe</code>
+under <code>Scripts\</code>, not <code>bin/</code>) — everything else about each command is
+identical. All scripts open files with <code>encoding="utf-8"</code> explicitly, so
+non-ASCII text (curly quotes, en-dashes) round-trips correctly on Windows'
+non-UTF-8 default locale.
 What travels with the repo so the analysis is fully reproducible without re-fetching
 or re-embedding anything:</p>
 <ul>
@@ -210,7 +234,8 @@ analysis/metaphors_report.md  most frequent metaphors with suggested source/targ
 </tbody>
 </table>
 </div>
-<p>Everything runs with <code>.venv/bin/python scripts/&lt;script&gt;.py</code>.</p>
+<p>Everything runs with <code>.venv/bin/python scripts/&lt;script&gt;.py</code> (Windows:
+<code>.venv\Scripts\python.exe scripts\&lt;script&gt;.py</code>).</p>
 <h2 id="author-checkpoints-non-delegable-human-decisions">Author checkpoints (non-delegable human decisions)</h2>
 <ol>
 <li>Variant lexicon (<code>coding/lexicon_v1.yaml</code>) — approve/extend.</li>

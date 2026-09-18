@@ -131,7 +131,7 @@ def render_report_page(report: dict) -> bytes:
     else:
         recompute_banner = (f'<div class="banner banner-warn">The document was admitted, but the '
                              f'network/hub recalculation failed: {html.escape(report.get("recompute_error",""))}. '
-                             f'Run <code>.venv/bin/python scripts/08_build_site.py</code> manually.</div>')
+                             f'Run <code>{html.escape(add_document.VENV_PY)} scripts/08_build_site.py</code> manually.</div>')
 
     body = f"""
     <h1>Document admitted</h1>

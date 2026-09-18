@@ -18,8 +18,9 @@ from datetime import datetime
 from typing import Optional, Dict, Any
 
 # Configuration
-MANIFEST_PATH = Path("/Users/fridaruh/Documents/Proyectos/Tafoya/data/manifest.csv")
-OUTPUT_PATH = Path("/Users/fridaruh/Documents/Proyectos/Tafoya/data/raw/archive_urls.json")
+ROOT = Path(__file__).resolve().parent.parent
+MANIFEST_PATH = ROOT / "data" / "manifest.csv"
+OUTPUT_PATH = ROOT / "data" / "raw" / "archive_urls.json"
 WAYBACK_AVAILABILITY_API = "https://archive.org/wayback/available"
 WAYBACK_SAVE_API = "https://web.archive.org/save"
 

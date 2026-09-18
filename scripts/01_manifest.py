@@ -1,8 +1,17 @@
-"""Phase 0: builds data/manifest.csv from 'Document Analysis v1.xlsx'.
+"""Phase 0: builds data/manifest.csv from the selection Excel.
 
 Corpus v1 = rows from 'Official_Document Selection' BEFORE the
 "EITHER BRING" marker (decisions made). The pending A/B blocks are not included.
 Decision by the author 2026-08-29: the CONTEXT_ row enters the corpus (Speaker=External_adviser).
+
+Rebuilding v1 from scratch is a one-off/historical operation -- the corpus
+has since grown via scripts/add_document.py (Phase 7), which is append-only
+and does not touch this script's output. Re-running this only matters if
+v1 itself needs to be regenerated (e.g. after fixing a parsing bug).
+
+Usage:
+    .venv/bin/python scripts/01_manifest.py                 # reads ./corpus.xlsx
+    .venv/bin/python scripts/01_manifest.py path/to/file.xlsx
 """
 import csv
 import re
@@ -11,8 +20,9 @@ from pathlib import Path
 
 import openpyxl
 
-XLSX = Path("/Users/fridaruh/Downloads/Document Analysis v1.xlsx")
-OUT = Path(__file__).resolve().parent.parent / "data" / "manifest.csv"
+ROOT = Path(__file__).resolve().parent.parent
+XLSX = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "corpus.xlsx"
+OUT = ROOT / "data" / "manifest.csv"
 
 FAMILIES = ["Anthropic", "Cohere", "OpenAI", "DeepMind", "ElevenLabs"]
 GENRES = {"STRAT", "MOU", "PRGOV", "PRCO", "BLOG", "WMS", "REG"}

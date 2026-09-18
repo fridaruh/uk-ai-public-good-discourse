@@ -8,6 +8,7 @@ anchored in the Government Digital Service.
 **Guiding principle: the LLM locates and extracts; the author interprets and
 consolidates.** No interpretive result is final until validated (see checkpoints).
 
+- **Picking this project up on a new machine (Windows setup included):** [HANDOFF.md](HANDOFF.md)
 - **Full design and constraints (SO1/SO2/SO3):** [PLAN.md](PLAN.md)
 - **Interpretation guide for each deliverable and its assumptions:** [interpretation.html](interpretation.html)
 - **Consolidated hub (corpus + deliverables + document intake):** [index.html](index.html)
@@ -15,14 +16,22 @@ consolidates.** No interpretive result is final until validated (see checkpoints
 
 ## Quick start
 
+**macOS / Linux:**
 ```bash
 # local hub with incremental document intake ("Add document" form)
 .venv/bin/python scripts/serve_site.py
 # → http://localhost:8765
 ```
 
+**Windows (PowerShell):**
+```powershell
+.venv\Scripts\python.exe scripts\serve_site.py
+# → http://localhost:8765
+```
+
 ## Reproducing on another machine
 
+**macOS / Linux:**
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
@@ -31,7 +40,26 @@ ollama pull kimi-k3:cloud         # Round 1 coding model (needs an Ollama Cloud 
 ollama pull deepseek-v4-flash:cloud   # fallback when kimi-k3:cloud hits the session usage quota
 ```
 
+**Windows (PowerShell):**
+```powershell
+py -3 -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+ollama pull embeddinggemma
+ollama pull kimi-k3:cloud
+ollama pull deepseek-v4-flash:cloud
+```
+Install Ollama for Windows from [ollama.com/download](https://ollama.com/download)
+first; it runs as a background service on `localhost:11434` the same as on
+macOS/Linux, no WSL required.
+
 Requirements: Python 3.13+, [Ollama](https://ollama.com) on `localhost:11434`.
+Every command below is shown in the macOS/Linux form
+(`.venv/bin/python scripts/<script>.py`); on Windows substitute
+`.venv\Scripts\python.exe scripts\<script>.py` (backslash path, `python.exe`
+under `Scripts\`, not `bin/`) — everything else about each command is
+identical. All scripts open files with `encoding="utf-8"` explicitly, so
+non-ASCII text (curly quotes, en-dashes) round-trips correctly on Windows'
+non-UTF-8 default locale.
 What travels with the repo so the analysis is fully reproducible without re-fetching
 or re-embedding anything:
 
@@ -87,7 +115,8 @@ analysis/metaphors_report.md  most frequent metaphors with suggested source/targ
 | `add_document.py` | 7 | Incremental intake: admission checklist → fetch → recompute |
 | `serve_site.py` | — | Hub on localhost:8765 with the intake form |
 
-Everything runs with `.venv/bin/python scripts/<script>.py`.
+Everything runs with `.venv/bin/python scripts/<script>.py` (Windows:
+`.venv\Scripts\python.exe scripts\<script>.py`).
 
 ## Author checkpoints (non-delegable human decisions)
 
