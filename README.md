@@ -11,7 +11,6 @@ consolidates.** No interpretive result is final until validated (see checkpoints
 - **Full design and constraints (SO1/SO2/SO3):** [PLAN.md](PLAN.md)
 - **Interpretation guide for each deliverable and its assumptions:** [interpretation.html](interpretation.html)
 - **Consolidated hub (corpus + deliverables + document intake):** [index.html](index.html)
-- **Picking this project up on a new machine (no Ollama available):** [HANDOFF.md](HANDOFF.md)
 - **Reviewing/naming the Phase 5 sub-codes:** [analysis/guidebook_summary.html](analysis/guidebook_summary.html)
 
 ## Quick start
@@ -29,13 +28,14 @@ python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 ollama pull embeddinggemma        # local embeddings (768-dim)
 ollama pull kimi-k3:cloud         # Round 1 coding model (needs an Ollama Cloud session)
+ollama pull deepseek-v4-flash:cloud   # fallback when kimi-k3:cloud hits the session usage quota
 ```
 
 Requirements: Python 3.13+, [Ollama](https://ollama.com) on `localhost:11434`.
 What travels with the repo so the analysis is fully reproducible without re-fetching
 or re-embedding anything:
 
-- `data/text/` — the full structured transcription of the 35 corpus documents
+- `data/text/` — the full structured transcription of the 66 corpus documents
   (the raw PDFs/HTML stay out of git; `data/raw/*.meta.json` records each fetch —
   URL, hash, source — and `data/raw/archive_urls.json` the archive.org snapshots).
 - `data/embeddings/` — the persisted embeddinggemma vectors: one L2-normalised
@@ -49,11 +49,11 @@ or re-embedding anything:
 ## Structure
 
 ```
-data/manifest.csv        frozen corpus v1 (35 docs) + attributes; append-only (v2+ = new intakes)
+data/manifest.csv        frozen corpus v1 (35 docs) + attributes; append-only (66 docs total as of 2026-09-18)
 data/raw/                downloaded originals + metadata per doc (outside git; snapshots on archive.org)
 data/text/                structured text per doc (blocks: title/pillar/heading/body/quotation)
 coding/lexicon_v1.yaml   term variants (nominal / variant / distributive) — versioned
-coding/units.jsonl       53 coding units (retrieval: lexicon | semantic | full_short_doc)
+coding/units.jsonl       91 coding units (retrieval: lexicon | semantic | full_short_doc)
 coding/prompts/          prompts for the 11 questions + document profile, versioned
 coding/model_eval/       Ollama model evaluation and documented decision
 coding/round1/           raw Round 1 output (JSONL per doc, with run metadata)
@@ -111,3 +111,10 @@ Everything runs with `.venv/bin/python scripts/<script>.py`.
 - `data/raw/` outside git; persistence via local copies + archive.org (33/35).
 - METAPHOR anchored in Lakoff & Johnson (1980) + MIP; the domains the pipeline
   produces are suggestions.
+- 2026-09-18: corpus expanded to 66 documents from `corpus.xlsx` (31 new
+  documents, 8 partner-company families total). The intake's Round 1 coding
+  had briefly run as an interim `claude-code-local` pass (no Ollama on the
+  intake machine); fully replaced same-day with real Ollama Cloud coding
+  (`kimi-k3:cloud` + `deepseek-v4-flash:cloud` fallback) — every record in
+  `coding/round1/` now traces to an actual model call. See PLAN.md's "Note
+  on tooling" for the full account, including one finding that changed.

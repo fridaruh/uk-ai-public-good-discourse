@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nvivo R1 R2 Review</title>
+<style>
+:root{
+  --canvas:#ffffff; --band:#f7f7f7; --ink:#0a0b0d; --body:#5b616e; --muted:#7c828a;
+  --hairline:#dee1e6; --card-fill:#eef0f3; --accent:#0052ff; --accent-active:#003ecc;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--canvas);color:var(--ink);
+  font:16px/1.7 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
+.topbar{background:var(--band);border-bottom:1px solid var(--hairline);padding:12px 24px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:13px;font-weight:500}
+.topbar a:hover{color:var(--accent-active)}
+.wrap{max-width:840px;margin:0 auto;padding:40px 24px 100px}
+h1{font-size:28px;font-weight:600;margin:0 0 8px;line-height:1.3}
+h2{font-size:21px;font-weight:600;margin:36px 0 12px;padding-top:8px;border-top:1px solid var(--hairline)}
+h1+h2, h1+p+h2{border-top:none;padding-top:0}
+h3{font-size:17px;font-weight:600;margin:24px 0 8px}
+h4{font-size:14px;font-weight:600;margin:18px 0 6px;color:var(--body)}
+p,li{color:var(--ink)}
+p{margin:0 0 14px}
+ul,ol{margin:0 0 14px;padding-left:24px}
+li{margin-bottom:4px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code{background:var(--card-fill);padding:2px 6px;border-radius:4px;font-size:0.9em;
+  font-family:ui-monospace,Menlo,Consolas,monospace}
+pre{background:var(--card-fill);padding:14px 16px;border-radius:8px;overflow-x:auto;
+  font-size:13px;line-height:1.5;margin:0 0 16px}
+pre code{background:none;padding:0}
+blockquote{border-left:3px solid var(--accent);margin:0 0 16px;padding:2px 0 2px 16px;
+  color:var(--body)}
+hr{border:none;border-top:1px solid var(--hairline);margin:28px 0}
+table{border-collapse:collapse;width:100%;margin:0 0 20px;font-size:14px}
+.table-wrap{overflow-x:auto;margin:0 0 20px}
+.table-wrap table{margin:0}
+th,td{border:1px solid var(--hairline);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--band);font-weight:600;font-size:13px}
+tr:nth-child(even) td{background:var(--band)}
+.note{background:var(--card-fill);border-radius:8px;padding:10px 14px;font-size:13px;
+  color:var(--body);margin-bottom:28px}
+</style>
+</head>
+<body>
+<div class="topbar"><a href="../index.html">&larr; Project hub</a></div>
+<div class="wrap">
+<div class="note">Rendered from <code>coding/nvivo_r1_r2_review.md</code> for readability &mdash; this page is
+generated, not authored; edit the source file, then re-run
+<code>scripts/16_render_markdown.py</code>.</div>
+<h1 id="review-of-the-authors-nvivo-coding-separating-round-1-from-round-23">Review of the author's NVIVO coding — separating Round 1 from Round 2/3</h1>
+<p><strong>Source reviewed:</strong> <code>NVIVO CODING R1.docx</code> (the author's analytic memos, one entry per
+corpus document, corpus v1's 35 documents + <code>Dx</code> duplicate pass on document 36) and
+<code>Research_Alignment_Matrix.docx</code> (the theoretical/methodological framework these memos
+answer to).</p>
+<p><strong>Why this review exists.</strong> The author flagged that the NVIVO export is titled "R1" but
+its content is not purely Round 1: some documents carry an explicit <code>ROUND 02 -&gt;</code> header;
+many more carry Round-2/3-level analytical content — intertextual links, cross-speaker
+comparison, family-completion reasoning — folded into an entry that is still labelled
+<code>ROUND 01</code>. This file makes that separation explicit, per document, and flags where Round 1
+itself looks incomplete on the author's own account ("did not code much," "will have to
+read in detail").</p>
+<p><strong>This is a locate-and-classify pass, not a re-coding.</strong> Nothing below overrides the
+author's own analytic judgment; it sorts her existing notes against the definitions in
+<code>PLAN.md</code> / <code>Research_Alignment_Matrix.docx</code> so she can see, at a glance, which of her own
+observations are already Round 2/3-level synthesis she doesn't need to redo, and which
+documents still need a Round 1 pass before their zero-counts can be trusted.</p>
+<h2 id="classification-used">Classification used</h2>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Round</th>
+<th>What it is (per PLAN.md / the Matrix)</th>
+<th>What it looks like in the NVIVO memos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Round 1</strong></td>
+<td>Per-passage answers to the 7 core questions (BENEFICIARY, MECHANISM, SAFEGUARD, RESPONSIBILITY, PROJECTED_FUTURE, ACTANTS, NATURALISED_ORDER) + the narrative/AGENCY/METAPHOR observations, located within <strong>one document's own text</strong>. Table 2's document-level questions (function, force, structural position, voice) are also Round 1 — they describe the document itself, not its relation to others.</td>
+<td>"Who is named as beneficiary? → members of the public and the economy"; a verbatim quote; "What I did: read the section, coded."</td>
+</tr>
+<tr>
+<td><strong>Round 2</strong></td>
+<td>Grouping/consolidating Round 1 answers <strong>across documents</strong>: intertextual links (this document cites/echoes that one), family-level or speaker-level comparison, timing/sequence arguments, admission/relevance judgment calls. This is exactly what <code>06_consolidate.py</code> + <code>06_network_v0.py</code> + the guidebook do computationally — Round 2 in this project is explicitly <strong>assisted</strong> by that pipeline, not purely manual.</td>
+<td>"SIX DAYS AFTER THE BLUEPRINT, WHICH USES THE TERM"; "the only MoU that explicitly names GDS"; "That's intertextuality in Fairclough's sense."</td>
+</tr>
+<tr>
+<td><strong>Round 3</strong> (or beyond-corpus)</td>
+<td>Connections to the theory chapter / literature review, or methodological process notes about how the coding itself should proceed. Not corpus coding at all — thesis-writing scaffolding that happens to live in the same memo.</td>
+<td>"gets my attention since it's something I read about in the literature review"; "might be better to do quantitative approaches using Claude code."</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>None of this is a criticism of mixing them — grounded theory (Saldaña 2025, cited in
+<code>PLAN.md</code>) expects noticing to happen before formal categories exist. The point is only to
+stop the R1/R2 labels from misleading anyone (including future-you) about what still needs
+a first pass versus what is already synthesis.</p>
+<h2 id="per-document-classification">Per-document classification</h2>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Doc (# in NVIVO memo)</th>
+<th>Round 1 in the memo</th>
+<th>Round 2/3 already embedded</th>
+<th>Flag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D1 AI Playbook</td>
+<td>4 of 7 core Qs answered explicitly (beneficiary/mechanism/safeguard/responsibility); 3 narrative Qs listed but not answered in this memo</td>
+<td>Explicit <code>ROUND 02 -&gt;</code> block: Table 2 questions (function/force/structural position/voice) + a forward methodological note ("how would Gramsci interrogate this... using gen AI")</td>
+<td>Narrative Qs (future/hero/order) not visibly answered — check they exist elsewhere in the live NVIVO project, not just this export</td>
+</tr>
+<tr>
+<td>D2 Playbook launch blog</td>
+<td>Read/coded, no per-question breakdown in memo</td>
+<td>A pattern-recognition claim ("I can recognize from a pattern of what they name/list") — borderline R2, thin evidence trail</td>
+<td>Core Qs not itemised here</td>
+</tr>
+<tr>
+<td>D3 Blueprint</td>
+<td>Six-point plan = MECHANISM answer</td>
+<td>Direct quote from the Roadmap establishing Blueprint→Roadmap intertextuality; explicit <code>R2:</code> tag for a forward re-read of Section 3</td>
+<td>R2 material already substantial and well-evidenced</td>
+</tr>
+<tr>
+<td>D4 Roadmap launch blog</td>
+<td>Read/coded, quotes only</td>
+<td>—</td>
+<td>Core Qs not itemised here</td>
+</tr>
+<tr>
+<td>D5 Roadmap</td>
+<td>Beneficiary categories (citizens/business/workers); 2 subpillars = MECHANISM</td>
+<td>"will consider that for when I do round 2 of coding" — explicit forward reference</td>
+<td>Document was split into an expanded version for later coding; make sure both halves get a full R1 pass</td>
+</tr>
+<tr>
+<td>D6 Roadmap WMS</td>
+<td>Term-used quote only</td>
+<td>—</td>
+<td>Core Qs not itemised here</td>
+</tr>
+<tr>
+<td>D7 Top British AI Expertise</td>
+<td>Term-used quote</td>
+<td>Anthropic's own use of the phrase compared to government's (discourse-coalition observation)</td>
+<td>"Ready for scans for R2" — author's own R1/R2 boundary marker</td>
+</tr>
+<tr>
+<td>D8 AI Opportunities Action Plan</td>
+<td><strong>Thin</strong> — "did not code much... will have to read in detail"</td>
+<td>Causal link drawn from Recommendation 33 to the MoU programme (a real R2/R3-level claim, stated as a hypothesis: "I would think that...")</td>
+<td><strong>R1 incomplete on the author's own account</strong> — the most-cited document in the corpus (44 in-edges) has the thinnest Round 1 coding</td>
+</tr>
+<tr>
+<td>D9 Action Plan gov response</td>
+<td>"No evident codes here"</td>
+<td>Notes the AI Opportunities Unit's creation (context, not coding)</td>
+<td><strong>R1 incomplete</strong></td>
+</tr>
+<tr>
+<td>D10 Action Plan One Year On</td>
+<td>"Only one code found"</td>
+<td>—</td>
+<td><strong>R1 incomplete</strong>; author flags needing to "draw a line and justify" the term-sections-only approach</td>
+</tr>
+<tr>
+<td>D11 Generative AI Framework</td>
+<td>Term-used quote ("supports the public good")</td>
+<td>Withdrawal/supersession relationship to the Playbook (R2-level, and the one supersession edge already coded into <code>intertextual_v0.json</code>)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>D12 Pro-innovation AI regulation response</td>
+<td>Forewords + keyword search on "public"</td>
+<td>Explicit self-identification: "That's intertextuality in Fairclough's [sense]"</td>
+<td>Author already naming her own R2 move correctly</td>
+</tr>
+<tr>
+<td>D13 PM "turbocharge AI" blueprint</td>
+<td>Beneficiary = "working people"</td>
+<td><strong>Heavy R2/R3</strong>: Labour-language correlation, 5-govt-vs-22-industry voice count, MoU-timing-relative-to-quotes analysis, naming-sequence argument (digital centre named 8 days before Blueprint)</td>
+<td>The clearest example of R2/R3 analysis filed under "ROUND 01" — this entry alone justifies the author's "R1 label but R1+R2 content" observation</td>
+</tr>
+<tr>
+<td>D14 Blueprint WMS</td>
+<td>Term-used quote, AGENCY-shaped observation ("FIRST-PERSON PLURAL, GOVERNMENT AS AGENT")</td>
+<td>—</td>
+<td>AGENCY tag is R1-level (passage-internal), correctly scoped despite looking analytical</td>
+</tr>
+<tr>
+<td>D15 State of Digital Gov Review</td>
+<td>"2 codes emerged but not relevant"</td>
+<td>—</td>
+<td><strong>R1 thin</strong></td>
+</tr>
+<tr>
+<td>D16 Same name, new ambitions</td>
+<td>Read/coded whole document</td>
+<td>Timing argument ("SIX DAYS AFTER THE BLUEPRINT"); a <code>COMMENT</code> asking to "add dates to all to analyze timeline evolution" (methodological, R3-adjacent)</td>
+<td>The dated-timeline request is exactly what <code>date</code> already does in <code>manifest.csv</code> — already satisfied by the pipeline</td>
+</tr>
+<tr>
+<td>D17 AI Exemplars blog</td>
+<td>Term-used quote, portfolio-approach context</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>D18 Anthropic MoU</td>
+<td>"A few codes"</td>
+<td>Forward reference to a later document (GOV.UK assistant "built with GDS engineers")</td>
+<td>—</td>
+</tr>
+<tr>
+<td>D19 Anthropic signs MOU (Anthropic voice)</td>
+<td>"2 things"</td>
+<td>—</td>
+<td><strong>R1 thin</strong></td>
+</tr>
+<tr>
+<td>D20 Anthropic GOV.UK partnership</td>
+<td>Term-used quotes ("public benefit")</td>
+<td>Admission-relevance reasoning ("NOT AN ANNOUNCEMENT blog, still we will keep")</td>
+<td>This is Phase 0/7 admission judgment, not coding — a fourth category worth naming separately if the memo is reorganised</td>
+</tr>
+<tr>
+<td>D21 Cohere MoU</td>
+<td>"Almost no codes emerged"</td>
+<td>Family-comparison flag: "the only MoU that explicitly names GDS"</td>
+<td><strong>R1 thin</strong>, but the R2 flag here is exactly what feeds <code>gds_tier = T2</code></td>
+</tr>
+<tr>
+<td>D22 Cohere Canada/UK (Cohere voice)</td>
+<td>"No term used"</td>
+<td>Explicit statement that MoU/announcement genres "might be better... using Claude code" — i.e., the author naming the need for this pipeline's assistance in real time</td>
+<td>Direct textual evidence for "R2/R3 assisted by this code"</td>
+</tr>
+<tr>
+<td>D23 OpenAI MoU</td>
+<td>"No term"</td>
+<td>—</td>
+<td><strong>R1 thin</strong></td>
+</tr>
+<tr>
+<td>D24 OpenAI expand UK office</td>
+<td>"No term"</td>
+<td>—</td>
+<td><strong>R1 thin</strong></td>
+</tr>
+<tr>
+<td>D25 OpenAI strategic partnership</td>
+<td>"Few codes"</td>
+<td>—</td>
+<td><strong>R1 thin</strong></td>
+</tr>
+<tr>
+<td>D26 Next chapter sovereign AI (MoJ)</td>
+<td>Metaphor note</td>
+<td>Cross-speaker trust-framing comparison (government vs. OpenAI's use of "trust")</td>
+<td>Comparison is genuinely R2 — a good AGENCY/NATURALISED_ORDER candidate once formalised</td>
+</tr>
+<tr>
+<td>D27 Stargate UK</td>
+<td>"Not really any codes"</td>
+<td>Admission-boundary reasoning ("recommend moving to context")</td>
+<td><strong>R1 thin</strong>; another Phase-0/7-flavoured note, not coding</td>
+</tr>
+<tr>
+<td>D28 DeepMind MoU</td>
+<td>Section structure noted (Table 2-level, R1)</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>D29 DeepMind national renewal (govside)</td>
+<td>Term found twice</td>
+<td><strong>AGENCY cross-document comparison</strong>: "we harness" (govt, 1st-person-plural) vs. the MoU's agentless passive "AI will be harnessed" — a genuinely strong finding</td>
+<td>This is exactly the kind of R2 pattern <code>agency_by_genre.csv</code> is built to surface at scale</td>
+</tr>
+<tr>
+<td>D30 DeepMind deepening AISI</td>
+<td>—</td>
+<td>Intra-family split-release comparison (vs. D31); a literature-review connection note (Chain-of-Thought monitoring) — the latter is <strong>R3</strong>, not corpus coding</td>
+<td>—</td>
+</tr>
+<tr>
+<td>D31 DeepMind strengthening partnership</td>
+<td>Term used once, full quotes</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>D32 ElevenLabs MoU</td>
+<td>Near-miss quotes</td>
+<td>Relevance judgment on Service Standard 5 citation</td>
+<td>—</td>
+</tr>
+<tr>
+<td>D33/D34 ElevenLabs (research / bring voice AI)</td>
+<td>Both minimal</td>
+<td>Cross-document duplicate-quote flag (same minister quote in both)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>D35 Tackling AI security risks</td>
+<td>Term absent (verified read)</td>
+<td><strong>Heaviest R2/R3 in the set</strong>: explicit family-completion verification against D23/D28's government releases; a citizens-as-protected vs. citizens-as-served semantic-role finding; AISI renaming/remit-narrowing note</td>
+<td>This entry is functionally a mini Round-2 memo on its own — strong candidate for a <code>NATURALISED_ORDER</code>/<code>ACTANTS</code> sub-code once named</td>
+</tr>
+<tr>
+<td>D36/Dx Data and AI Ethics Framework</td>
+<td>Update history (4 new principles)</td>
+<td><strong>Definitional intertextuality</strong>: connects "deliver public good" (2025) back to the Roadmap's "societal wellbeing and public good" (2025) heading</td>
+<td>Independently converges with the pipeline's own finding — see below</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="where-the-authors-manual-reading-already-agrees-with-the-pipeline">Where the author's manual reading already agrees with the pipeline</h2>
+<p>Three convergences worth knowing about, because they cross-validate each other without
+either side having seen the other's output:</p>
+<ol>
+<li><strong>D36/Dx's "deliver public good" note</strong> is the same passage the automated DEFINITIONAL
+   question flagged as one of only <strong>4 explicit (glossed) definitions in 66 documents</strong> —
+   see <code>interpretation.html</code>'s "Term defined vs. term used" section. The author found this
+   by close reading; the pipeline found it by running the same question mechanically over
+   every unit. Same answer, two independent methods.</li>
+<li><strong>D29's AGENCY observation</strong> ("we harness" vs. the MoU's agentless passive) is precisely
+   the pattern <code>11_agency_query.py</code> / <code>agency_by_genre.csv</code> was built to detect at scale
+   (411 AGENCY records corpus-wide). The author's single hand-found instance is a good
+   spot-check case for validating that CSV once it's reviewed.</li>
+<li><strong>D13's discourse-coalition analysis</strong> (voice counts, timing relative to MoU signings) is
+   exactly SO3's design intent (Hajer 1995, discourse coalitions) — already the sharpest
+   manual analysis in the set, and a template for what the echo-phrase/agency data could
+   support for the other MoU families if extended the same way.</li>
+</ol>
+<h2 id="what-this-means-for-round-1-is-what-i-did-in-nvivo">What this means for "Round 1 is what I did in NVIVO"</h2>
+<p>Fourteen of the 35 entries (D8, D9, D10, D15, D19, D21, D22, D23, D24, D25, D27, D30, D32,
+D33/34) are flagged above as having thin or no per-question Round 1 coding — mostly on
+documents where the term is absent and the author's own notes already say she scanned
+rather than close-read. This is not necessarily a problem: several of those documents
+(MoUs, press releases with no term) are exactly the zero-count cases the design expects
+(<code>term_status = absent</code> is itself a finding, not a gap) — but it does mean any claim drawn
+from those documents' <em>narrative</em> questions (future/hero/threat/order), as opposed to their
+term-presence status, should be treated as author-flagged-incomplete until she does a full
+read, not as a completed Round 1 pass.</p>
+<p>The documents with the richest embedded Round 2/3 content (D3, D7, D8, D12, D13, D16, D18,
+D21, D22, D26, D29, D30, D35, D36) are, not coincidentally, mostly the documents that sit at
+family or genre boundaries — exactly where intertextual/comparative noticing happens
+naturally while reading. That content is valuable and should not be re-done; it should be
+pulled into the guidebook naming pass (Phase 5) and the network's edge evidence
+(<code>intertextual_v0.json</code>) rather than left stranded in a memo titled "R1."</p>
+</div>
+</body>
+</html>

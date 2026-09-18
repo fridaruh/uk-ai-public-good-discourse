@@ -62,7 +62,6 @@ consolidates.</strong> No interpretive result is final until validated (see chec
 <li><strong>Full design and constraints (SO1/SO2/SO3):</strong> <a href="PLAN.html">PLAN.md</a></li>
 <li><strong>Interpretation guide for each deliverable and its assumptions:</strong> <a href="interpretation.html">interpretation.html</a></li>
 <li><strong>Consolidated hub (corpus + deliverables + document intake):</strong> <a href="index.html">index.html</a></li>
-<li><strong>Picking this project up on a new machine (no Ollama available):</strong> <a href="HANDOFF.html">HANDOFF.md</a></li>
 <li><strong>Reviewing/naming the Phase 5 sub-codes:</strong> <a href="analysis/guidebook_summary.html">analysis/guidebook_summary.html</a></li>
 </ul>
 <h2 id="quick-start">Quick start</h2>
@@ -75,12 +74,13 @@ consolidates.</strong> No interpretive result is final until validated (see chec
 .venv/bin/pip install -r requirements.txt
 ollama pull embeddinggemma        # local embeddings (768-dim)
 ollama pull kimi-k3:cloud         # Round 1 coding model (needs an Ollama Cloud session)
+ollama pull deepseek-v4-flash:cloud   # fallback when kimi-k3:cloud hits the session usage quota
 </code></pre>
 <p>Requirements: Python 3.13+, <a href="https://ollama.com">Ollama</a> on <code>localhost:11434</code>.
 What travels with the repo so the analysis is fully reproducible without re-fetching
 or re-embedding anything:</p>
 <ul>
-<li><code>data/text/</code> — the full structured transcription of the 35 corpus documents
+<li><code>data/text/</code> — the full structured transcription of the 66 corpus documents
   (the raw PDFs/HTML stay out of git; <code>data/raw/*.meta.json</code> records each fetch —
   URL, hash, source — and <code>data/raw/archive_urls.json</code> the archive.org snapshots).</li>
 <li><code>data/embeddings/</code> — the persisted embeddinggemma vectors: one L2-normalised
@@ -92,11 +92,11 @@ or re-embedding anything:</p>
 <li><code>coding/model_eval/</code> — the model comparison behind the kimi-k3 decision.</li>
 </ul>
 <h2 id="structure">Structure</h2>
-<pre><code>data/manifest.csv        frozen corpus v1 (35 docs) + attributes; append-only (v2+ = new intakes)
+<pre><code>data/manifest.csv        frozen corpus v1 (35 docs) + attributes; append-only (66 docs total as of 2026-09-18)
 data/raw/                downloaded originals + metadata per doc (outside git; snapshots on archive.org)
 data/text/                structured text per doc (blocks: title/pillar/heading/body/quotation)
 coding/lexicon_v1.yaml   term variants (nominal / variant / distributive) — versioned
-coding/units.jsonl       53 coding units (retrieval: lexicon | semantic | full_short_doc)
+coding/units.jsonl       91 coding units (retrieval: lexicon | semantic | full_short_doc)
 coding/prompts/          prompts for the 11 questions + document profile, versioned
 coding/model_eval/       Ollama model evaluation and documented decision
 coding/round1/           raw Round 1 output (JSONL per doc, with run metadata)
@@ -233,6 +233,13 @@ analysis/metaphors_report.md  most frequent metaphors with suggested source/targ
 <li><code>data/raw/</code> outside git; persistence via local copies + archive.org (33/35).</li>
 <li>METAPHOR anchored in Lakoff &amp; Johnson (1980) + MIP; the domains the pipeline
   produces are suggestions.</li>
+<li>2026-09-18: corpus expanded to 66 documents from <code>corpus.xlsx</code> (31 new
+  documents, 8 partner-company families total). The intake's Round 1 coding
+  had briefly run as an interim <code>claude-code-local</code> pass (no Ollama on the
+  intake machine); fully replaced same-day with real Ollama Cloud coding
+  (<code>kimi-k3:cloud</code> + <code>deepseek-v4-flash:cloud</code> fallback) — every record in
+  <code>coding/round1/</code> now traces to an actual model call. See PLAN.md's "Note
+  on tooling" for the full account, including one finding that changed.</li>
 </ul>
 </div>
 </body>

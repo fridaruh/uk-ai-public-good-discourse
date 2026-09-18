@@ -116,7 +116,7 @@ def main():
         })
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    with OUT.open("w", newline="") as f:
+    with OUT.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(records[0].keys()))
         w.writeheader()
         w.writerows(records)

@@ -1,7 +1,7 @@
 {
  "model": "embeddinggemma",
  "dim": 768,
- "n_sections": 538,
+ "n_sections": 786,
  "normalisation": "L2",
  "truncation_chars": 1500,
  "lexicon_version": 1,

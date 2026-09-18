@@ -76,16 +76,6 @@
     "status": "partial",
     "error": "Only existing snapshot available"
   },
-  "CONTEXT_2025-01-13_STRAT_DSIT_AIOpportunitiesActionPlan": {
-    "url": "https://www.gov.uk/government/publications/ai-opportunities-action-plan",
-    "existing_snapshot": {
-      "url": "https://web.archive.org/web/20260819220405/https://www.gov.uk/government/publications/ai-opportunities-action-plan",
-      "timestamp": "20260819220405"
-    },
-    "fresh_snapshot": null,
-    "status": "partial",
-    "error": "Only existing snapshot available"
-  },
   "2025-02-10_STRAT_GDS_AIPlaybookUKGovernment": {
     "url": "https://www.gov.uk/government/publications/ai-playbook-for-the-uk-government/artificial-intelligence-playbook-for-the-uk-government-html",
     "existing_snapshot": {
@@ -338,6 +328,16 @@
     "existing_snapshot": {
       "url": "https://web.archive.org/web/20260821182752/https://www.gov.uk/government/news/tackling-ai-security-risks-to-unleash-growth-and-deliver-plan-for-change",
       "timestamp": "20260821182752"
+    },
+    "fresh_snapshot": null,
+    "status": "partial",
+    "error": "Only existing snapshot available"
+  },
+  "2025-01-13_STRAT_DSIT_AIOpportunitiesActionPlan": {
+    "url": "https://www.gov.uk/government/publications/ai-opportunities-action-plan",
+    "existing_snapshot": {
+      "url": "https://web.archive.org/web/20260819220405/https://www.gov.uk/government/publications/ai-opportunities-action-plan",
+      "timestamp": "20260819220405"
     },
     "fresh_snapshot": null,
     "status": "partial",

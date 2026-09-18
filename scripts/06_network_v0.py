@@ -71,7 +71,7 @@ SUPERSESSION = [
 
 def load_text(doc_id):
     p = ROOT / "data" / "text" / f"{doc_id}.json"
-    doc = json.loads(p.read_text())
+    doc = json.loads(p.read_text(encoding="utf-8"))
     return "\n".join(b["text"] for b in doc["blocks"]).lower()
 
 
@@ -81,7 +81,7 @@ def snippet(text, pos, width=90):
 
 
 def main():
-    rows = list(csv.DictReader((ROOT / "data" / "manifest.csv").open()))
+    rows = list(csv.DictReader((ROOT / "data" / "manifest.csv").open(encoding="utf-8")))
     texts = {r["doc_id"]: load_text(r["doc_id"]) for r in rows}
 
     # (alias, target) pairs sorted by descending length to mask long ones first
@@ -133,7 +133,7 @@ def main():
     echo_csv = ROOT / "analysis" / "queries" / "echo_phrases.csv"
     if echo_csv.exists():
         pair_stats = {}
-        for row in csv.DictReader(echo_csv.open()):
+        for row in csv.DictReader(echo_csv.open(encoding="utf-8")):
             if row.get("formulaic", "").strip().lower() in ("true", "1", "yes"):
                 continue
             key = (row["gov_doc"], row["company_doc"])
@@ -166,7 +166,7 @@ def main():
         })
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps({"nodes": nodes, "edges": edges}, indent=1, ensure_ascii=False))
+    OUT.write_text(json.dumps({"nodes": nodes, "edges": edges}, indent=1, ensure_ascii=False), encoding="utf-8")
     print(f"{len(nodes)} nodes, {len(edges)} edges -> {OUT}")
     print("\nTop referenced (in-degree):")
     for n in sorted(nodes, key=lambda n: -n["in_degree"])[:10]:

@@ -38,9 +38,9 @@
 
 ## OpenAI
 
-- **Total echoes**: 15
+- **Total echoes**: 23
 - **Formulaic**: 0
-- **Non-formulaic**: 15
+- **Non-formulaic**: 23
 - **Longest non-formulaic echo**: 118 words
   - Phrase: "technology secretary peter kyle said ai will be fundamental in driving the change we need to see across the country whether that s in fixing the nhs breaking down barriers to opportunity or driving economic growth that s why we need to make sure britain is front and centre when it comes to developing and deploying ai so we can make sure it works for us this can t be achieved without companies like openai who are driving this revolution forward internationally this partnership will see more of their work taking place in the uk creating high paid tech jobs driving investment in infrastructure and crucially giving our country agency over how this world changing technology moves forward"
 - **Published first (majority)**: same_day

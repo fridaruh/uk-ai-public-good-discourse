@@ -5,3 +5,8 @@ data/raw/*
 __pycache__/
 *.pyc
 .DS_Store
+
+# Dissertation-facing drafts: findings/analysis/discussion prose that goes
+# straight into the thesis, kept out of the public repo (see
+# dissertation_outputs/README.md).
+dissertation_outputs/

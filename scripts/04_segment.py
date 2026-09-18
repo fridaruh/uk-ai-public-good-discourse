@@ -18,7 +18,7 @@ import requests
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-LEX = yaml.safe_load((ROOT / "coding" / "lexicon_v1.yaml").read_text())
+LEX = yaml.safe_load((ROOT / "coding" / "lexicon_v1.yaml").read_text(encoding="utf-8"))
 OLLAMA = "http://localhost:11434"
 EMB_MODEL = "embeddinggemma"
 SEM_THRESHOLD = 0.52   # minimum cosine (calibrated to embeddinggemma's scale
@@ -63,12 +63,12 @@ def hits(rxs, text):
 
 
 def main():
-    rows = list(csv.DictReader((ROOT / "data" / "manifest.csv").open()))
+    rows = list(csv.DictReader((ROOT / "data" / "manifest.csv").open(encoding="utf-8")))
     units, counts = [], []
     probes = embed(LEX["beneficiary_probes"])
 
     for r in rows:
-        doc = json.loads((ROOT / "data" / "text" / f"{r['doc_id']}.json").read_text())
+        doc = json.loads((ROOT / "data" / "text" / f"{r['doc_id']}.json").read_text(encoding="utf-8"))
         full = "\n".join(b["text"] for b in doc["blocks"])
         n_nom, n_var, n_dis = hits(RX_NOM, full), hits(RX_VAR, full), hits(RX_DIS, full)
         counts.append({"doc_id": r["doc_id"], "genre": r["genre"], "speaker": r["speaker"],
@@ -134,14 +134,14 @@ def main():
                 "hits_nominal": [], "hits_variant": [], "hits_distributive": []})
         units.extend(doc_units)
 
-    with (ROOT / "data" / "manifest.csv").open("w", newline="") as f:
+    with (ROOT / "data" / "manifest.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         w.writeheader(); w.writerows(rows)
-    with (ROOT / "coding" / "units.jsonl").open("w") as f:
+    with (ROOT / "coding" / "units.jsonl").open("w", encoding="utf-8") as f:
         for u in units:
             f.write(json.dumps(u, ensure_ascii=False) + "\n")
     qdir = ROOT / "analysis" / "queries"; qdir.mkdir(parents=True, exist_ok=True)
-    with (qdir / "term_counts.csv").open("w", newline="") as f:
+    with (qdir / "term_counts.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(counts[0].keys()))
         w.writeheader(); w.writerows(counts)
 
